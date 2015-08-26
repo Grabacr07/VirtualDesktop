@@ -44,7 +44,7 @@ namespace WindowsDesktop
 			{
 				desktop = ComInternal.GetAdjacentDesktop(this.ComObject, AdjacentDesktop.LeftDirection);
 			}
-			catch (COMException ex) when (((uint)ex.HResult) == HResult.TYPE_E_OUTOFBOUNDS)
+			catch (COMException ex) when (ex.Match(HResult.TYPE_E_OUTOFBOUNDS))
 			{
 				return null;
 			}
@@ -60,7 +60,7 @@ namespace WindowsDesktop
 			{
 				desktop = ComInternal.GetAdjacentDesktop(this.ComObject, AdjacentDesktop.RightDirection);
 			}
-			catch (COMException ex) when (((uint)ex.HResult) == HResult.TYPE_E_OUTOFBOUNDS)
+			catch (COMException ex) when (ex.Match(HResult.TYPE_E_OUTOFBOUNDS))
 			{
 				return null;
 			}

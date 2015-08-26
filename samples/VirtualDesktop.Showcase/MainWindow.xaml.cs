@@ -27,7 +27,7 @@ namespace VirtualDesktopShowcase
 
 			await Task.Delay(1000);
 
-			var desktop = VirtualDesktop.FromId(Guid.NewGuid());
+			var desktop = VirtualDesktop.FromHwnd((IntPtr)1283123);
 		}
 	}
 }

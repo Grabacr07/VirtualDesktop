@@ -81,7 +81,28 @@ namespace WindowsDesktop
 			{
 				desktop = ComInternal.FindDesktop(desktopId);
 			}
-			catch (COMException ex) when (((uint)ex.HResult) == HResult.TYPE_E_ELEMENTNOTFOUND)
+			catch (COMException ex) when (ex.Match(HResult.TYPE_E_ELEMENTNOTFOUND))
+			{
+				return null;
+			}
+			var wrapper = wrappers.GetOrAdd(desktop.GetID(), _ => new VirtualDesktop(desktop));
+
+			return wrapper;
+		}
+
+		public static VirtualDesktop FromHwnd(IntPtr hwnd)
+		{
+			VirtualDesktopHelper.ThrowIfNotSupported();
+
+			if (hwnd == IntPtr.Zero) return null;
+
+			IVirtualDesktop desktop;
+			try
+			{
+				var desktopId = ComManager.GetWindowDesktopId(hwnd);
+				desktop = ComInternal.FindDesktop(desktopId);
+			}
+			catch (COMException ex) when (ex.Match(HResult.REGDB_E_CLASSNOTREG, HResult.TYPE_E_ELEMENTNOTFOUND))
 			{
 				return null;
 			}

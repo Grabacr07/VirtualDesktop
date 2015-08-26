@@ -20,7 +20,7 @@ namespace WindowsDesktop
 
 		public static VirtualDesktop GetCurrentDesktop(this Form form)
 		{
-			return VirtualDesktopHelper.GetCurrentDesktop(form.Handle);
+			return VirtualDesktop.FromHwnd(form.Handle);
 		}
 	}
 }

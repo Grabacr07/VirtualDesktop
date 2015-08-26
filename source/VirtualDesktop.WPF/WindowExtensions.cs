@@ -17,7 +17,7 @@ namespace WindowsDesktop
 
 		public static VirtualDesktop GetCurrentDesktop(this Window window)
 		{
-			return VirtualDesktopHelper.GetCurrentDesktop(window.GetHandle());
+			return VirtualDesktop.FromHwnd(window.GetHandle());
 		}
 
 		public static void MoveToDesktop(this Window window, VirtualDesktop virtualDesktop)

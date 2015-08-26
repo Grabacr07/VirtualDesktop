@@ -23,13 +23,5 @@ namespace WindowsDesktop
 
 			VirtualDesktop.ComManager.MoveWindowToDesktop(handle, virtualDesktop.Id);
 		}
-
-		public static VirtualDesktop GetCurrentDesktop(IntPtr handle)
-		{
-			ThrowIfNotSupported();
-
-			var id = VirtualDesktop.ComManager.GetWindowDesktopId(handle);
-			return VirtualDesktop.FromId(id);
-		}
 	}
 }
