@@ -34,4 +34,5 @@ namespace WindowsDesktop.Interop
 		LeftDirection = 3,
 		RightDirection = 4
 	}
+	
 }

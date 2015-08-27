@@ -21,7 +21,8 @@ namespace WindowsDesktop
 		{
 			ThrowIfNotSupported();
 
-			VirtualDesktop.ComManager.MoveWindowToDesktop(handle, virtualDesktop.Id);
+			var guid = virtualDesktop.Id;
+			VirtualDesktop.ComManager.MoveWindowToDesktop(handle, ref guid);
 		}
 	}
 }

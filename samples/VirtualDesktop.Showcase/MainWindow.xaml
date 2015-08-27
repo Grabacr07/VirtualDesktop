@@ -4,8 +4,31 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		mc:Ignorable="d"
-		Title="MainWindow" Height="350" Width="525">
-	<Grid>
-		
-	</Grid>
+		Title="VirtualDesktop.Showcase"
+		SizeToContent="WidthAndHeight"
+		FontSize="20">
+	<StackPanel Margin="8">
+		<Panel.Resources>
+			<Style TargetType="{x:Type Button}">
+				<Setter Property="Padding"
+						Value="20,4" />
+				<Setter Property="HorizontalContentAlignment"
+						Value="Left" />
+				<Setter Property="Margin"
+						Value="8" />
+			</Style>
+		</Panel.Resources>
+		<Button Content="Create new"
+				Click="CreateNew" />
+		<Button Content="Create new and move"
+				Click="CreateNewAndMove" />
+		<Button Content="Switch left"
+				Click="SwitchLeft" />
+		<Button Content="Switch left and move"
+				Click="SwitchLeftAndMove" />
+		<Button Content="Switch right"
+				Click="SwitchRight" />
+		<Button Content="Switch right and move"
+				Click="SwitchRightAndMove" />
+	</StackPanel>
 </Window>

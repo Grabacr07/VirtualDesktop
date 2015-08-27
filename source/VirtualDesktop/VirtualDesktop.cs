@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using WindowsDesktop.Interop;
 
 namespace WindowsDesktop
 {
+	[DebuggerDisplay("{Id}")]
 	public partial class VirtualDesktop
 	{
 		public Guid Id { get; }

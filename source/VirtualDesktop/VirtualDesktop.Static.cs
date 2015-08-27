@@ -16,7 +16,13 @@ namespace WindowsDesktop
 		internal static IVirtualDesktopManager ComManager { get; }
 		internal static IVirtualDesktopManagerInternal ComInternal { get; }
 
-		public static bool IsSupported => (Environment.OSVersion.Version.Major >= 10) && isSupportedInternal;
+		// ReSharper disable once ConvertToAutoProperty
+		public static bool IsSupported =>
+#if DEBUG
+			isSupportedInternal;
+#else
+			Environment.OSVersion.Version.Major >= 10 && isSupportedInternal;
+#endif
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static Exception InitializationException { get; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using WindowsDesktop;
 
 namespace VirtualDesktopShowcase
@@ -13,21 +14,45 @@ namespace VirtualDesktopShowcase
 			this.InitializeComponent();
 		}
 
-		protected override async void OnContentRendered(EventArgs e)
+		private void CreateNew(object sender, RoutedEventArgs e)
 		{
-			base.OnContentRendered(e);
+			VirtualDesktop.Create().Switch();
+		}
 
-			await Task.Delay(5000);
+		private void CreateNewAndMove(object sender, RoutedEventArgs e)
+		{
+			var desktop = VirtualDesktop.Create();
 
-			this.GetCurrentDesktop().GetRight()?.SwitchAndMove(this);
+			this.MoveToDesktop(desktop);
+			desktop.Switch();
+		}
 
-			await Task.Delay(1000);
+		private void SwitchLeft(object sender, RoutedEventArgs e)
+		{
+			this.GetCurrentDesktop().GetLeft()?.Switch();
+		}
 
-			this.GetCurrentDesktop().GetRight()?.SwitchAndMove(this);
+		private void SwitchLeftAndMove(object sender, RoutedEventArgs e)
+		{
+			var left = this.GetCurrentDesktop().GetLeft();
+			if (left == null) return;
 
-			await Task.Delay(1000);
+			this.MoveToDesktop(left);
+			left.Switch();
+		}
 
-			var desktop = VirtualDesktop.FromHwnd((IntPtr)1283123);
+		private void SwitchRight(object sender, RoutedEventArgs e)
+		{
+			this.GetCurrentDesktop().GetRight()?.Switch();
+		}
+
+		private void SwitchRightAndMove(object sender, RoutedEventArgs e)
+		{
+			var right = this.GetCurrentDesktop().GetRight();
+			if (right == null) return;
+
+			this.MoveToDesktop(right);
+			right.Switch();
 		}
 	}
 }
