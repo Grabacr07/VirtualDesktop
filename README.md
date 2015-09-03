@@ -67,9 +67,11 @@ var desktop = window.GetCurrentDesktop();
 window.MoveToDesktop(desktop);
 ```
 
+See also:
+* [samples/VirtualDesktop.Showcase](samples/VirtualDesktop.Showcase) project  
+![ss150904031950kd](https://cloud.githubusercontent.com/assets/1779073/9666915/d57850d8-52b3-11e5-9d61-b13a49656b11.png)
+
 
 ## License
 
 This library is under the MIT License.
-
-
