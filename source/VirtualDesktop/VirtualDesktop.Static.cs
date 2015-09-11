@@ -78,6 +78,15 @@ namespace WindowsDesktop
 			return wrapper;
 		}
 
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public static VirtualDesktop FromComObject(IVirtualDesktop desktop)
+		{
+			VirtualDesktopHelper.ThrowIfNotSupported();
+
+			var wrapper = wrappers.GetOrAdd(desktop.GetID(), _ => new VirtualDesktop(desktop));
+			return wrapper;
+		}
+
 		public static VirtualDesktop FromId(Guid desktopId)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
