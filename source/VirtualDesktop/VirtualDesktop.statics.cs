@@ -41,6 +41,9 @@ namespace WindowsDesktop
 				InitializationException = ex;
 				isSupportedInternal = false;
 			}
+
+			RegisterListener();
+			AppDomain.CurrentDomain.ProcessExit += (sender, args) => UnregisterListener();
 		}
 
 

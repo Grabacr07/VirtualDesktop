@@ -89,12 +89,12 @@
     <Compile Include="Interop\IVirtualDesktopNotificationService.cs" />
     <Compile Include="Interop\VirtualDesktopInteropHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VirtualDesktop.Static.cs" />
+    <Compile Include="VirtualDesktop.statics.cs" />
     <Compile Include="VirtualDesktop.cs" />
     <Compile Include="VirtualDesktopChangedEventArgs.cs" />
     <Compile Include="VirtualDesktopDestroyEventArgs.cs" />
     <Compile Include="VirtualDesktopHelper.cs" />
-    <Compile Include="VirtualDesktopNotifier.cs" />
+    <Compile Include="VirtualDesktop.statics.notification.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
