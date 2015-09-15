@@ -27,6 +27,17 @@ namespace WindowsDesktop
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static Exception InitializationException { get; }
 
+		public static VirtualDesktop Current
+		{
+			get
+			{
+				var current = ComInternal.GetCurrentDesktop();
+				var wrapper = wrappers.GetOrAdd(current.GetID(), _ => new VirtualDesktop(current));
+
+				return wrapper;
+			}
+		}
+
 		static VirtualDesktop()
 		{
 			if (!IsSupported) return;
