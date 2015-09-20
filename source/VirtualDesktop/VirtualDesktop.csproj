@@ -87,6 +87,7 @@
     <Compile Include="Interop\IVirtualDesktopManagerInternal.cs" />
     <Compile Include="Interop\IVirtualDesktopNotification.cs" />
     <Compile Include="Interop\IVirtualDesktopNotificationService.cs" />
+    <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Interop\VirtualDesktopInteropHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VirtualDesktop.static.cs" />
