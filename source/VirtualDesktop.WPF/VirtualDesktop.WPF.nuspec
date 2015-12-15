@@ -13,7 +13,7 @@
         <language>en-US</language>
         <tags>Windows Windows10 Desktop VirtualDesktop WPF</tags>
         <dependencies>
-            <dependency id="VirtualDesktop" version="1.0.0" />
+            <dependency id="VirtualDesktop" version="1.0.2" />
         </dependencies>
     </metadata>
 </package>

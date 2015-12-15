@@ -28,16 +28,26 @@ namespace WindowsDesktop
 			this.Id = comObject.GetID();
 		}
 
+
+		/// <summary>
+		/// Display the virtual desktop.
+		/// </summary>
 		public void Switch()
 		{
 			ComInternal.SwitchDesktop(this.ComObject);
 		}
 
+		/// <summary>
+		/// Remove the virtual desktop.
+		/// </summary>
 		public void Remove()
 		{
 			this.Remove(GetDesktopsInternal().FirstOrDefault(x => x.Id != this.Id) ?? Create());
 		}
 
+		/// <summary>
+		/// Remove the virtual desktop, specifying a virtual desktop that display after destroyed.
+		/// </summary>
 		public void Remove(VirtualDesktop fallbackDesktop)
 		{
 			if (fallbackDesktop == null) throw new ArgumentNullException(nameof(fallbackDesktop));
@@ -45,6 +55,9 @@ namespace WindowsDesktop
 			ComInternal.RemoveDesktop(this.ComObject, fallbackDesktop.ComObject);
 		}
 
+		/// <summary>
+		/// Returns a virtual desktop on the left.
+		/// </summary>
 		public VirtualDesktop GetLeft()
 		{
 			IVirtualDesktop desktop;
@@ -61,6 +74,9 @@ namespace WindowsDesktop
 			return wrapper;
 		}
 
+		/// <summary>
+		/// Returns a virtual desktop on the right.
+		/// </summary>
 		public VirtualDesktop GetRight()
 		{
 			IVirtualDesktop desktop;
