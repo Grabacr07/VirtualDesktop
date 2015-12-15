@@ -2,6 +2,9 @@
 
 namespace WindowsDesktop
 {
+	/// <summary>
+	/// Provides data for the <see cref="VirtualDesktop.CurrentChanged"/> event.
+	/// </summary>
 	public class VirtualDesktopChangedEventArgs : EventArgs
 	{
 		public VirtualDesktop OldDesktop { get; }

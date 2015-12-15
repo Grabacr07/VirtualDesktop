@@ -10,16 +10,25 @@ namespace WindowsDesktop
 {
 	public static class WindowExtensions
 	{
+		/// <summary>
+		/// Determines whether the window is located over the virtual desktop that current displayed.
+		/// </summary>
 		public static bool IsCurrentVirtualDesktop(this Window window)
 		{
 			return VirtualDesktopHelper.IsCurrentVirtualDesktop(window.GetHandle());
 		}
 
+		/// <summary>
+		/// Returns a virtual desktop that window is located.
+		/// </summary>
 		public static VirtualDesktop GetCurrentDesktop(this Window window)
 		{
 			return VirtualDesktop.FromHwnd(window.GetHandle());
 		}
 
+		/// <summary>
+		/// Move this window to specified virtual desktop.
+		/// </summary>
 		public static void MoveToDesktop(this Window window, VirtualDesktop virtualDesktop)
 		{
 			VirtualDesktopHelper.MoveToDesktop(window.GetHandle(), virtualDesktop);

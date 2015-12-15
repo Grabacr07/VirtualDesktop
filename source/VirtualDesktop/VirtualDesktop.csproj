@@ -30,6 +30,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\VirtualDesktop.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
@@ -96,6 +98,9 @@
     <Compile Include="VirtualDesktopDestroyEventArgs.cs" />
     <Compile Include="VirtualDesktopHelper.cs" />
     <Compile Include="VirtualDesktop.static.notification.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VirtualDesktop.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -16,7 +16,9 @@ namespace WindowsDesktop
 		internal static IVirtualDesktopManager ComManager { get; }
 		internal static IVirtualDesktopManagerInternal ComInternal { get; }
 
-		// ReSharper disable once ConvertToAutoProperty
+		/// <summary>
+		/// Gets a value indicating whether the operating system is support virtual desktop.
+		/// </summary>
 		public static bool IsSupported =>
 #if DEBUG
 			isSupportedInternal;
@@ -27,6 +29,9 @@ namespace WindowsDesktop
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static Exception InitializationException { get; }
 
+		/// <summary>
+		/// Gets the virtual desktop that is currently displayed.
+		/// </summary>
 		public static VirtualDesktop Current
 		{
 			get
@@ -57,7 +62,10 @@ namespace WindowsDesktop
 			AppDomain.CurrentDomain.ProcessExit += (sender, args) => UnregisterListener();
 		}
 
-
+		/// <summary>
+		/// Returns all the virtual desktops of currently valid.
+		/// </summary>
+		/// <returns></returns>
 		public static VirtualDesktop[] GetDesktops()
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
@@ -82,6 +90,9 @@ namespace WindowsDesktop
 			}
 		}
 
+		/// <summary>
+		/// Creates a virtual desktop.
+		/// </summary>
 		public static VirtualDesktop Create()
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
@@ -101,6 +112,9 @@ namespace WindowsDesktop
 			return wrapper;
 		}
 
+		/// <summary>
+		/// Returns the virtual desktop of the specified identifier.
+		/// </summary>
 		public static VirtualDesktop FromId(Guid desktopId)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
@@ -119,6 +133,9 @@ namespace WindowsDesktop
 			return wrapper;
 		}
 
+		/// <summary>
+		/// Returns the virtual desktop that the specified window is located.
+		/// </summary>
 		public static VirtualDesktop FromHwnd(IntPtr hwnd)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();

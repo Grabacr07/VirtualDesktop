@@ -12,13 +12,24 @@ namespace WindowsDesktop
 		private static uint? dwCookie;
 		private static VirtualDesktopNotificationListener listener;
 
+		/// <summary>
+		/// Occurs when a virtual desktop is created.
+		/// </summary>
 		public static event EventHandler<VirtualDesktop> Created;
 		public static event EventHandler<VirtualDesktopDestroyEventArgs> DestroyBegin;
 		public static event EventHandler<VirtualDesktopDestroyEventArgs> DestroyFailed;
+
+		/// <summary>
+		/// Occurs when a virtual desktop is destroyed.
+		/// </summary>
 		public static event EventHandler<VirtualDesktopDestroyEventArgs> Destroyed;
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static event EventHandler ApplicationViewChanged;
+
+		/// <summary>
+		/// Occurs when a current virtual desktop is changed.
+		/// </summary>
 		public static event EventHandler<VirtualDesktopChangedEventArgs> CurrentChanged;
 
 
