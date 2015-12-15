@@ -10,11 +10,25 @@ VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://msdn.microsoft
 * **[CANNOT]** Move the window of another process to any Virtual Desktop.
 
 
+## Installation
+
+Install NuGet package(s).
+
+```powershell
+PM> Install-Package VirtualDesktop
+```
+
+* [VirtualDesktop](https://www.nuget.org/packages/VirtualDesktop/) - Core classes for VirtualDesktop.
+* [VirtualDesktop.WPF](https://www.nuget.org/packages/VirtualDesktop.WPF/) - Provides extension methods for WPF [Window class](https://msdn.microsoft.com/en-us/library/system.windows.window(v=vs.110).aspx).
+* [VirtualDesktop.WinForms](https://www.nuget.org/packages/VirtualDesktop.WinForms/) - Provides extension methods for [Form class](https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx).
+
+
+
 ## How to use
 
 Preparation: 
 ```xml
-<!-- create "app.manifest" file -->
+<!-- Please create application manifest file and run without debugging. -->
 <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
     <application>
 	    <!-- Windows 10 -->
@@ -23,7 +37,6 @@ Preparation:
 </compatibility>
 ```
 ```csharp
-// reference VirtualDesktop.dll
 using WindowsDesktop;
 ```
 
@@ -55,7 +68,7 @@ desktop.Switch();
 
 for WPF window
 ```csharp
-// reference VirtualDesktop.WPF.dll
+// Need to install 'VirtualDesktop.WPF' package
 
 // Check whether a window is on the current desktop.
 var isCurrent = window.IsCurrentVirtualDesktop();
@@ -74,4 +87,4 @@ See also:
 
 ## License
 
-This library is under the MIT License.
+This library is under [the MIT License](https://github.com/Grabacr07/VirtualDesktop/blob/master/LICENSE).
