@@ -13,7 +13,7 @@
         <language>en-US</language>
         <tags>Windows Windows10 Desktop VirtualDesktop WinForms</tags>
         <dependencies>
-            <dependency id="VirtualDesktop" version="1.0.2" />
+            <dependency id="VirtualDesktop" version="1.0.3" />
         </dependencies>
     </metadata>
 </package>

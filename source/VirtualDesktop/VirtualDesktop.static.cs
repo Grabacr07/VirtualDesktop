@@ -36,6 +36,8 @@ namespace WindowsDesktop
 		{
 			get
 			{
+				VirtualDesktopHelper.ThrowIfNotSupported();
+
 				var current = ComInternal.GetCurrentDesktop();
 				var wrapper = wrappers.GetOrAdd(current.GetID(), _ => new VirtualDesktop(current));
 
