@@ -8,7 +8,7 @@ VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://msdn.microsoft
 * Switch, add, and remove a Virtual Desktop.
 * Move the window in the same process to any Virtual Desktop.
 * **[CANNOT]** Move the window of another process to any Virtual Desktop.  
-(alternate method: [https://github.com/tmyt/VDMHelper]())
+(alternate method: [https://github.com/tmyt/VDMHelper](https://github.com/tmyt/VDMHelper))
 
 
 ## Installation
