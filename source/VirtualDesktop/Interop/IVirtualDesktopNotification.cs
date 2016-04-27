@@ -16,7 +16,7 @@ namespace WindowsDesktop.Interop
 
 		void VirtualDesktopDestroyed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback);
 
-		void ViewVirtualDesktopChanged(object pView);
+		void ViewVirtualDesktopChanged(IntPtr pView);
 
 		void CurrentVirtualDesktopChanged(IVirtualDesktop pDesktopOld, IVirtualDesktop pDesktopNew);
 	}

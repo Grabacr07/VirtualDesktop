@@ -74,7 +74,7 @@ namespace WindowsDesktop
 				Destroyed?.Invoke(this, args);
 			}
 
-			void IVirtualDesktopNotification.ViewVirtualDesktopChanged(object pView)
+			void IVirtualDesktopNotification.ViewVirtualDesktopChanged(IntPtr pView)
 			{
 				ApplicationViewChanged?.Invoke(this, EventArgs.Empty);
 			}
