@@ -14,7 +14,7 @@ namespace WindowsDesktop
 		private static readonly ConcurrentDictionary<Guid, VirtualDesktop> wrappers = new ConcurrentDictionary<Guid, VirtualDesktop>();
 
 		internal static IVirtualDesktopManager ComManager { get; }
-		internal static IVirtualDesktopManagerInternal ComInternal { get; }
+		internal static VirtualDesktopManagerInternal ComInternal { get; }
 
 		/// <summary>
 		/// Gets a value indicating whether the operating system is support virtual desktop.
@@ -52,7 +52,7 @@ namespace WindowsDesktop
 			try
 			{
 				ComManager = VirtualDesktopInteropHelper.GetVirtualDesktopManager();
-				ComInternal = VirtualDesktopInteropHelper.GetVirtualDesktopManagerInternal();
+				ComInternal = VirtualDesktopManagerInternal.GetInstance();
 			}
 			catch (Exception ex)
 			{
@@ -124,7 +124,7 @@ namespace WindowsDesktop
 			IVirtualDesktop desktop;
 			try
 			{
-				desktop = ComInternal.FindDesktop(desktopId);
+				desktop = ComInternal.FindDesktop(ref desktopId);
 			}
 			catch (COMException ex) when (ex.Match(HResult.TYPE_E_ELEMENTNOTFOUND))
 			{
@@ -148,7 +148,7 @@ namespace WindowsDesktop
 			try
 			{
 				var desktopId = ComManager.GetWindowDesktopId(hwnd);
-				desktop = ComInternal.FindDesktop(desktopId);
+				desktop = ComInternal.FindDesktop(ref desktopId);
 			}
 			catch (COMException ex) when (ex.Match(HResult.REGDB_E_CLASSNOTREG, HResult.TYPE_E_ELEMENTNOTFOUND))
 			{

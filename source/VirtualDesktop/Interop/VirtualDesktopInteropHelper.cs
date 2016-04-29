@@ -14,18 +14,7 @@ namespace WindowsDesktop.Interop
 
 			return (IVirtualDesktopManager)instance;
 		}
-
-		public static IVirtualDesktopManagerInternal GetVirtualDesktopManagerInternal()
-		{
-			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
-			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
-
-			object ppvObject;
-			shell.QueryService(CLSID.VirtualDesktopAPIUnknown, typeof(IVirtualDesktopManagerInternal).GUID, out ppvObject);
-
-			return (IVirtualDesktopManagerInternal)ppvObject;
-		}
-
+		
 		public static IVirtualDesktopNotificationService GetVirtualDesktopNotificationService()
 		{
 			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
