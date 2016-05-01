@@ -25,5 +25,16 @@ namespace WindowsDesktop.Interop
 
 			return (IVirtualDesktopNotificationService)ppvObject;
 		}
+
+		public static IVirtualDesktopPinnedApps GetVirtualDesktopPinnedApps()
+		{
+			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
+			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
+
+			object ppvObject;
+			shell.QueryService(CLSID.VirtualDesktopPinnedApps, typeof(IVirtualDesktopPinnedApps).GUID, out ppvObject);
+
+			return (IVirtualDesktopPinnedApps)ppvObject;
+		}
 	}
 }

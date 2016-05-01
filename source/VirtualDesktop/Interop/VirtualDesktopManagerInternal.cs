@@ -2,7 +2,7 @@
 
 namespace WindowsDesktop.Interop
 {
-	internal class VirtualDesktopManagerInternal
+	public class VirtualDesktopManagerInternal
 		: IVirtualDesktopManagerInternal10130
 		, IVirtualDesktopManagerInternal10240
 		, IVirtualDesktopManagerInternal14328
