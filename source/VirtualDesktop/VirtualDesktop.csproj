@@ -82,6 +82,8 @@
   <ItemGroup>
     <Compile Include="Interop\CLSID.cs" />
     <Compile Include="Interop\HResult.cs" />
+    <Compile Include="Interop\IApplicationView.cs" />
+    <Compile Include="Interop\IApplicationViewCollection.cs" />
     <Compile Include="Interop\IObjectArray.cs" />
     <Compile Include="Interop\IServiceProvider.cs" />
     <Compile Include="Interop\IVirtualDesktop.cs" />

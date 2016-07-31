@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WindowsDesktop.Interop
 {
@@ -14,7 +11,7 @@ namespace WindowsDesktop.Interop
 
 			return (IVirtualDesktopManager)instance;
 		}
-		
+
 		public static IVirtualDesktopNotificationService GetVirtualDesktopNotificationService()
 		{
 			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
@@ -35,6 +32,17 @@ namespace WindowsDesktop.Interop
 			shell.QueryService(CLSID.VirtualDesktopPinnedApps, typeof(IVirtualDesktopPinnedApps).GUID, out ppvObject);
 
 			return (IVirtualDesktopPinnedApps)ppvObject;
+		}
+
+		public static IApplicationViewCollection GetApplicationViewCollection()
+		{
+			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
+			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
+
+			object ppvObject;
+			shell.QueryService(typeof(IApplicationViewCollection).GUID, typeof(IApplicationViewCollection).GUID, out ppvObject);
+
+			return (IApplicationViewCollection)ppvObject;
 		}
 	}
 }

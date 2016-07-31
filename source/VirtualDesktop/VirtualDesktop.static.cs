@@ -15,6 +15,8 @@ namespace WindowsDesktop
 
 		internal static IVirtualDesktopManager ComManager { get; }
 		internal static VirtualDesktopManagerInternal ComInternal { get; }
+		internal static IVirtualDesktopPinnedApps PinndApps { get; }
+		internal static IApplicationViewCollection ApplicationViewCollection { get; }
 
 		/// <summary>
 		/// Gets a value indicating whether the operating system is support virtual desktop.
@@ -53,6 +55,8 @@ namespace WindowsDesktop
 			{
 				ComManager = VirtualDesktopInteropHelper.GetVirtualDesktopManager();
 				ComInternal = VirtualDesktopManagerInternal.GetInstance();
+				PinndApps = VirtualDesktopInteropHelper.GetVirtualDesktopPinnedApps();
+				ApplicationViewCollection = VirtualDesktopInteropHelper.GetApplicationViewCollection();
 			}
 			catch (Exception ex)
 			{

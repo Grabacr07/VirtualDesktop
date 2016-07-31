@@ -8,10 +8,16 @@ namespace WindowsDesktop.Interop
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IVirtualDesktopPinnedApps
 	{
-		void Reserved1();
+		bool IsAppIdPinned(string appId);
 
-		bool IsPinnedWindow(IntPtr hwnd);
+		void PinAppID(string appId);
 
-		bool IsPinnedApp(IntPtr hwnd);
+		void UnpinAppID(string appId);
+
+		bool IsViewPinned(IntPtr applicationView);
+
+		void PinView(IntPtr applicationView);
+
+		void UnpinView(IntPtr applicationView);
 	}
 }

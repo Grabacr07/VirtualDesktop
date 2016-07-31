@@ -40,6 +40,26 @@ namespace WindowsDesktop
 			virtualDesktop.Switch();
 		}
 
+		public static bool IsPinned(this Window window)
+		{
+			return VirtualDesktopHelper.IsPinnedWindow(window.GetHandle());
+		}
+
+		public static void Pin(this Window window)
+		{
+			VirtualDesktopHelper.PinWindow(window.GetHandle());
+		}
+
+		public static void Unpin(this Window window)
+		{
+			VirtualDesktopHelper.UnpinWindow(window.GetHandle());
+		}
+
+		public static void TogglePin(this Window window)
+		{
+			VirtualDesktopHelper.TogglePinWindow(window.GetHandle());
+		}
+
 		private static IntPtr GetHandle(this Visual window)
 		{
 			var hwndSource = (HwndSource)PresentationSource.FromVisual(window);

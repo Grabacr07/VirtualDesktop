@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using WindowsDesktop;
+using WindowsDesktop.Interop;
 
 namespace VirtualDesktopShowcase
 {
@@ -53,6 +55,11 @@ namespace VirtualDesktopShowcase
 
 			this.MoveToDesktop(right);
 			right.Switch();
+		}
+
+		private void Pin(object sender, RoutedEventArgs e)
+		{
+			this.TogglePin();
 		}
 	}
 }

@@ -6,6 +6,7 @@
 		mc:Ignorable="d"
 		Title="VirtualDesktop.Showcase"
 		SizeToContent="WidthAndHeight"
+		SnapsToDevicePixels="True"
 		FontSize="20">
 	<StackPanel Margin="8">
 		<Panel.Resources>
@@ -16,6 +17,8 @@
 						Value="Left" />
 				<Setter Property="Margin"
 						Value="8" />
+				<Setter Property="BorderThickness"
+						Value="0.99" />
 			</Style>
 		</Panel.Resources>
 		<Button Content="Create new"
@@ -30,5 +33,7 @@
 				Click="SwitchRight" />
 		<Button Content="Switch right and move"
 				Click="SwitchRightAndMove" />
+		<Button Content="Pin/Unpin"
+				Click="Pin" />
 	</StackPanel>
 </Window>

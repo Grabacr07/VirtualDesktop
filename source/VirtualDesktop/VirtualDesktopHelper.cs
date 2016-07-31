@@ -38,5 +38,60 @@ namespace WindowsDesktop
 
 			return false;
 		}
+
+		public static bool IsPinnedWindow(IntPtr hWnd)
+		{
+			ThrowIfNotSupported();
+
+			return VirtualDesktop.PinndApps.IsViewPinned(hWnd.GetApplicationView());
+		}
+
+		public static void PinWindow(IntPtr hWnd)
+		{
+			ThrowIfNotSupported();
+
+			var view = hWnd.GetApplicationView();
+
+			if (!VirtualDesktop.PinndApps.IsViewPinned(view))
+			{
+				VirtualDesktop.PinndApps.PinView(view);
+			}
+		}
+
+		public static void UnpinWindow(IntPtr hWnd)
+		{
+			ThrowIfNotSupported();
+
+			var view = hWnd.GetApplicationView();
+
+			if (VirtualDesktop.PinndApps.IsViewPinned(view))
+			{
+				VirtualDesktop.PinndApps.UnpinView(view);
+			}
+		}
+
+		public static void TogglePinWindow(IntPtr hWnd)
+		{
+			ThrowIfNotSupported();
+
+			var view = hWnd.GetApplicationView();
+
+			if (VirtualDesktop.PinndApps.IsViewPinned(view))
+			{
+				VirtualDesktop.PinndApps.UnpinView(view);
+			}
+			else
+			{
+				VirtualDesktop.PinndApps.PinView(view);
+			}
+		}
+
+		private static IntPtr GetApplicationView(this IntPtr hWnd)
+		{
+			IntPtr view;
+			VirtualDesktop.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
+
+			return view;
+		}
 	}
 }
