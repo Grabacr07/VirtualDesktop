@@ -20,7 +20,7 @@ namespace WindowsDesktop
 #if DEBUG
 			_isSupportedInternal;
 #else
-			Environment.OSVersion.Version.Major >= 10 && isSupportedInternal;
+			Environment.OSVersion.Version.Major >= 10 && _isSupportedInternal;
 #endif
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
