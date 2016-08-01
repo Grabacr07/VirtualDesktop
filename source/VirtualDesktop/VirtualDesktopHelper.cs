@@ -19,10 +19,10 @@ namespace WindowsDesktop
 		{
 			ThrowIfNotSupported();
 
-			return VirtualDesktop.ComManager.IsWindowOnCurrentVirtualDesktop(handle);
+			return ComObjects.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle);
 		}
 
-		public static bool MoveToDesktop(IntPtr hWnd, VirtualDesktop virtualDesktop)
+		public static void MoveToDesktop(IntPtr hWnd, VirtualDesktop virtualDesktop)
 		{
 			ThrowIfNotSupported();
 
@@ -32,18 +32,21 @@ namespace WindowsDesktop
 			if (Process.GetCurrentProcess().Id == processId)
 			{
 				var guid = virtualDesktop.Id;
-				VirtualDesktop.ComManager.MoveWindowToDesktop(hWnd, ref guid);
-				return true;
+				ComObjects.VirtualDesktopManager.MoveWindowToDesktop(hWnd, ref guid);
 			}
-
-			return false;
+			else
+			{
+				IntPtr view;
+				ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
+				ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, virtualDesktop.ComObject);
+			}
 		}
 
 		public static bool IsPinnedWindow(IntPtr hWnd)
 		{
 			ThrowIfNotSupported();
 
-			return VirtualDesktop.PinndApps.IsViewPinned(hWnd.GetApplicationView());
+			return ComObjects.VirtualDesktopPinnedApps.IsViewPinned(hWnd.GetApplicationView());
 		}
 
 		public static void PinWindow(IntPtr hWnd)
@@ -52,9 +55,9 @@ namespace WindowsDesktop
 
 			var view = hWnd.GetApplicationView();
 
-			if (!VirtualDesktop.PinndApps.IsViewPinned(view))
+			if (!ComObjects.VirtualDesktopPinnedApps.IsViewPinned(view))
 			{
-				VirtualDesktop.PinndApps.PinView(view);
+				ComObjects.VirtualDesktopPinnedApps.PinView(view);
 			}
 		}
 
@@ -64,9 +67,9 @@ namespace WindowsDesktop
 
 			var view = hWnd.GetApplicationView();
 
-			if (VirtualDesktop.PinndApps.IsViewPinned(view))
+			if (ComObjects.VirtualDesktopPinnedApps.IsViewPinned(view))
 			{
-				VirtualDesktop.PinndApps.UnpinView(view);
+				ComObjects.VirtualDesktopPinnedApps.UnpinView(view);
 			}
 		}
 
@@ -76,20 +79,20 @@ namespace WindowsDesktop
 
 			var view = hWnd.GetApplicationView();
 
-			if (VirtualDesktop.PinndApps.IsViewPinned(view))
+			if (ComObjects.VirtualDesktopPinnedApps.IsViewPinned(view))
 			{
-				VirtualDesktop.PinndApps.UnpinView(view);
+				ComObjects.VirtualDesktopPinnedApps.UnpinView(view);
 			}
 			else
 			{
-				VirtualDesktop.PinndApps.PinView(view);
+				ComObjects.VirtualDesktopPinnedApps.PinView(view);
 			}
 		}
 
 		private static IntPtr GetApplicationView(this IntPtr hWnd)
 		{
 			IntPtr view;
-			VirtualDesktop.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
+			ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
 
 			return view;
 		}

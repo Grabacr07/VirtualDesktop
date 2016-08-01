@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using WindowsDesktop.Internal;
 using WindowsDesktop.Interop;
 
 namespace WindowsDesktop
@@ -33,21 +34,14 @@ namespace WindowsDesktop
 		public static event EventHandler<VirtualDesktopChangedEventArgs> CurrentChanged;
 
 
-		private static void RegisterListener()
+		internal static IDisposable RegisterListener()
 		{
-			var service = VirtualDesktopInteropHelper.GetVirtualDesktopNotificationService();
+			var service = ComObjects.VirtualDesktopNotificationService;
 			listener = new VirtualDesktopNotificationListener();
 			dwCookie = service.Register(listener);
+
+			return Disposable.Create(() => service.Unregister(dwCookie.Value));
 		}
-
-		private static void UnregisterListener()
-		{
-			if (dwCookie == null) return;
-
-			var service = VirtualDesktopInteropHelper.GetVirtualDesktopNotificationService();
-			service.Unregister(dwCookie.Value);
-		}
-
 
 		private class VirtualDesktopNotificationListener : IVirtualDesktopNotification
 		{
