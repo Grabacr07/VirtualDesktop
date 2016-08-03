@@ -8,5 +8,6 @@ namespace WindowsDesktop.Interop
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IApplicationView
 	{
+		// invalid iid in Win10 build 14393.
 	}
 }
