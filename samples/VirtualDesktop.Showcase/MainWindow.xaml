@@ -21,6 +21,21 @@
 						Value="0.99" />
 			</Style>
 		</Panel.Resources>
+		<StackPanel Margin="8">
+			<RadioButton x:Name="ThisWindowMenu"
+						 IsChecked="True"
+						 VerticalContentAlignment="Center">
+				<TextBlock Text="This window" />
+			</RadioButton>
+			<Border Height="4" />
+			<RadioButton VerticalContentAlignment="Center">
+				<TextBlock>
+					<Run>Foreground window</Run>
+					<LineBreak />
+					<Run FontSize="14">(seconds later)</Run>
+				</TextBlock>
+			</RadioButton>
+		</StackPanel>
 		<Button Content="Create new"
 				Click="CreateNew" />
 		<Button Content="Create new and move"

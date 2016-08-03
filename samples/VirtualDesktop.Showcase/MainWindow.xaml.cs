@@ -10,6 +10,8 @@ namespace VirtualDesktopShowcase
 {
 	partial class MainWindow
 	{
+		private static readonly int _delay = 2000;
+
 		public MainWindow()
 		{
 			this.InitializeComponent();
@@ -25,11 +27,20 @@ namespace VirtualDesktopShowcase
 			VirtualDesktop.Create().Switch();
 		}
 
-		private void CreateNewAndMove(object sender, RoutedEventArgs e)
+		private async void CreateNewAndMove(object sender, RoutedEventArgs e)
 		{
 			var desktop = VirtualDesktop.Create();
 
-			this.MoveToDesktop(desktop);
+			if (this.ThisWindowMenu.IsChecked ?? false)
+			{
+				this.MoveToDesktop(desktop);
+			}
+			else
+			{
+				await Task.Delay(_delay);
+				VirtualDesktopHelper.MoveToDesktop(GetForegroundWindow(), desktop);
+			}
+
 			desktop.Switch();
 		}
 
@@ -38,12 +49,21 @@ namespace VirtualDesktopShowcase
 			this.GetCurrentDesktop().GetLeft()?.Switch();
 		}
 
-		private void SwitchLeftAndMove(object sender, RoutedEventArgs e)
+		private async void SwitchLeftAndMove(object sender, RoutedEventArgs e)
 		{
 			var left = this.GetCurrentDesktop().GetLeft();
 			if (left == null) return;
 
-			this.MoveToDesktop(left);
+			if (this.ThisWindowMenu.IsChecked ?? false)
+			{
+				this.MoveToDesktop(left);
+			}
+			else
+			{
+				await Task.Delay(_delay);
+				VirtualDesktopHelper.MoveToDesktop(GetForegroundWindow(), left);
+			}
+
 			left.Switch();
 		}
 
@@ -52,18 +72,35 @@ namespace VirtualDesktopShowcase
 			this.GetCurrentDesktop().GetRight()?.Switch();
 		}
 
-		private void SwitchRightAndMove(object sender, RoutedEventArgs e)
+		private async void SwitchRightAndMove(object sender, RoutedEventArgs e)
 		{
 			var right = this.GetCurrentDesktop().GetRight();
 			if (right == null) return;
 
-			this.MoveToDesktop(right);
+			if (this.ThisWindowMenu.IsChecked ?? false)
+			{
+				this.MoveToDesktop(right);
+			}
+			else
+			{
+				await Task.Delay(_delay);
+				VirtualDesktopHelper.MoveToDesktop(GetForegroundWindow(), right);
+			}
+
 			right.Switch();
 		}
 
-		private void Pin(object sender, RoutedEventArgs e)
+		private async void Pin(object sender, RoutedEventArgs e)
 		{
-			this.TogglePin();
+			if (this.ThisWindowMenu.IsChecked ?? false)
+			{
+				this.TogglePin();
+			}
+			else
+			{
+				await Task.Delay(_delay);
+				VirtualDesktopHelper.TogglePinWindow(GetForegroundWindow());
+			}
 		}
 
 
