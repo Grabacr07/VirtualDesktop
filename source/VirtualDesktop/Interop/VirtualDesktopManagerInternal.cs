@@ -57,7 +57,7 @@ namespace WindowsDesktop.Interop
 		}
 
 
-		public void MoveViewToDesktop(IntPtr pView, IVirtualDesktop desktop)
+		public void MoveViewToDesktop(IApplicationView pView, IVirtualDesktop desktop)
 		{
 			if (this._manager14328 != null)
 			{
@@ -80,7 +80,7 @@ namespace WindowsDesktop.Interop
 			throw new NotSupportedException();
 		}
 
-		public bool CanViewMoveDesktops(IntPtr pView)
+		public bool CanViewMoveDesktops(IApplicationView pView)
 		{
 			if (this._manager14328 != null)
 			{

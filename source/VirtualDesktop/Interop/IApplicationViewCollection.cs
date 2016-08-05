@@ -14,11 +14,11 @@ namespace WindowsDesktop.Interop
 
 		int GetViewsByAppUserModelId(string id, out IObjectArray array);
 
-		int GetViewForHwnd(IntPtr hwnd, out IntPtr view);
+		int GetViewForHwnd(IntPtr hwnd, out IApplicationView view);
 
-		int GetViewForApplication(object application, out IntPtr view);
+		int GetViewForApplication(object application, out IApplicationView view);
 
-		int GetViewForAppUserModelId(string id, out IntPtr view);
+		int GetViewForAppUserModelId(string id, out IApplicationView view);
 
 		int GetViewInFocus(out IntPtr view);
 

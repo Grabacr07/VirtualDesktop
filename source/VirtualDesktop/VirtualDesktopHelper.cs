@@ -36,7 +36,7 @@ namespace WindowsDesktop
 			}
 			else
 			{
-				IntPtr view;
+				IApplicationView view;
 				ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
 				ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, virtualDesktop.ComObject);
 			}
@@ -89,9 +89,9 @@ namespace WindowsDesktop
 			}
 		}
 
-		private static IntPtr GetApplicationView(this IntPtr hWnd)
+		private static IApplicationView GetApplicationView(this IntPtr hWnd)
 		{
-			IntPtr view;
+			IApplicationView view;
 			ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
 
 			return view;

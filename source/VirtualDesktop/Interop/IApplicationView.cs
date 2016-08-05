@@ -4,10 +4,9 @@ using System.Runtime.InteropServices;
 namespace WindowsDesktop.Interop
 {
 	[ComImport]
-	[Guid("855BCAAD-3177-47B5-8571-23803421F9D8")]
+	[Guid("9AC0B5C8-1484-4C5B-9533-4134A0F97CEA")]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IApplicationView
 	{
-		// invalid iid in Win10 build 14393.
 	}
 }
