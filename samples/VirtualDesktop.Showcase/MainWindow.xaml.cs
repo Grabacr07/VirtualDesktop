@@ -103,6 +103,19 @@ namespace VirtualDesktopShowcase
 			}
 		}
 
+		private async void PinApp(object sender, RoutedEventArgs e)
+		{
+			if (this.ThisWindowMenu.IsChecked ?? false)
+			{
+				Application.Current.TogglePin();
+			}
+			else
+			{
+				await Task.Delay(_delay);
+				VirtualDesktopHelper.TogglePinApplication(GetForegroundWindow());
+			}
+		}
+
 
 		[DllImport("user32.dll")]
 		private static extern IntPtr GetForegroundWindow();

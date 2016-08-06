@@ -50,5 +50,7 @@
 				Click="SwitchRightAndMove" />
 		<Button Content="Pin/Unpin"
 				Click="Pin" />
+		<Button Content="Pin/Unpin (App)"
+				Click="PinApp" />
 	</StackPanel>
 </Window>

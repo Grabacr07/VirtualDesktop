@@ -89,12 +89,68 @@ namespace WindowsDesktop
 			}
 		}
 
+		public static bool IsPinnedApplication(IntPtr hWnd)
+		{
+			ThrowIfNotSupported();
+
+			return ComObjects.VirtualDesktopPinnedApps.IsAppIdPinned(hWnd.GetAppId());
+		}
+
+		public static void PinApplication(IntPtr hWnd)
+		{
+			ThrowIfNotSupported();
+
+			var appId = hWnd.GetAppId();
+
+			if (!ComObjects.VirtualDesktopPinnedApps.IsAppIdPinned(appId))
+			{
+				ComObjects.VirtualDesktopPinnedApps.PinAppID(appId);
+			}
+		}
+
+		public static void UnpinApplication(IntPtr hWnd)
+		{
+			ThrowIfNotSupported();
+
+			var appId = hWnd.GetAppId();
+
+			if (ComObjects.VirtualDesktopPinnedApps.IsAppIdPinned(appId))
+			{
+				ComObjects.VirtualDesktopPinnedApps.UnpinAppID(appId);
+			}
+		}
+
+		public static void TogglePinApplication(IntPtr hWnd)
+		{
+			ThrowIfNotSupported();
+
+			var appId = hWnd.GetAppId();
+
+			if (ComObjects.VirtualDesktopPinnedApps.IsAppIdPinned(appId))
+			{
+				ComObjects.VirtualDesktopPinnedApps.UnpinAppID(appId);
+			}
+			else
+			{
+				ComObjects.VirtualDesktopPinnedApps.PinAppID(appId);
+			}
+		}
+
+
 		private static IApplicationView GetApplicationView(this IntPtr hWnd)
 		{
 			IApplicationView view;
 			ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
 
 			return view;
+		}
+
+		private static string GetAppId(this IntPtr hWnd)
+		{
+			string appId;
+			hWnd.GetApplicationView().GetAppUserModelId(out appId);
+
+			return appId;
 		}
 	}
 }

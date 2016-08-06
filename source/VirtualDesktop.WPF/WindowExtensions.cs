@@ -60,7 +60,7 @@ namespace WindowsDesktop
 			VirtualDesktopHelper.TogglePinWindow(window.GetHandle());
 		}
 
-		private static IntPtr GetHandle(this Visual window)
+		internal static IntPtr GetHandle(this Visual window)
 		{
 			var hwndSource = (HwndSource)PresentationSource.FromVisual(window);
 			if (hwndSource == null) throw new InvalidOperationException();
