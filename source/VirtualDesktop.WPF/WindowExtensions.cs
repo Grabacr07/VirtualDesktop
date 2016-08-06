@@ -42,22 +42,31 @@ namespace WindowsDesktop
 
 		public static bool IsPinned(this Window window)
 		{
-			return VirtualDesktopHelper.IsPinnedWindow(window.GetHandle());
+			return VirtualDesktop.IsPinnedWindow(window.GetHandle());
 		}
 
 		public static void Pin(this Window window)
 		{
-			VirtualDesktopHelper.PinWindow(window.GetHandle());
+			VirtualDesktop.PinWindow(window.GetHandle());
 		}
 
 		public static void Unpin(this Window window)
 		{
-			VirtualDesktopHelper.UnpinWindow(window.GetHandle());
+			VirtualDesktop.UnpinWindow(window.GetHandle());
 		}
 
 		public static void TogglePin(this Window window)
 		{
-			VirtualDesktopHelper.TogglePinWindow(window.GetHandle());
+			var handle = window.GetHandle();
+
+			if (VirtualDesktop.IsPinnedWindow(handle))
+			{
+				VirtualDesktop.UnpinWindow(handle);
+			}
+			else
+			{
+				VirtualDesktop.PinWindow(handle);
+			}
 		}
 
 		internal static IntPtr GetHandle(this Visual window)

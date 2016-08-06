@@ -8,49 +8,52 @@
 		SizeToContent="WidthAndHeight"
 		SnapsToDevicePixels="True"
 		FontSize="20">
-	<StackPanel Margin="8">
-		<Panel.Resources>
-			<Style TargetType="{x:Type Button}">
-				<Setter Property="Padding"
-						Value="20,4" />
-				<Setter Property="HorizontalContentAlignment"
-						Value="Left" />
-				<Setter Property="Margin"
-						Value="8" />
-				<Setter Property="BorderThickness"
-						Value="0.99" />
-			</Style>
-		</Panel.Resources>
+	<ScrollViewer HorizontalScrollBarVisibility="Disabled"
+				  VerticalScrollBarVisibility="Auto">
 		<StackPanel Margin="8">
-			<RadioButton x:Name="ThisWindowMenu"
-						 IsChecked="True"
-						 VerticalContentAlignment="Center">
-				<TextBlock Text="This window" />
-			</RadioButton>
-			<Border Height="4" />
-			<RadioButton VerticalContentAlignment="Center">
-				<TextBlock>
-					<Run>Foreground window</Run>
-					<LineBreak />
-					<Run FontSize="14">(seconds later)</Run>
-				</TextBlock>
-			</RadioButton>
+			<Panel.Resources>
+				<Style TargetType="{x:Type Button}">
+					<Setter Property="Padding"
+							Value="20,4" />
+					<Setter Property="HorizontalContentAlignment"
+							Value="Left" />
+					<Setter Property="Margin"
+							Value="8" />
+					<Setter Property="BorderThickness"
+							Value="0.99" />
+				</Style>
+			</Panel.Resources>
+			<StackPanel Margin="8">
+				<RadioButton x:Name="ThisWindowMenu"
+							 IsChecked="True"
+							 VerticalContentAlignment="Center">
+					<TextBlock Text="This window" />
+				</RadioButton>
+				<Border Height="4" />
+				<RadioButton VerticalContentAlignment="Center">
+					<TextBlock>
+						<Run>Foreground window</Run>
+						<LineBreak />
+						<Run FontSize="14">(seconds later)</Run>
+					</TextBlock>
+				</RadioButton>
+			</StackPanel>
+			<Button Content="Create new"
+					Click="CreateNew" />
+			<Button Content="Create new and move"
+					Click="CreateNewAndMove" />
+			<Button Content="Switch left"
+					Click="SwitchLeft" />
+			<Button Content="Switch left and move"
+					Click="SwitchLeftAndMove" />
+			<Button Content="Switch right"
+					Click="SwitchRight" />
+			<Button Content="Switch right and move"
+					Click="SwitchRightAndMove" />
+			<Button Content="Pin/Unpin"
+					Click="Pin" />
+			<Button Content="Pin/Unpin (App)"
+					Click="PinApp" />
 		</StackPanel>
-		<Button Content="Create new"
-				Click="CreateNew" />
-		<Button Content="Create new and move"
-				Click="CreateNewAndMove" />
-		<Button Content="Switch left"
-				Click="SwitchLeft" />
-		<Button Content="Switch left and move"
-				Click="SwitchLeftAndMove" />
-		<Button Content="Switch right"
-				Click="SwitchRight" />
-		<Button Content="Switch right and move"
-				Click="SwitchRightAndMove" />
-		<Button Content="Pin/Unpin"
-				Click="Pin" />
-		<Button Content="Pin/Unpin (App)"
-				Click="PinApp" />
-	</StackPanel>
+	</ScrollViewer>
 </Window>

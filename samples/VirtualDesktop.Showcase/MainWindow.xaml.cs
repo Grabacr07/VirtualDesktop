@@ -99,7 +99,8 @@ namespace VirtualDesktopShowcase
 			else
 			{
 				await Task.Delay(_delay);
-				VirtualDesktopHelper.TogglePinWindow(GetForegroundWindow());
+				var handle = GetForegroundWindow();
+				(VirtualDesktop.IsPinnedWindow(handle) ? VirtualDesktop.UnpinWindow : (Action<IntPtr>)VirtualDesktop.PinWindow)(handle);
 			}
 		}
 
@@ -112,7 +113,8 @@ namespace VirtualDesktopShowcase
 			else
 			{
 				await Task.Delay(_delay);
-				VirtualDesktopHelper.TogglePinApplication(GetForegroundWindow());
+				var appId = ApplicationHelper.GetAppId(GetForegroundWindow());
+				(VirtualDesktop.IsPinnedApplication(appId) ? VirtualDesktop.UnpinApplication : (Action<string>)VirtualDesktop.PinApplication)(appId);
 			}
 		}
 
