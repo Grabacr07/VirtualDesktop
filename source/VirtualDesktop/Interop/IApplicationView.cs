@@ -20,7 +20,7 @@ namespace WindowsDesktop.Interop
 
 		int GetVisibility(out int visibility);
 
-		int SetCloak(APPLICATION_VIEW_CLOAK_TYPE cloakType, int unknown);
+		int SetCloak(ApplicationViewCloakType cloakType, int unknown);
 
 		int GetPosition(ref Guid guid /* GUID for IApplicationViewPosition */, out IntPtr /* IApplicationViewPosition** */ position);
 
@@ -58,9 +58,9 @@ namespace WindowsDesktop.Interop
 
 		int CanReceiveInput(out bool canReceiveInput);
 
-		int GetCompatibilityPolicyType(out APPLICATION_VIEW_COMPATIBILITY_POLICY flags);
+		int GetCompatibilityPolicyType(out ApplicationViewCompatibilityPolicy flags);
 
-		int SetCompatibilityPolicyType(APPLICATION_VIEW_COMPATIBILITY_POLICY flags);
+		int SetCompatibilityPolicyType(ApplicationViewCompatibilityPolicy flags);
 
 		int GetPositionPriority(out IntPtr /* IShellPositionerPriority** */ priority);
 
@@ -114,19 +114,23 @@ namespace WindowsDesktop.Interop
 		public int Bottom;
 	}
 
-	public enum APPLICATION_VIEW_CLOAK_TYPE : int
+	public enum ApplicationViewCloakType
 	{
+		// ReSharper disable InconsistentNaming
 		AVCT_NONE = 0,
 		AVCT_DEFAULT = 1,
 		AVCT_VIRTUAL_DESKTOP = 2
+		// ReSharper restore InconsistentNaming
 	}
 
-	public enum APPLICATION_VIEW_COMPATIBILITY_POLICY : int
+	public enum ApplicationViewCompatibilityPolicy
 	{
+		// ReSharper disable InconsistentNaming
 		AVCP_NONE = 0,
 		AVCP_SMALL_SCREEN = 1,
 		AVCP_TABLET_SMALL_SCREEN = 2,
 		AVCP_VERY_SMALL_SCREEN = 3,
 		AVCP_HIGH_SCALE_FACTOR = 4
+		// ReSharper restore InconsistentNaming
 	}
 }
