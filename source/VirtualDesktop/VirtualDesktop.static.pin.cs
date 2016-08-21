@@ -55,6 +55,27 @@ namespace WindowsDesktop
 			}
 		}
 
+		public static void TogglePinWindow(IntPtr hWnd) 
+		{
+			VirtualDesktopHelper.ThrowIfNotSupported();
+
+			var view = hWnd.GetApplicationView();
+
+			if (view == null)
+			{
+				throw new ArgumentException(nameof(hWnd));
+			}
+
+			if (ComObjects.VirtualDesktopPinnedApps.IsViewPinned(view))
+			{
+				ComObjects.VirtualDesktopPinnedApps.UnpinView(view);
+			}
+			else
+			{
+				ComObjects.VirtualDesktopPinnedApps.PinView(view);
+			}
+		}
+
 		public static bool IsPinnedApplication(string appId)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
@@ -79,6 +100,20 @@ namespace WindowsDesktop
 			if (ComObjects.VirtualDesktopPinnedApps.IsAppIdPinned(appId))
 			{
 				ComObjects.VirtualDesktopPinnedApps.UnpinAppID(appId);
+			}
+		}
+
+		public static void TogglePinApplication(string appId) 
+		{
+			VirtualDesktopHelper.ThrowIfNotSupported();
+
+			if (ComObjects.VirtualDesktopPinnedApps.IsAppIdPinned(appId))
+			{
+				ComObjects.VirtualDesktopPinnedApps.UnpinAppID(appId appId);
+			}
+			else
+			{
+				ComObjects.VirtualDesktopPinnedApps.PinAppID(appId);
 			}
 		}
 	}
