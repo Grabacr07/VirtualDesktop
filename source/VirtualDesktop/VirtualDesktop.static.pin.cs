@@ -109,7 +109,7 @@ namespace WindowsDesktop
 
 			if (ComObjects.VirtualDesktopPinnedApps.IsAppIdPinned(appId))
 			{
-				ComObjects.VirtualDesktopPinnedApps.UnpinAppID(appId appId);
+				ComObjects.VirtualDesktopPinnedApps.UnpinAppID(appId);
 			}
 			else
 			{
