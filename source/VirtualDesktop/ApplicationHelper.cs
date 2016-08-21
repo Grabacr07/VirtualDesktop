@@ -9,16 +9,29 @@ namespace WindowsDesktop
 	{
 		internal static IApplicationView GetApplicationView(this IntPtr hWnd)
 		{
-			IApplicationView view;
-			ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
-
-			return view;
+			try
+			{
+				IApplicationView view;
+				ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
+				return view;
+			}
+			catch (System.Runtime.InteropServices.COMException ex) when (ex.Match(HResult.TYPE_E_ELEMENTNOTFOUND))
+			{
+				return null;
+			}
 		}
 
 		public static string GetAppId(IntPtr hWnd)
 		{
+			var view = hWnd.GetApplicationView();
+
+			if (view == null)
+			{
+				throw new ArgumentException(nameof(hWnd));
+			}
+
 			string appId;
-			hWnd.GetApplicationView().GetAppUserModelId(out appId);
+			view.GetAppUserModelId(out appId);
 
 			return appId;
 		}
