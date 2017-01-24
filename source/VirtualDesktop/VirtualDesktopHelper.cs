@@ -26,20 +26,22 @@ namespace WindowsDesktop
 		{
 			ThrowIfNotSupported();
 
-			int processId;
-			NativeMethods.GetWindowThreadProcessId(hWnd, out processId);
+            virtualDesktop.MoveHere(hWnd);
 
-			if (Process.GetCurrentProcess().Id == processId)
-			{
-				var guid = virtualDesktop.Id;
-				ComObjects.VirtualDesktopManager.MoveWindowToDesktop(hWnd, ref guid);
-			}
-			else
-			{
-				IApplicationView view;
-				ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
-				ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, virtualDesktop.ComObject);
-			}
+			//int processId;
+			//NativeMethods.GetWindowThreadProcessId(hWnd, out processId);
+
+			//if (Process.GetCurrentProcess().Id == processId)
+			//{
+			//	var guid = virtualDesktop.Id;
+			//	ComObjects.VirtualDesktopManager.MoveWindowToDesktop(hWnd, ref guid);
+			//}
+			//else
+			//{
+			//	IApplicationView view;
+			//	ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
+			//	ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, virtualDesktop.ComObject);
+			//}
 		}
 	}
 }
