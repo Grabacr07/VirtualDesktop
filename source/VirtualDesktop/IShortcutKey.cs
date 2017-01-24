@@ -17,5 +17,7 @@ namespace WindowsDesktop
         VirtualKey Key { get; }
 
         VirtualKey[] Modifiers { get; }
+
+        bool Equals(IShortcutKey other);
     }
 }

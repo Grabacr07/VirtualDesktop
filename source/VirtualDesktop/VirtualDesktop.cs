@@ -6,9 +6,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using WindowsDesktop.Interop;
 using WindowsInput;
 using WindowsInput.Native;
+using Timer = System.Timers.Timer;
 
 #pragma warning disable 4014 // disable await warning for when adding to animation queue
 
@@ -20,8 +22,8 @@ namespace WindowsDesktop
     [DebuggerDisplay("{Id}")]
     public partial class VirtualDesktop
     {
-        private static VirtualDesktop _finalMoveDesktop;
-        private static readonly SequentialTaskQueue _animationQueue = new SequentialTaskQueue();
+        private static VirtualDesktop _finalSwitchToDesktop;
+        private static readonly LatestTaskRunner _animator = new LatestTaskRunner();
 
         /// <summary>
         /// Gets the unique identifier for the virtual desktop.
@@ -45,7 +47,6 @@ namespace WindowsDesktop
             int processId;
             NativeMethods.GetWindowThreadProcessId(hWnd, out processId);
 
-            _finalMoveDesktop = this;
             if (Process.GetCurrentProcess().Id == processId)
             {
                 var guid = this.Id;
@@ -62,11 +63,11 @@ namespace WindowsDesktop
         /// <summary>
         /// Display the virtual desktop.
         /// </summary>
-        public void Switch(IntPtr hWnd, IShortcutKeyDetector keyDetector, bool smoothSwitch, IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey)
+        public void Switch(IShortcutKeyDetector keyDetector, bool smoothSwitch, IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey)
         {
             if (smoothSwitch)
             {
-                this.SmoothSwitch(hWnd, keyDetector, switchLeftShortcutKey, switchRightShortcutKey);
+                this.SmoothSwitch(IntPtr.Zero, keyDetector, switchLeftShortcutKey, switchRightShortcutKey, null);
             }
             else
             {
@@ -74,35 +75,62 @@ namespace WindowsDesktop
             }
         }
 
-        public void SmoothSwitch(IntPtr hWnd, IShortcutKeyDetector keyDetector, IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey)
+        /// <summary>
+        /// Display the virtual desktop and reactivate the hWnd.
+        /// </summary>
+        public void Switch(IntPtr hWnd, IShortcutKeyDetector keyDetector, bool smoothSwitch, IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey, IShortcutKey keyPressed)
+        {
+            if (smoothSwitch)
+            {
+                this.SmoothSwitch(hWnd, keyDetector, switchLeftShortcutKey, switchRightShortcutKey, keyPressed);
+            }
+            else
+            {
+                ComObjects.VirtualDesktopManagerInternal.SwitchDesktop(this.ComObject);
+            }
+        }
+
+        public void SmoothSwitch(IntPtr hWnd, IShortcutKeyDetector keyDetector, IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey, IShortcutKey keyPressed)
         {
             var current = Current;
             var desktops = GetDesktops();
 
+            _finalSwitchToDesktop = this;
+
             Task task = null;
-            if (this.IsThisOnLeftOf(current))
+            if (LastKnownVirtualDesktop.WasUserDefinitelyHere(current))
             {
-                task = this.SmoothSwitchFromRightToLeft(hWnd, keyDetector, switchLeftShortcutKey, this);
-            }
-            else if (this.IsThisOnRightOf(current))
-            {
-                task = this.SmoothSwitchFromLeftToRight(hWnd, keyDetector, switchRightShortcutKey, this);
-            }
-            else if (current.GetLeft()?.Id == this.Id)
-            {
-                task = this.SmoothSwitchLeftOne(hWnd, keyDetector, switchLeftShortcutKey, this);
-            }
-            else if (current.GetRight()?.Id == this.Id)
-            {
-                task = this.SmoothSwitchRightOne(hWnd, keyDetector, switchRightShortcutKey, this);
+                // if we need to wrap from last to first
+                if (current.Id == desktops.Last().Id && this.Id == desktops.First().Id)
+                {
+                    task = this.SmoothSwitchFromRightToLeft(hWnd, keyDetector, switchLeftShortcutKey, keyPressed);
+                }
+                // if we need to wrap from first to last
+                else if (current.Id == desktops.First().Id && this.Id == desktops.Last().Id)
+                {
+                    task = this.SmoothSwitchFromLeftToRight(hWnd, keyDetector, switchRightShortcutKey, keyPressed);
+                }
+                else if (keyPressed?.Equals(switchLeftShortcutKey) == true)
+                {
+                    // do nothing
+                }
+                else if (keyPressed?.Equals(switchRightShortcutKey) == true)
+                {
+                    // do nothing
+                }
+                else if (this.IsThisOnLeftOf(current))
+                {
+                    task = this.SmoothSwitchFromRightToLeft(hWnd, keyDetector, switchLeftShortcutKey, keyPressed);
+                }
+                else if (this.IsThisOnRightOf(current))
+                {
+                    task = this.SmoothSwitchFromLeftToRight(hWnd, keyDetector, switchRightShortcutKey, keyPressed);
+                }
             }
 
             if (task != null)
             {
-                lock (VirtualDesktop._animationQueue)
-                {
-                    VirtualDesktop._animationQueue.Enqueue(() => task);
-                }
+                _animator.Set(() => task, Task.Factory.StartNew(() => keyDetector.WaitForNoKeysPressed()));
             }
         }
 
@@ -136,19 +164,27 @@ namespace WindowsDesktop
             return thisIndex >= 0 && thatIndex >= 0 && thisIndex > thatIndex;
         }
 
-        private Task SmoothSwitchFromLeftToRight(IntPtr hWnd, IShortcutKeyDetector keyDetector, IShortcutKey switchRightShortcutKey, VirtualDesktop targetDesktop)
+        private Task SmoothSwitchFromLeftToRight(IntPtr hWnd, IShortcutKeyDetector keyDetector, IShortcutKey switchRightShortcutKey, IShortcutKey keyPressed)
         {
-            return Task.Factory.StartNew(() =>
+            return new Task(() =>
             {
                 if (keyDetector.WaitForNoKeysPressed())
                 {
                     // avoid a bunch of unnecessary switching if the user moved multiple desktops at a time
-                    if (targetDesktop.Id != _finalMoveDesktop?.Id) return;
+                    if (this.Id != _finalSwitchToDesktop?.Id) return;
+                    _finalSwitchToDesktop = null;
 
                     var currentIndex = this.IndexOf(Current);
-                    var thatIndex = this.IndexOf(targetDesktop);
+                    var moveToIndex = this.IndexOf(this);
 
-                    for (var i = currentIndex; i < thatIndex; ++i)
+                    // suspend our input until the keyDetector has seen the number of inputs
+                    if (keyPressed?.Equals(switchRightShortcutKey) == true)
+                    {
+                        var keyCountToIgnore = moveToIndex - currentIndex;
+                        keyDetector.SuspendUntil(switchRightShortcutKey, keyCountToIgnore);
+                    }
+
+                    for (var i = currentIndex; i < moveToIndex; ++i)
                     {
                         this.Input.Keyboard.ModifiedKeyStroke(
                             switchRightShortcutKey.Modifiers.Select(x => (VirtualKeyCode)x),
@@ -161,19 +197,27 @@ namespace WindowsDesktop
             });
         }
 
-        private Task SmoothSwitchFromRightToLeft(IntPtr hWnd, IShortcutKeyDetector keyDetector, IShortcutKey switchLeftShortcutKey, VirtualDesktop targetDesktop)
+        private Task SmoothSwitchFromRightToLeft(IntPtr hWnd, IShortcutKeyDetector keyDetector, IShortcutKey switchLeftShortcutKey, IShortcutKey keyPressed)
         {
-            return Task.Factory.StartNew(() =>
+            return new Task(() =>
             {
                 if (keyDetector.WaitForNoKeysPressed())
                 {
                     // avoid a bunch of unnecessary switching if the user moved multiple desktops at a time
-                    if (targetDesktop.Id != _finalMoveDesktop?.Id) return;
+                    if (this.Id != _finalSwitchToDesktop?.Id) return;
+                    _finalSwitchToDesktop = null;
 
                     var currentIndex = this.IndexOf(Current);
-                    var thatIndex = this.IndexOf(targetDesktop);
+                    var moveToIndex = this.IndexOf(this);
 
-                    for (var i = currentIndex; i > thatIndex; --i)
+                    // suspend our input until the keyDetector has seen the number of inputs
+                    if (keyPressed?.Equals(switchLeftShortcutKey) == true)
+                    {
+                        var keyCountToIgnore = currentIndex - moveToIndex;
+                        keyDetector.SuspendUntil(switchLeftShortcutKey, keyCountToIgnore);
+                    }
+
+                    for (var i = currentIndex; i > moveToIndex; --i)
                     {
                         this.Input.Keyboard.ModifiedKeyStroke(
                             switchLeftShortcutKey.Modifiers.Select(x => (VirtualKeyCode)x),
@@ -186,45 +230,9 @@ namespace WindowsDesktop
             });
         }
 
-        private Task SmoothSwitchLeftOne(IntPtr hWnd, IShortcutKeyDetector keyDetector, IShortcutKey switchLeftShortcutKey, VirtualDesktop targetDesktop)
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                if (keyDetector.WaitForNoKeysPressed())
-                {
-                    // avoid a bunch of unnecessary switching if the user moved multiple desktops at a time
-                    if (targetDesktop.Id != _finalMoveDesktop?.Id) return;
-
-                    this.Input.Keyboard.ModifiedKeyStroke(
-                        switchLeftShortcutKey.Modifiers.Select(x => (VirtualKeyCode)x),
-                        (VirtualKeyCode)switchLeftShortcutKey.Key);
-
-                    this.RestoreForegroundWindow(hWnd);
-                }
-            });
-        }
-
-        private Task SmoothSwitchRightOne(IntPtr hWnd, IShortcutKeyDetector keyDetector, IShortcutKey switchRightShortcutKey, VirtualDesktop targetDesktop)
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                if (keyDetector.WaitForNoKeysPressed())
-                {
-                    // avoid a bunch of unnecessary switching if the user moved multiple desktops at a time
-                    if (targetDesktop.Id != _finalMoveDesktop?.Id) return;
-
-                    this.Input.Keyboard.ModifiedKeyStroke(
-                        switchRightShortcutKey.Modifiers.Select(x => (VirtualKeyCode)x),
-                        (VirtualKeyCode)switchRightShortcutKey.Key);
-
-                    this.RestoreForegroundWindow(hWnd);
-                }
-            });
-        }
-
         private void RestoreForegroundWindow(IntPtr hWnd)
         {
-            NativeMethods.SetForegroundWindow(hWnd);
+            if (hWnd != IntPtr.Zero) NativeMethods.SetForegroundWindow(hWnd);
         }
 
         /// <summary>

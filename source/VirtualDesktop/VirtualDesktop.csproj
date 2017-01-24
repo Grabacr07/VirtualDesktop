@@ -108,8 +108,9 @@
     <Compile Include="Interop\VirtualDesktopManagerInternal.cs" />
     <Compile Include="IShortcutKey.cs" />
     <Compile Include="IShortcutKeyDetector.cs" />
+    <Compile Include="LastKnownVirtualDesktop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SequentialTaskQueue.cs" />
+    <Compile Include="LatestTaskRunner.cs" />
     <Compile Include="VirtualDesktop.static.pin.cs" />
     <Compile Include="VirtualDesktop.static.cs" />
     <Compile Include="VirtualDesktop.cs" />

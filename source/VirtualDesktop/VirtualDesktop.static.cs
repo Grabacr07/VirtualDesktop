@@ -49,7 +49,7 @@ namespace WindowsDesktop
 			try
 			{
 				ComObjects.Initialize();
-			}
+            }
 			catch (Exception ex)
 			{
 				InitializationException = ex;
@@ -57,13 +57,15 @@ namespace WindowsDesktop
 			}
 
 			AppDomain.CurrentDomain.ProcessExit += (sender, args) => ComObjects.Terminate();
-		}
 
-		/// <summary>
-		/// Returns all the virtual desktops of currently valid.
-		/// </summary>
-		/// <returns></returns>
-		public static VirtualDesktop[] GetDesktops()
+            LastKnownVirtualDesktop.Start();
+        }
+
+        /// <summary>
+        /// Returns all the virtual desktops of currently valid.
+        /// </summary>
+        /// <returns></returns>
+        public static VirtualDesktop[] GetDesktops()
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
 

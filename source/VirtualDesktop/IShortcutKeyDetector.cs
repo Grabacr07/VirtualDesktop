@@ -10,6 +10,7 @@ namespace WindowsDesktop
     {
         void Start();
         void Stop();
+        void SuspendUntil(IShortcutKey key, int keyCountToIgnore);
         bool WaitForNoKeysPressed();
     }
 }

@@ -38,7 +38,7 @@ namespace WindowsDesktop
             Window window, IShortcutKeyDetector keyDetector, bool smoothSwitch, IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey)
 		{
 			window.MoveToDesktop(virtualDesktop);
-			virtualDesktop.Switch(new WindowInteropHelper(window).Handle, keyDetector, smoothSwitch, switchLeftShortcutKey, switchRightShortcutKey);
+			virtualDesktop.Switch(new WindowInteropHelper(window).Handle, keyDetector, smoothSwitch, switchLeftShortcutKey, switchRightShortcutKey, null);
 		}
 
 		public static bool IsPinned(this Window window)
