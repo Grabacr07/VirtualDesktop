@@ -34,10 +34,11 @@ namespace WindowsDesktop
 			VirtualDesktopHelper.MoveToDesktop(window.GetHandle(), virtualDesktop);
 		}
 
-		public static void SwitchAndMove(this VirtualDesktop virtualDesktop, Window window)
+		public static void SwitchAndMove(this VirtualDesktop virtualDesktop,
+            Window window, IShortcutKeyDetector keyDetector, bool smoothSwitch, IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey)
 		{
 			window.MoveToDesktop(virtualDesktop);
-			virtualDesktop.Switch();
+			virtualDesktop.Switch(new WindowInteropHelper(window).Handle, keyDetector, smoothSwitch, switchLeftShortcutKey, switchRightShortcutKey);
 		}
 
 		public static bool IsPinned(this Window window)
