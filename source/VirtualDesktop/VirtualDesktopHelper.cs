@@ -23,26 +23,11 @@ namespace WindowsDesktop
 			return ComObjects.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle);
 		}
 
-		public static void MoveToDesktop(IntPtr hWnd, VirtualDesktop virtualDesktop)
-		{
-			ThrowIfNotSupported();
+        public static VirtualDesktopActor MoveToDesktop(IntPtr hWnd, VirtualDesktop virtualDesktop, AdjacentDesktop direction, bool loop)
+        {
+            ThrowIfNotSupported();
 
-            virtualDesktop.MoveHere(hWnd);
-		}
-
-	    //public static bool WillWrapIfSwitchedTo(VirtualDesktop virtualDesktop)
-	    //{
-	    //    ThrowIfNotSupported();
-
-	    //    var current = VirtualDesktop.Current;
-	    //    var desktops = VirtualDesktop.GetDesktops();
-
-	    //    return desktops.Length >= 2
-	    //        &&
-	    //        (
-	    //            (current.Id == desktops.First().Id && virtualDesktop.Id == desktops.Last().Id)
-	    //            || (current.Id == desktops.Last().Id && virtualDesktop.Id == desktops.First().Id)
-	    //        );
-	    //}
-	}
+            return virtualDesktop.Move(hWnd, direction, loop);
+        }
+    }
 }

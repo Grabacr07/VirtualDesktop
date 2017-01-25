@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,5 +13,7 @@ namespace WindowsDesktop
         void Stop();
         void SuspendUntil(IShortcutKey key, int keyCountToIgnore);
         bool WaitForNoKeysPressed();
+
+        bool IsSuspendedUntilKeyPress { get; }
     }
 }

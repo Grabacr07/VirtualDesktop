@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
+using WindowsDesktop.Interop;
 
 namespace WindowsDesktop
 {
@@ -29,17 +30,24 @@ namespace WindowsDesktop
 		/// <summary>
 		/// Move this window to specified virtual desktop.
 		/// </summary>
-		public static void MoveToDesktop(this Window window, VirtualDesktop virtualDesktop)
+        public static VirtualDesktopActor MoveToDesktop(this Window window, VirtualDesktop virtualDesktop, AdjacentDesktop direction, bool loop)
+        {
+            return VirtualDesktopHelper.MoveToDesktop(window.GetHandle(), virtualDesktop, direction, loop);
+        }
+
+        public static VirtualDesktopActor SwitchAndMove(this VirtualDesktop virtualDesktop, Window window, AdjacentDesktop direction, bool loop)
 		{
-			VirtualDesktopHelper.MoveToDesktop(window.GetHandle(), virtualDesktop);
+			window.MoveToDesktop(virtualDesktop, direction, loop);
+			return virtualDesktop.Switch(direction, loop);
 		}
 
-		public static void SwitchAndMove(this VirtualDesktop virtualDesktop,
-            Window window, IShortcutKeyDetector keyDetector, bool smoothSwitch, IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey)
-		{
-			window.MoveToDesktop(virtualDesktop);
-			virtualDesktop.Switch(new WindowInteropHelper(window).Handle, keyDetector, smoothSwitch, switchLeftShortcutKey, switchRightShortcutKey, null);
-		}
+	    public static VirtualDesktopActor SwitchAndMove(this VirtualDesktop virtualDesktop, Window window, SmoothSwitchData switchData, AdjacentDesktop direction, bool loop)
+	    {
+            window.MoveToDesktop(virtualDesktop, direction, loop);
+
+            switchData.Hwnd = window.GetHandle();
+            return virtualDesktop.Switch(direction, loop);
+        }
 
 		public static bool IsPinned(this Window window)
 		{

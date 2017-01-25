@@ -16,15 +16,55 @@ using Timer = System.Timers.Timer;
 
 namespace WindowsDesktop
 {
+    public enum SwitchType
+    {
+        Quick = 1,
+        Smooth = 2
+    }
+
+    public class SmoothSwitchData
+    {
+        public IntPtr Hwnd { get; set; }
+        public SwitchType SwitchType { get; set; }
+        public IShortcutKeyDetector KeyDetector { get; set; }
+        public IShortcutKey SwitchLeftShortcutKey { get; set; }
+        public IShortcutKey SwitchRightShortcutKey { get; set; }
+        public IShortcutKey KeyPressed { get; set; }
+
+        public SmoothSwitchData()
+        {
+        }
+
+        public SmoothSwitchData(
+            SwitchType switchType,
+            IShortcutKeyDetector keyDetector,
+            IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey,
+            IShortcutKey keyPressed)
+            : this(IntPtr.Zero, switchType, keyDetector, switchLeftShortcutKey, switchRightShortcutKey, keyPressed)
+        {
+        }
+
+        public SmoothSwitchData(IntPtr hWnd,
+            SwitchType switchType,
+            IShortcutKeyDetector keyDetector,
+            IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey,
+            IShortcutKey keyPressed)
+        {
+            this.Hwnd = hWnd;
+            this.SwitchType = switchType;
+            this.KeyDetector = keyDetector;
+            this.SwitchLeftShortcutKey = switchLeftShortcutKey;
+            this.SwitchRightShortcutKey = switchRightShortcutKey;
+            this.KeyPressed = keyPressed;
+        }
+    }
+
     /// <summary>
     /// Encapsulates a virtual desktop on Windows 10.
     /// </summary>
     [DebuggerDisplay("{Id}")]
     public partial class VirtualDesktop
     {
-        private static VirtualDesktop _finalSwitchToDesktop;
-        private static readonly LatestTaskRunner _animator = new LatestTaskRunner();
-
         /// <summary>
         /// Gets the unique identifier for the virtual desktop.
         /// </summary>
@@ -60,77 +100,102 @@ namespace WindowsDesktop
             }
         }
 
+        public VirtualDesktopActor Move(IntPtr hWnd, AdjacentDesktop direction, bool loop)
+        {
+            return _actor.Move(this, hWnd, direction, loop);
+        }
+
+        public VirtualDesktopActor Switch(AdjacentDesktop direction, bool loop)
+        {
+            return _actor.Switch(this, direction, loop);
+        }
+
+        public VirtualDesktopActor Switch(SmoothSwitchData switchData, AdjacentDesktop direction, bool loop)
+        {
+            return _actor.Switch(this, switchData, direction, loop);
+        }
+
+        public void Execute(IShortcutKeyDetector keyDetector)
+        {
+            _actor.Execute(keyDetector);
+        }
+
         /// <summary>
         /// Display the virtual desktop.
         /// </summary>
-        public void Switch(IShortcutKeyDetector keyDetector, bool smoothSwitch, IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey)
+        internal void InternalQuickSwitch()
         {
-            if (smoothSwitch)
-            {
-                this.SmoothSwitch(IntPtr.Zero, keyDetector, switchLeftShortcutKey, switchRightShortcutKey, null);
-            }
-            else
-            {
-                ComObjects.VirtualDesktopManagerInternal.SwitchDesktop(this.ComObject);
-            }
+            Console.WriteLine("InternalQuickSwitch");
+            ComObjects.VirtualDesktopManagerInternal.SwitchDesktop(this.ComObject);
         }
 
+
+        /// <summary>
+        /// Display the virtual desktop.
+        /// </summary>
         /// <summary>
         /// Display the virtual desktop and reactivate the hWnd.
         /// </summary>
-        public void Switch(IntPtr hWnd, IShortcutKeyDetector keyDetector, bool smoothSwitch, IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey, IShortcutKey keyPressed)
+        internal void InternalSwitchSelector(SmoothSwitchData switchData)
         {
-            if (smoothSwitch)
+            Console.WriteLine("InternalSwitchSelector");
+            if (switchData.SwitchType == SwitchType.Smooth)
             {
-                this.SmoothSwitch(hWnd, keyDetector, switchLeftShortcutKey, switchRightShortcutKey, keyPressed);
+                this.InternalSmoothSwitch(switchData);
             }
             else
             {
-                ComObjects.VirtualDesktopManagerInternal.SwitchDesktop(this.ComObject);
+                this.InternalQuickSwitch();
             }
         }
 
-        public void SmoothSwitch(IntPtr hWnd, IShortcutKeyDetector keyDetector, IShortcutKey switchLeftShortcutKey, IShortcutKey switchRightShortcutKey, IShortcutKey keyPressed)
+        internal void InternalSmoothSwitch(SmoothSwitchData switchData)
         {
             var current = Current;
             var desktops = GetDesktops();
 
+            Console.WriteLine($"InternalSmoothSwitch: Current is {current}");
+
             _finalSwitchToDesktop = this;
 
             Task task = null;
-            if (LastKnownVirtualDesktop.WasUserDefinitelyHere(current))
+
+            // if we need to wrap from last to something on the left
+            if (current.Id == desktops.Last().Id && this.IsThisOnLeftOf(current))
             {
-                // if we need to wrap from last to first
-                if (current.Id == desktops.Last().Id && this.Id == desktops.First().Id)
-                {
-                    task = this.SmoothSwitchFromRightToLeft(hWnd, keyDetector, switchLeftShortcutKey, keyPressed);
-                }
-                // if we need to wrap from first to last
-                else if (current.Id == desktops.First().Id && this.Id == desktops.Last().Id)
-                {
-                    task = this.SmoothSwitchFromLeftToRight(hWnd, keyDetector, switchRightShortcutKey, keyPressed);
-                }
-                else if (keyPressed?.Equals(switchLeftShortcutKey) == true)
-                {
-                    // do nothing
-                }
-                else if (keyPressed?.Equals(switchRightShortcutKey) == true)
-                {
-                    // do nothing
-                }
-                else if (this.IsThisOnLeftOf(current))
-                {
-                    task = this.SmoothSwitchFromRightToLeft(hWnd, keyDetector, switchLeftShortcutKey, keyPressed);
-                }
-                else if (this.IsThisOnRightOf(current))
-                {
-                    task = this.SmoothSwitchFromLeftToRight(hWnd, keyDetector, switchRightShortcutKey, keyPressed);
-                }
+                Console.WriteLine("Wrapping last to something left");
+                task = this.SmoothSwitchFromRightToLeft(switchData.Hwnd, switchData.KeyDetector, switchData.SwitchLeftShortcutKey, switchData.KeyPressed);
+            }
+            // if we need to wrap from first to something on the right
+            else if (current.Id == desktops.First().Id && this.IsThisOnRightOf(current))
+            {
+                Console.WriteLine("Wrapping first to something right");
+                task = this.SmoothSwitchFromLeftToRight(switchData.Hwnd, switchData.KeyDetector, switchData.SwitchRightShortcutKey, switchData.KeyPressed);
+            }
+            //else if (switchData.KeyPressed?.Equals(switchData.SwitchLeftShortcutKey) == true)
+            //{
+            //    // do nothing
+            //    Console.WriteLine("Ignoring left switch shortcut");
+            //}
+            //else if (switchData.KeyPressed?.Equals(switchData.SwitchRightShortcutKey) == true)
+            //{
+            //    // do nothing
+            //    Console.WriteLine("Ignoring right switch shortcut");
+            //}
+            else if (this.IsThisOnLeftOf(current))
+            {
+                Console.WriteLine("Switching left");
+                task = this.SmoothSwitchFromRightToLeft(switchData.Hwnd, switchData.KeyDetector, switchData.SwitchLeftShortcutKey, switchData.KeyPressed);
+            }
+            else if (this.IsThisOnRightOf(current))
+            {
+                Console.WriteLine("Switching right");
+                task = this.SmoothSwitchFromLeftToRight(switchData.Hwnd, switchData.KeyDetector, switchData.SwitchRightShortcutKey, switchData.KeyPressed);
             }
 
             if (task != null)
             {
-                _animator.Set(() => task, Task.Factory.StartNew(() => keyDetector.WaitForNoKeysPressed()));
+                _animator.Set(() => task, Task.Factory.StartNew(() => switchData.KeyDetector.WaitForNoKeysPressed()));
             }
         }
 
@@ -186,10 +251,11 @@ namespace WindowsDesktop
 
                     for (var i = currentIndex; i < moveToIndex; ++i)
                     {
+                        Console.WriteLine($"Generating: {switchRightShortcutKey}");
                         this.Input.Keyboard.ModifiedKeyStroke(
                             switchRightShortcutKey.Modifiers.Select(x => (VirtualKeyCode)x),
                             (VirtualKeyCode)switchRightShortcutKey.Key);
-                        Thread.Sleep(200);
+                        Thread.Sleep(400);
                     }
 
                     this.RestoreForegroundWindow(hWnd);
@@ -219,10 +285,11 @@ namespace WindowsDesktop
 
                     for (var i = currentIndex; i > moveToIndex; --i)
                     {
+                        Console.WriteLine($"Generating: {switchLeftShortcutKey}");
                         this.Input.Keyboard.ModifiedKeyStroke(
                             switchLeftShortcutKey.Modifiers.Select(x => (VirtualKeyCode)x),
                             (VirtualKeyCode)switchLeftShortcutKey.Key);
-                        Thread.Sleep(200);
+                        Thread.Sleep(400);
                     }
 
                     this.RestoreForegroundWindow(hWnd);
@@ -256,7 +323,7 @@ namespace WindowsDesktop
         /// <summary>
         /// Returns a virtual desktop on the left.
         /// </summary>
-        public VirtualDesktop GetLeft()
+        public VirtualDesktop GetLeft(bool loop)
         {
             IVirtualDesktop desktop;
             try
@@ -265,7 +332,16 @@ namespace WindowsDesktop
             }
             catch (COMException ex) when (ex.Match(HResult.TYPE_E_OUTOFBOUNDS))
             {
-                return null;
+                if (loop)
+                {
+                    var desktops = GetDesktops();
+                    Console.WriteLine($"GetLeft: this is {this}");
+                    return desktops.Length >= 2 && this.Id == desktops.First().Id ? desktops.Last() : this.GetLeft(false);
+                }
+                else
+                {
+                    return null;
+                }
             }
             var wrapper = _wrappers.GetOrAdd(desktop.GetID(), _ => new VirtualDesktop(desktop));
 
@@ -275,7 +351,7 @@ namespace WindowsDesktop
         /// <summary>
         /// Returns a virtual desktop on the right.
         /// </summary>
-        public VirtualDesktop GetRight()
+        public VirtualDesktop GetRight(bool loop)
         {
             IVirtualDesktop desktop;
             try
@@ -284,11 +360,25 @@ namespace WindowsDesktop
             }
             catch (COMException ex) when (ex.Match(HResult.TYPE_E_OUTOFBOUNDS))
             {
-                return null;
+                if (loop)
+                {
+                    var desktops = GetDesktops();
+                    Console.WriteLine($"GetRight: this is {this}");
+                    return desktops.Length >= 2 && this.Id == desktops.Last().Id ? desktops.First() : this.GetRight(false);
+                }
+                else
+                {
+                    return null;
+                }
             }
             var wrapper = _wrappers.GetOrAdd(desktop.GetID(), _ => new VirtualDesktop(desktop));
 
             return wrapper;
+        }
+
+        public override string ToString()
+        {
+            return $"{this.IndexOf(this)}:{this.Id}";
         }
     }
 }

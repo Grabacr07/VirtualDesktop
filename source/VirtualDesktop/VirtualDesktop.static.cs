@@ -13,10 +13,15 @@ namespace WindowsDesktop
 		private static readonly bool _isSupportedInternal = true;
 		private static readonly ConcurrentDictionary<Guid, VirtualDesktop> _wrappers = new ConcurrentDictionary<Guid, VirtualDesktop>();
 
-		/// <summary>
-		/// Gets a value indicating whether the operating system is support virtual desktop.
-		/// </summary>
-		public static bool IsSupported =>
+        private static VirtualDesktop _finalSwitchToDesktop;
+        private static readonly LatestTaskRunner _animator = new LatestTaskRunner();
+
+        private static readonly VirtualDesktopActor _actor = new VirtualDesktopActor();
+
+        /// <summary>
+        /// Gets a value indicating whether the operating system is support virtual desktop.
+        /// </summary>
+        public static bool IsSupported =>
 #if DEBUG
 			_isSupportedInternal;
 #else
@@ -35,12 +40,27 @@ namespace WindowsDesktop
 			{
 				VirtualDesktopHelper.ThrowIfNotSupported();
 
-				var current = ComObjects.VirtualDesktopManagerInternal.GetCurrentDesktop();
-				var wrapper = _wrappers.GetOrAdd(current.GetID(), _ => new VirtualDesktop(current));
+			    var current = ComObjects.VirtualDesktopManagerInternal.GetCurrentDesktop();
+			    var wrapper = _wrappers.GetOrAdd(current.GetID(), _ => new VirtualDesktop(current));
 
-				return wrapper;
+			    return wrapper;
 			}
 		}
+
+	    public static VirtualDesktop CurrentOrDesktopToSwitchTo
+	    {
+	        get
+	        {
+	            if (_actor.DesktopToSwitchTo != null)
+	            {
+	                return _actor.DesktopToSwitchTo;
+	            }
+	            else
+	            {
+	                return Current;
+	 ;           }
+	        }
+	    }
 
 		static VirtualDesktop()
 		{
@@ -57,8 +77,6 @@ namespace WindowsDesktop
 			}
 
 			AppDomain.CurrentDomain.ProcessExit += (sender, args) => ComObjects.Terminate();
-
-            LastKnownVirtualDesktop.Start();
         }
 
         /// <summary>
