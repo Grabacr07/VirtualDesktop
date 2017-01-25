@@ -36,6 +36,7 @@ namespace WindowsDesktop
             }
             else
             {
+                Console.WriteLine($"Move to desktop was null. Canelling move action.");
                 this._queuedMoves.Clear();
             }
 
@@ -74,13 +75,11 @@ namespace WindowsDesktop
             var originalDesktop = toDesktop;
             if (this._switchAction != null)
             {
-                Console.WriteLine($"ADJUSTING SmoothSwitch from {toDesktop}");
                 // allow buffering of keyboard inputs, but since the desktop doesn't change until
                 // Execute actually does something, we need to keep track of where we are
                 toDesktop = direction == AdjacentDesktop.LeftDirection ? this._switchAction?.ToDesktop.GetLeft(loop) :
                     direction == AdjacentDesktop.RightDirection ? this._switchAction?.ToDesktop.GetRight(loop) :
                         toDesktop;
-                Console.WriteLine($"ADJUSTED from {originalDesktop} to {toDesktop}");
             }
 
             if (toDesktop != null)
@@ -120,8 +119,7 @@ namespace WindowsDesktop
             }
             else
             {
-                Console.WriteLine("Cancelling switch action because user was not definitely here");
-                //this._switchAction = null;
+                Console.WriteLine("Cancelling switch action");
             }
         }
     }
