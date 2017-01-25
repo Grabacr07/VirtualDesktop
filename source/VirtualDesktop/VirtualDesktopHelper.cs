@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using WindowsDesktop.Interop;
 
 namespace WindowsDesktop
@@ -22,24 +23,11 @@ namespace WindowsDesktop
 			return ComObjects.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle);
 		}
 
-		public static void MoveToDesktop(IntPtr hWnd, VirtualDesktop virtualDesktop)
-		{
-			ThrowIfNotSupported();
+        public static VirtualDesktopActor MoveToDesktop(IntPtr hWnd, VirtualDesktop virtualDesktop, AdjacentDesktop direction, bool loop)
+        {
+            ThrowIfNotSupported();
 
-			int processId;
-			NativeMethods.GetWindowThreadProcessId(hWnd, out processId);
-
-			if (Process.GetCurrentProcess().Id == processId)
-			{
-				var guid = virtualDesktop.Id;
-				ComObjects.VirtualDesktopManager.MoveWindowToDesktop(hWnd, ref guid);
-			}
-			else
-			{
-				IApplicationView view;
-				ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
-				ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, virtualDesktop.ComObject);
-			}
-		}
-	}
+            return virtualDesktop.Move(hWnd, direction, loop);
+        }
+    }
 }

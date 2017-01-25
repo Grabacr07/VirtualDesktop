@@ -85,5 +85,6 @@ namespace WindowsDesktop.Interop
 	{
 		LeftDirection = 3,
 		RightDirection = 4,
+        Jump = 100
 	}
 }

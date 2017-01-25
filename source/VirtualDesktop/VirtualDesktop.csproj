@@ -72,6 +72,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -80,6 +81,10 @@
     <Reference Include="System.Xml" />
     <Reference Include="Windows.UI" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationHelper.cs" />
@@ -101,7 +106,10 @@
     <Compile Include="Interop\IVirtualDesktopPinnedApps.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Interop\VirtualDesktopManagerInternal.cs" />
+    <Compile Include="IShortcutKey.cs" />
+    <Compile Include="IShortcutKeyDetector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LatestTaskRunner.cs" />
     <Compile Include="VirtualDesktop.static.pin.cs" />
     <Compile Include="VirtualDesktop.static.cs" />
     <Compile Include="VirtualDesktop.cs" />
@@ -109,8 +117,10 @@
     <Compile Include="VirtualDesktopDestroyEventArgs.cs" />
     <Compile Include="VirtualDesktopHelper.cs" />
     <Compile Include="VirtualDesktop.static.notification.cs" />
+    <Compile Include="VirtualDesktopActor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="VirtualDesktop.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
