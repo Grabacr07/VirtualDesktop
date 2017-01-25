@@ -255,7 +255,7 @@ namespace WindowsDesktop
                         this.Input.Keyboard.ModifiedKeyStroke(
                             switchRightShortcutKey.Modifiers.Select(x => (VirtualKeyCode)x),
                             (VirtualKeyCode)switchRightShortcutKey.Key);
-                        Thread.Sleep(400);
+                        Thread.Sleep(300);
                     }
 
                     this.RestoreForegroundWindow(hWnd);
@@ -289,7 +289,7 @@ namespace WindowsDesktop
                         this.Input.Keyboard.ModifiedKeyStroke(
                             switchLeftShortcutKey.Modifiers.Select(x => (VirtualKeyCode)x),
                             (VirtualKeyCode)switchLeftShortcutKey.Key);
-                        Thread.Sleep(400);
+                        Thread.Sleep(300);
                     }
 
                     this.RestoreForegroundWindow(hWnd);

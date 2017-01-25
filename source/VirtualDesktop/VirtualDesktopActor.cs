@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -139,19 +140,26 @@ namespace WindowsDesktop
 
         public void Execute()
         {
-            int processId;
-            NativeMethods.GetWindowThreadProcessId(this._hWnd, out processId);
+            try
+            {
+                int processId;
+                NativeMethods.GetWindowThreadProcessId(this._hWnd, out processId);
 
-            if (Process.GetCurrentProcess().Id == processId)
-            {
-                var guid = this.ToDesktop.Id;
-                ComObjects.VirtualDesktopManager.MoveWindowToDesktop(this._hWnd, ref guid);
+                if (Process.GetCurrentProcess().Id == processId)
+                {
+                    var guid = this.ToDesktop.Id;
+                    ComObjects.VirtualDesktopManager.MoveWindowToDesktop(this._hWnd, ref guid);
+                }
+                else
+                {
+                    IApplicationView view;
+                    ComObjects.ApplicationViewCollection.GetViewForHwnd(this._hWnd, out view);
+                    ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, this.ToDesktop.ComObject);
+                }
             }
-            else
+            catch (COMException ex)
             {
-                IApplicationView view;
-                ComObjects.ApplicationViewCollection.GetViewForHwnd(this._hWnd, out view);
-                ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, this.ToDesktop.ComObject);
+                Console.WriteLine(ex);
             }
         }
     }
