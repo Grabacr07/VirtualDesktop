@@ -14,7 +14,6 @@ namespace WindowsDesktop
 			}
 		}
 
-
 		public static bool IsCurrentVirtualDesktop(IntPtr handle)
 		{
 			ThrowIfNotSupported();
