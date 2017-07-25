@@ -33,6 +33,7 @@ namespace WindowsDesktop.Interop
 			ApplicationViewCollection = GetApplicationViewCollection();
 
 			_virtualDesktops.Clear();
+			_listener?.Dispose();
 			_listener = VirtualDesktop.RegisterListener();
 		}
 

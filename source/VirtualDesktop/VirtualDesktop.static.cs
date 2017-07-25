@@ -60,6 +60,7 @@ namespace WindowsDesktop
 			var clearWrappers = new Action(() => {
 				var oldWrappers = Interlocked.Exchange(ref _wrappers, new ConcurrentDictionary<Guid, VirtualDesktop>());
 				foreach (var v in oldWrappers.Values) { Marshal.ReleaseComObject(v.ComObject); }
+				ComObjects.Initialize();
 			});
 
 			VirtualDesktop.Created += (o, e) => clearWrappers();
