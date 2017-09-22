@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using WindowsDesktop.Interop;
 
 namespace WindowsDesktop
@@ -11,7 +12,7 @@ namespace WindowsDesktop
 	partial class VirtualDesktop
 	{
 		private static readonly bool _isSupportedInternal = true;
-		private static readonly ConcurrentDictionary<Guid, VirtualDesktop> _wrappers = new ConcurrentDictionary<Guid, VirtualDesktop>();
+		private static ConcurrentDictionary<Guid, VirtualDesktop> _wrappers = new ConcurrentDictionary<Guid, VirtualDesktop>();
 
 		/// <summary>
 		/// Gets a value indicating whether the operating system is support virtual desktop.
@@ -55,6 +56,15 @@ namespace WindowsDesktop
 				InitializationException = ex;
 				_isSupportedInternal = false;
 			}
+
+			var clearWrappers = new Action(() => {
+				var oldWrappers = Interlocked.Exchange(ref _wrappers, new ConcurrentDictionary<Guid, VirtualDesktop>());
+				foreach (var v in oldWrappers.Values) { Marshal.ReleaseComObject(v.ComObject); }
+				ComObjects.Initialize();
+			});
+
+			VirtualDesktop.Created += (o, e) => clearWrappers();
+			VirtualDesktop.Destroyed += (o, e) => clearWrappers();
 
 			AppDomain.CurrentDomain.ProcessExit += (sender, args) => ComObjects.Terminate();
 		}
