@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using WindowsDesktop.Interop;
+
 
 namespace WindowsDesktop
 {
@@ -53,6 +55,12 @@ namespace WindowsDesktop
 			catch (Exception ex)
 			{
 				InitializationException = ex;
+				
+				// Throws an InvalidOpertaionException, informing the user, that this needs to be called
+				// from a Thread with ApartmentState "STA".
+				if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
+					throw ex;
+
 				_isSupportedInternal = false;
 			}
 
