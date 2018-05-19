@@ -27,7 +27,7 @@ namespace WindowsDesktop.Interop
 			}
 
 			VirtualDesktopManager = GetVirtualDesktopManager();
-			VirtualDesktopManagerInternal = VirtualDesktopManagerInternal.GetInstance();
+			VirtualDesktopManagerInternal = new VirtualDesktopManagerInternal();
 			VirtualDesktopNotificationService = GetVirtualDesktopNotificationService();
 			VirtualDesktopPinnedApps = GetVirtualDesktopPinnedApps();
 			ApplicationViewCollection = GetApplicationViewCollection();
@@ -97,8 +97,7 @@ namespace WindowsDesktop.Interop
 			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
 			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
 
-			object ppvObject;
-			shell.QueryService(CLSID.VirtualDesktopNotificationService, typeof(IVirtualDesktopNotificationService).GUID, out ppvObject);
+			shell.QueryService(CLSID.VirtualDesktopNotificationService, typeof(IVirtualDesktopNotificationService).GUID, out var ppvObject);
 
 			return (IVirtualDesktopNotificationService)ppvObject;
 		}
@@ -108,8 +107,7 @@ namespace WindowsDesktop.Interop
 			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
 			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
 
-			object ppvObject;
-			shell.QueryService(CLSID.VirtualDesktopPinnedApps, typeof(IVirtualDesktopPinnedApps).GUID, out ppvObject);
+			shell.QueryService(CLSID.VirtualDesktopPinnedApps, typeof(IVirtualDesktopPinnedApps).GUID, out var ppvObject);
 
 			return (IVirtualDesktopPinnedApps)ppvObject;
 		}
@@ -119,8 +117,7 @@ namespace WindowsDesktop.Interop
 			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
 			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
 
-			object ppvObject;
-			shell.QueryService(typeof(IApplicationViewCollection).GUID, typeof(IApplicationViewCollection).GUID, out ppvObject);
+			shell.QueryService(typeof(IApplicationViewCollection).GUID, typeof(IApplicationViewCollection).GUID, out var ppvObject);
 
 			return (IApplicationViewCollection)ppvObject;
 		}

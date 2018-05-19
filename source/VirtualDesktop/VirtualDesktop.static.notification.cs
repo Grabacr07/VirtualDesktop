@@ -10,8 +10,8 @@ namespace WindowsDesktop
 {
 	partial class VirtualDesktop
 	{
-		private static uint? dwCookie;
-		private static VirtualDesktopNotificationListener listener;
+		private static uint? _dwCookie;
+		private static VirtualDesktopNotificationListener _listener;
 
 		/// <summary>
 		/// Occurs when a virtual desktop is created.
@@ -37,10 +37,10 @@ namespace WindowsDesktop
 		internal static IDisposable RegisterListener()
 		{
 			var service = ComObjects.VirtualDesktopNotificationService;
-			listener = new VirtualDesktopNotificationListener();
-			dwCookie = service.Register(listener);
+			_listener = new VirtualDesktopNotificationListener();
+			_dwCookie = service.Register(_listener);
 
-			return Disposable.Create(() => service.Unregister(dwCookie.Value));
+			return Disposable.Create(() => service.Unregister(_dwCookie.Value));
 		}
 
 		private class VirtualDesktopNotificationListener : IVirtualDesktopNotification

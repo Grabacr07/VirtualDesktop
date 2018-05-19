@@ -77,8 +77,7 @@ namespace WindowsDesktop
 
 			for (var i = 0u; i < count; i++)
 			{
-				object ppvObject;
-				desktops.GetAt(i, typeof(IVirtualDesktop).GUID, out ppvObject);
+				desktops.GetAt(i, typeof(IVirtualDesktop).GUID, out var ppvObject);
 
 				var desktop = (IVirtualDesktop)ppvObject;
 				var wrapper = _wrappers.GetOrAdd(desktop.GetID(), _ => new VirtualDesktop(desktop));

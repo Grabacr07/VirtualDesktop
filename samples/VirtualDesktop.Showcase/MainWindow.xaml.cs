@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using WindowsDesktop;
+using WindowsDesktop.Interop;
 
 namespace VirtualDesktopShowcase
 {
@@ -12,15 +13,23 @@ namespace VirtualDesktopShowcase
 	{
 		private static readonly int _delay = 2000;
 
-		public MainWindow()
-		{
-			this.InitializeComponent();
+	    public MainWindow()
+	    {
+	        this.InitializeComponent();
+	        InitializeComObjects();
+	    }
 
-			foreach (var id in VirtualDesktop.GetDesktops().Select(x => x.Id))
-			{
-				System.Diagnostics.Debug.WriteLine(id);
-			}
-		}
+	    private static async void InitializeComObjects()
+	    {
+	        try
+	        {
+	            await ComActivator.Initialize();
+	        }
+	        catch (Exception ex)
+	        {
+	            MessageBox.Show(ex.Message, "Failed to initialize.");
+	        }
+	    }
 
 		private void CreateNew(object sender, RoutedEventArgs e)
 		{

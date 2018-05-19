@@ -9,16 +9,14 @@ namespace WindowsDesktop
 	{
 		internal static IApplicationView GetApplicationView(this IntPtr hWnd)
 		{
-			IApplicationView view;
-			ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
+			ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out var view);
 
 			return view;
 		}
 
 		public static string GetAppId(IntPtr hWnd)
 		{
-			string appId;
-			hWnd.GetApplicationView().GetAppUserModelId(out appId);
+			hWnd.GetApplicationView().GetAppUserModelId(out var appId);
 
 			return appId;
 		}

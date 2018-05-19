@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WindowsDesktop</RootNamespace>
     <AssemblyName>VirtualDesktop</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <TargetPlatformVersion>10.0</TargetPlatformVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -71,6 +72,7 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -86,7 +88,11 @@
     <Compile Include="Internal\Disposable.cs" />
     <Compile Include="Internal\RawWindow.cs" />
     <Compile Include="Internal\TransparentWindow.cs" />
+    <Compile Include="Interop\AdjacentDesktop.cs" />
     <Compile Include="Interop\CLSID.cs" />
+    <Compile Include="Interop\ComActivator.cs" />
+    <Compile Include="Interop\ComInterfaceWrapperAttribute.cs" />
+    <Compile Include="Interop\ComInterfaceWrapperBase.cs" />
     <Compile Include="Interop\ComObjects.cs" />
     <Compile Include="Interop\HResult.cs" />
     <Compile Include="Interop\IApplicationView.cs" />
@@ -95,7 +101,7 @@
     <Compile Include="Interop\IServiceProvider.cs" />
     <Compile Include="Interop\IVirtualDesktop.cs" />
     <Compile Include="Interop\IVirtualDesktopManager.cs" />
-    <Compile Include="Interop\IVirtualDesktopManagerInternal.cs" />
+    <EmbeddedResource Include="Interop\Sources\IVirtualDesktopManagerInternal.cs" />
     <Compile Include="Interop\IVirtualDesktopNotification.cs" />
     <Compile Include="Interop\IVirtualDesktopNotificationService.cs" />
     <Compile Include="Interop\IVirtualDesktopPinnedApps.cs" />
