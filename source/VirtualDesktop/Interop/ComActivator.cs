@@ -35,7 +35,10 @@ namespace WindowsDesktop.Interop
 
 				foreach (var name in executingAssembly.GetManifestResourceNames())
 				{
-					var interfaceName = interfaceNames.FirstOrDefault(x => name.Contains(x));
+					var typeName = Path.GetFileNameWithoutExtension(name)?.Split('.').LastOrDefault();
+					if (typeName == null) continue;
+
+					var interfaceName = interfaceNames.FirstOrDefault(x => typeName == x);
 					if (interfaceName == null) continue;
 
 					var stream = executingAssembly.GetManifestResourceStream(name);
@@ -52,17 +55,33 @@ namespace WindowsDesktop.Interop
 			}
 		}
 
-		internal static (Type type, object obj) CreateInstance(string comInterfaceName)
+		internal static Type GetType(string comInterfaceName)
 		{
 			Initialize().Wait();
 
-			var type = _compiledAssembly.GetTypes().Single(x => x.Name.Contains(comInterfaceName));
+			return _compiledAssembly
+				.GetTypes()
+				.Single(x => x.Name.Split('.').Last() == comInterfaceName);
+		}
+
+		internal static object CreateInstance(Type type, Guid? guidService)
+		{
+			Initialize().Wait();
+
 			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
 			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
 
-			shell.QueryService(CLSID.VirtualDesktopAPIUnknown, type.GUID, out var ppvObject);
+			shell.QueryService(guidService ?? type.GUID, type.GUID, out var ppvObject);
 
-			return (type, ppvObject);
+			return ppvObject;
+		}
+
+		internal static (Type type, object instance) CreateInstance(string comInterfaceName, Guid? guidService)
+		{
+			var type = GetType(comInterfaceName);
+			var instance = CreateInstance(type, guidService);
+
+			return (type, instance);
 		}
 
 		private static Dictionary<string, Guid> GetInterfaceIds(string[] targets)

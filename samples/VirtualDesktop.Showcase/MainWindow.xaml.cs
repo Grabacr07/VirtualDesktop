@@ -29,6 +29,8 @@ namespace VirtualDesktopShowcase
 	        {
 	            MessageBox.Show(ex.Message, "Failed to initialize.");
 	        }
+
+	        VirtualDesktop.CurrentChanged += (sender, args) => System.Diagnostics.Debug.WriteLine($"Desktop changed: {args.NewDesktop.Id}");
 	    }
 
 		private void CreateNew(object sender, RoutedEventArgs e)

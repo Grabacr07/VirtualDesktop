@@ -14,9 +14,9 @@ namespace WindowsDesktop.Interop
 
 		internal static IVirtualDesktopManager VirtualDesktopManager { get; private set; }
 		internal static VirtualDesktopManagerInternal VirtualDesktopManagerInternal { get; private set; }
-		internal static IVirtualDesktopNotificationService VirtualDesktopNotificationService { get; private set; }
-		internal static IVirtualDesktopPinnedApps VirtualDesktopPinnedApps { get; private set; }
-		internal static IApplicationViewCollection ApplicationViewCollection { get; private set; }
+		internal static VirtualDesktopNotificationService VirtualDesktopNotificationService { get; private set; }
+		internal static VirtualDesktopPinnedApps VirtualDesktopPinnedApps { get; private set; }
+		internal static ApplicationViewCollection ApplicationViewCollection { get; private set; }
 
 		internal static void Initialize()
 		{
@@ -28,9 +28,9 @@ namespace WindowsDesktop.Interop
 
 			VirtualDesktopManager = GetVirtualDesktopManager();
 			VirtualDesktopManagerInternal = new VirtualDesktopManagerInternal();
-			VirtualDesktopNotificationService = GetVirtualDesktopNotificationService();
-			VirtualDesktopPinnedApps = GetVirtualDesktopPinnedApps();
-			ApplicationViewCollection = GetApplicationViewCollection();
+			VirtualDesktopNotificationService = new VirtualDesktopNotificationService();
+			VirtualDesktopPinnedApps = new VirtualDesktopPinnedApps();
+			ApplicationViewCollection = new ApplicationViewCollection();
 
 			_virtualDesktops.Clear();
 			_listener = VirtualDesktop.RegisterListener();
@@ -90,36 +90,6 @@ namespace WindowsDesktop.Interop
 			var instance = Activator.CreateInstance(vdmType);
 
 			return (IVirtualDesktopManager)instance;
-		}
-
-		public static IVirtualDesktopNotificationService GetVirtualDesktopNotificationService()
-		{
-			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
-			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
-
-			shell.QueryService(CLSID.VirtualDesktopNotificationService, typeof(IVirtualDesktopNotificationService).GUID, out var ppvObject);
-
-			return (IVirtualDesktopNotificationService)ppvObject;
-		}
-
-		public static IVirtualDesktopPinnedApps GetVirtualDesktopPinnedApps()
-		{
-			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
-			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
-
-			shell.QueryService(CLSID.VirtualDesktopPinnedApps, typeof(IVirtualDesktopPinnedApps).GUID, out var ppvObject);
-
-			return (IVirtualDesktopPinnedApps)ppvObject;
-		}
-
-		public static IApplicationViewCollection GetApplicationViewCollection()
-		{
-			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
-			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
-
-			shell.QueryService(typeof(IApplicationViewCollection).GUID, typeof(IApplicationViewCollection).GUID, out var ppvObject);
-
-			return (IApplicationViewCollection)ppvObject;
 		}
 
 		#endregion

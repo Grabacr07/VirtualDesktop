@@ -1,24 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace WindowsDesktop.Interop
 {
 	[ComInterfaceWrapper]
 	internal class VirtualDesktopManagerInternal : ComInterfaceWrapperBase
 	{
-		public int GetCount()
+		public VirtualDesktopManagerInternal()
+			: base(service: CLSID.VirtualDesktopAPIUnknown) { }
+		
+		public void MoveViewToDesktop(ApplicationView pView, IVirtualDesktop desktop)
 		{
-			return this.Invoke<int>();
-		}
-
-		public void MoveViewToDesktop(IApplicationView pView, IVirtualDesktop desktop)
-		{
-			this.Invoke(Args(pView, desktop));
-		}
-
-		public bool CanViewMoveDesktops(IApplicationView pView)
-		{
-			return this.Invoke<bool>(Args(pView));
+			this.Invoke(Args(pView.Instance, desktop));
 		}
 
 		public IVirtualDesktop GetCurrentDesktop()
@@ -55,6 +47,5 @@ namespace WindowsDesktop.Interop
 		{
 			return this.Invoke<IVirtualDesktop>(Args(desktopId));
 		}
-
 	}
 }

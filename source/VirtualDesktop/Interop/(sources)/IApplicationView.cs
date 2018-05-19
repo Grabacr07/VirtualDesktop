@@ -3,9 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace WindowsDesktop.Interop
 {
-	[ComImport]
-	//[Guid("9ac0b5c8-1484-4c5b-9533-4134a0f97cea")]
-	[Guid("871F602A-2B58-42B4-8C4B-6C43D642C06F")]
+	[ComImport, Guid("00000000-0000-0000-0000-000000000000") /* replace at runtime */]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IApplicationView
 	{
@@ -96,42 +94,5 @@ namespace WindowsDesktop.Interop
 		int GetEnterpriseId([MarshalAs(UnmanagedType.LPWStr)] out string enterpriseId);
 
 		int IsMirrored(out bool isMirrored);
-	}
-
-
-	[StructLayout(LayoutKind.Sequential)]
-	public struct Size
-	{
-		public int X;
-		public int Y;
-	}
-
-	[StructLayout(LayoutKind.Sequential)]
-	public struct Rect
-	{
-		public int Left;
-		public int Top;
-		public int Right;
-		public int Bottom;
-	}
-
-	public enum ApplicationViewCloakType
-	{
-		// ReSharper disable InconsistentNaming
-		AVCT_NONE = 0,
-		AVCT_DEFAULT = 1,
-		AVCT_VIRTUAL_DESKTOP = 2
-		// ReSharper restore InconsistentNaming
-	}
-
-	public enum ApplicationViewCompatibilityPolicy
-	{
-		// ReSharper disable InconsistentNaming
-		AVCP_NONE = 0,
-		AVCP_SMALL_SCREEN = 1,
-		AVCP_TABLET_SMALL_SCREEN = 2,
-		AVCP_VERY_SMALL_SCREEN = 3,
-		AVCP_HIGH_SCALE_FACTOR = 4
-		// ReSharper restore InconsistentNaming
 	}
 }

@@ -26,8 +26,7 @@ namespace WindowsDesktop
 		{
 			ThrowIfNotSupported();
 
-			int processId;
-			NativeMethods.GetWindowThreadProcessId(hWnd, out processId);
+			NativeMethods.GetWindowThreadProcessId(hWnd, out var processId);
 
 			if (Process.GetCurrentProcess().Id == processId)
 			{
@@ -36,8 +35,7 @@ namespace WindowsDesktop
 			}
 			else
 			{
-				IApplicationView view;
-				ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
+				var view = ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd);
 				ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, virtualDesktop.ComObject);
 			}
 		}

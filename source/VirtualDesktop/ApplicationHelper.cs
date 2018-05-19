@@ -7,18 +7,14 @@ namespace WindowsDesktop
 {
 	public static class ApplicationHelper
 	{
-		internal static IApplicationView GetApplicationView(this IntPtr hWnd)
+		internal static ApplicationView GetApplicationView(this IntPtr hWnd)
 		{
-			ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out var view);
-
-			return view;
+			return ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd);
 		}
 
 		public static string GetAppId(IntPtr hWnd)
 		{
-			hWnd.GetApplicationView().GetAppUserModelId(out var appId);
-
-			return appId;
+			return hWnd.GetApplicationView().GetAppUserModelId();
 		}
 	}
 }
