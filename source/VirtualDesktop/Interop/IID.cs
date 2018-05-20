@@ -20,8 +20,8 @@ namespace WindowsDesktop.Interop
 
 			foreach (var prop in Settings.Default.Properties.OfType<SettingsProperty>())
 			{
-				if (int.TryParse(_osBuildRegex.Match(prop.Name).Groups["build"]?.ToString(), out var version)
-					&& version == Environment.OSVersion.Version.Build)
+				if (int.TryParse(_osBuildRegex.Match(prop.Name).Groups["build"]?.ToString(), out var build)
+					&& build == ProductInfo.OSBuild)
 				{
 					foreach (var str in (StringCollection)Settings.Default[prop.Name])
 					{

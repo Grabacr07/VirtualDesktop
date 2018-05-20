@@ -96,6 +96,7 @@
     <Compile Include="Interop\%28wrappers%29\ApplicationViewCollection.cs" />
     <Compile Include="Interop\CLSID.cs" />
     <Compile Include="Interop\ComActivator.cs" />
+    <Compile Include="Interop\ComInterface.cs" />
     <Compile Include="Interop\ComInterfaceWrapperAttribute.cs" />
     <Compile Include="Interop\ComInterfaceWrapperBase.cs" />
     <Compile Include="Interop\ComObjects.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Interop\%28wrappers%29\VirtualDesktopManagerInternal.cs" />
     <Compile Include="Interop\%28wrappers%29\VirtualDesktopPinnedApps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\ProductInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
