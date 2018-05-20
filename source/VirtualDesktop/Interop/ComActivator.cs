@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CSharp;
-using Microsoft.Win32;
 
 namespace WindowsDesktop.Interop
 {
@@ -17,7 +16,7 @@ namespace WindowsDesktop.Interop
 
 		private static Task _initializationTask;
 		private static Assembly _compiledAssembly;
-
+		
 		public static Task Initialize()
 		{
 			return _initializationTask ?? (_initializationTask = Task.Run(() => Core()));
@@ -30,7 +29,7 @@ namespace WindowsDesktop.Interop
 					.Select(x => x.GetComInterfaceNameIfWrapper())
 					.Where(x => x != null)
 					.ToArray();
-				var iids = GetInterfaceIds(interfaceNames);
+				var iids = IID.GetIIDs(interfaceNames);
 				var compileTargets = new List<string>();
 
 				foreach (var name in executingAssembly.GetManifestResourceNames())
@@ -82,37 +81,6 @@ namespace WindowsDesktop.Interop
 			var instance = CreateInstance(type, guidService);
 
 			return (type, instance);
-		}
-
-		private static Dictionary<string, Guid> GetInterfaceIds(string[] targets)
-		{
-			using (var interfaceKey = Registry.ClassesRoot.OpenSubKey("Interface"))
-			{
-				if (interfaceKey == null)
-				{
-					throw new Exception(@"Registry key '\HKEY_CLASSES_ROOT\Interface' is missing.");
-				}
-
-				var result = new Dictionary<string, Guid>();
-				var names = interfaceKey.GetSubKeyNames();
-
-				foreach (var name in names)
-				{
-					using (var key = interfaceKey.OpenSubKey(name))
-					{
-						if (key?.GetValue("") is string value)
-						{
-							var match = targets.FirstOrDefault(x => x == value);
-							if (match != null && Guid.TryParse(key.Name.Split('\\').Last(), out var guid))
-							{
-								result[match] = guid;
-							}
-						}
-					}
-				}
-
-				return result;
-			}
 		}
 
 		private static Assembly Compile(string[] sources)
