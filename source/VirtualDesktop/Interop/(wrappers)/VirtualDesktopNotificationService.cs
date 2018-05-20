@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WindowsDesktop.Internal;
 
 namespace WindowsDesktop.Interop
 {
@@ -10,12 +11,13 @@ namespace WindowsDesktop.Interop
 		public VirtualDesktopNotificationService()
 			: base(service: CLSID.VirtualDesktopNotificationService) { }
 
-		public uint Register(IVirtualDesktopNotification pNotification)
+		public IDisposable Register(VirtualDesktopNotification pNotification)
 		{
-			return this.Invoke<uint>(Args(pNotification));
+			var dwCookie = this.Invoke<uint>(Args(pNotification));
+			return Disposable.Create(() => this.Unregister(dwCookie));
 		}
 
-		public void Unregister(uint dwCookie)
+		private void Unregister(uint dwCookie)
 		{
 			this.Invoke(Args(dwCookie));
 		}

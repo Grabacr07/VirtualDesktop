@@ -55,13 +55,13 @@ namespace WindowsDesktop.Interop
 			}
 		}
 
-		internal static Type GetType(string comInterfaceName)
+		internal static Type GetType(string typeName)
 		{
 			Initialize().Wait();
 
 			return _compiledAssembly
 				.GetTypes()
-				.Single(x => x.Name.Split('.').Last() == comInterfaceName);
+				.Single(x => x.Name.Split('.').Last() == typeName);
 		}
 
 		internal static object CreateInstance(Type type, Guid? guidService)
