@@ -19,32 +19,32 @@ namespace WindowsDesktop.Interop
 
 		public void VirtualDesktopCreated(IVirtualDesktop pDesktop)
 		{
-			VirtualDesktop.RaiseCreatedEvent(this, pDesktop);
+			VirtualDesktop.EventRaiser.RaiseCreated(this, pDesktop);
 		}
 
 		public void VirtualDesktopDestroyBegin(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
 		{
-			VirtualDesktop.RaiseDestroyBeginEvent(this, pDesktopDestroyed, pDesktopFallback);
+			VirtualDesktop.EventRaiser.RaiseDestroyBegin(this, pDesktopDestroyed, pDesktopFallback);
 		}
 
 		public void VirtualDesktopDestroyFailed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
 		{
-			VirtualDesktop.RaiseDestroyFailedEvent(this, pDesktopDestroyed, pDesktopFallback);
+			VirtualDesktop.EventRaiser.RaiseDestroyFailed(this, pDesktopDestroyed, pDesktopFallback);
 		}
 
 		public void VirtualDesktopDestroyed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
 		{
-			VirtualDesktop.RaiseDestroyedEvent(this, pDesktopDestroyed, pDesktopFallback);
+			VirtualDesktop.EventRaiser.RaiseDestroyed(this, pDesktopDestroyed, pDesktopFallback);
 		}
 
 		public void ViewVirtualDesktopChanged(IntPtr pView)
 		{
-			VirtualDesktop.RaiseApplicationViewChangedEvent(this, pView);
+			VirtualDesktop.EventRaiser.RaiseApplicationViewChanged(this, pView);
 		}
 
 		public void CurrentVirtualDesktopChanged(IVirtualDesktop pDesktopOld, IVirtualDesktop pDesktopNew)
 		{
-			VirtualDesktop.RaiseCurrentChangedEvent(this, pDesktopOld, pDesktopNew);
+			VirtualDesktop.EventRaiser.RaiseCurrentChanged(this, pDesktopOld, pDesktopNew);
 		}
 	}
 }

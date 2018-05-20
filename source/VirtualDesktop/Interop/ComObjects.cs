@@ -33,8 +33,8 @@ namespace WindowsDesktop.Interop
 			ApplicationViewCollection = new ApplicationViewCollection();
 
 			_virtualDesktops.Clear();
-			_listener = VirtualDesktop.RegisterListener();
-		}
+			_listener = VirtualDesktopNotificationService.Register(VirtualDesktopNotification.CreateInstance());
+;		}
 
 		internal static void Register(IVirtualDesktop vd)
 		{
@@ -82,8 +82,6 @@ namespace WindowsDesktop.Interop
 		}
 
 
-		#region public methods
-
 		public static IVirtualDesktopManager GetVirtualDesktopManager()
 		{
 			var vdmType = Type.GetTypeFromCLSID(CLSID.VirtualDesktopManager);
@@ -91,7 +89,5 @@ namespace WindowsDesktop.Interop
 
 			return (IVirtualDesktopManager)instance;
 		}
-
-		#endregion
 	}
 }
