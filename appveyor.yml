@@ -2,13 +2,13 @@ version: '{build}'
 branches:
   only:
   - master
-os: Visual Studio 2015
+os: Visual Studio 2017
 configuration: Release
 platform: Any CPU
 init:
 - cmd: git config --global core.autocrlf true
 environment:
-  PATH: C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+  PATH: C:\Program Files (x86)\MSBuild\15.0\Bin;%PATH%
 nuget:
   disable_publish_on_pr: true
 build:
