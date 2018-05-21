@@ -72,7 +72,6 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -95,12 +94,12 @@
     <Compile Include="Interop\%28wrappers%29\ApplicationView.cs" />
     <Compile Include="Interop\%28wrappers%29\ApplicationViewCollection.cs" />
     <Compile Include="Interop\CLSID.cs" />
-    <Compile Include="Interop\ComActivator.cs" />
-    <Compile Include="Interop\ComInterface.cs" />
+    <Compile Include="Interop\ComInterfaceAssemblyProvider.cs" />
     <Compile Include="Interop\ComInterfaceWrapperAttribute.cs" />
     <Compile Include="Interop\ComInterfaceWrapperBase.cs" />
     <Compile Include="Interop\ComObjects.cs" />
     <Compile Include="Interop\HResult.cs" />
+    <Compile Include="VirtualDesktopProvider.cs" />
     <EmbeddedResource Include="Interop\%28interfaces%29\IApplicationView.cs" />
     <EmbeddedResource Include="Interop\%28interfaces%29\IApplicationViewCollection.cs" />
     <Compile Include="Interop\IID.cs" />

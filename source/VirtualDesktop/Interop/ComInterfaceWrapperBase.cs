@@ -16,7 +16,7 @@ namespace WindowsDesktop.Interop
 
 		protected ComInterfaceWrapperBase(string comInterfaceName = null, Guid? service = null)
 		{
-			var (type, instance) = ComActivator.CreateInstance(comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper(), service);
+			var (type, instance) = VirtualDesktop.ProviderInternal.CreateInstance(comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper(), service);
 
 			this.InterfaceType = type;
 			this.Instance = instance;
@@ -24,7 +24,7 @@ namespace WindowsDesktop.Interop
 
 		protected ComInterfaceWrapperBase(object instance, string comInterfaceName = null)
 		{
-			this.InterfaceType = ComActivator.GetType(comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper());
+			this.InterfaceType = VirtualDesktop.ProviderInternal.GetType(comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper());
 			this.Instance = instance;
 		}
 

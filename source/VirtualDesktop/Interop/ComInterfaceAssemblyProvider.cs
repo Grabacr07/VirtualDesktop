@@ -11,29 +11,34 @@ using Microsoft.CSharp;
 
 namespace WindowsDesktop.Interop
 {
-	public static class ComInterface
+	internal class ComInterfaceAssemblyProvider
 	{
 		private const string _placeholderGuid = "00000000-0000-0000-0000-000000000000";
-		private static readonly string _assemblyName = "VirtualDesktop.{0}.generated.dll";
+		private const string _assemblyName = "VirtualDesktop.{0}.generated.dll";
 
 		private static readonly Regex _assemblyRegex = new Regex(@"VirtualDesktop\.(?<build>\d{5}?)(\.\w*|)\.dll");
 		private static readonly string _defaultAssemblyDirectoryPath = Path.Combine(ProductInfo.LocalAppData.FullName, "assemblies");
 
-		public static string AssemblyDirectoryPath { get; set; } = _defaultAssemblyDirectoryPath;
-
-		public static Assembly GetAssembly()
+		private readonly string _assemblyDirectoryPath;
+		
+		public ComInterfaceAssemblyProvider(string assemblyDirectoryPath)
 		{
-			var assembly = GetExisitingAssembly();
-			if (assembly != null) return assembly;
-
-			return CreateAssembly();
+			this._assemblyDirectoryPath = assemblyDirectoryPath ?? _defaultAssemblyDirectoryPath;
 		}
 
-		private static Assembly GetExisitingAssembly()
+		public Assembly GetAssembly()
+		{
+			var assembly = this.GetExisitingAssembly();
+			if (assembly != null) return assembly;
+
+			return this.CreateAssembly();
+		}
+
+		private Assembly GetExisitingAssembly()
 		{
 			var searchTargets = new[]
 			{
-				AssemblyDirectoryPath,
+				this._assemblyDirectoryPath,
 				Environment.CurrentDirectory,
 				Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
 				_defaultAssemblyDirectoryPath,
@@ -58,7 +63,7 @@ namespace WindowsDesktop.Interop
 			return null;
 		}
 
-		private static Assembly CreateAssembly()
+		private Assembly CreateAssembly()
 		{
 			var executingAssembly = Assembly.GetExecutingAssembly();
 			var interfaceNames = executingAssembly
@@ -87,12 +92,12 @@ namespace WindowsDesktop.Interop
 				}
 			}
 
-			return Compile(compileTargets.ToArray());
+			return this.Compile(compileTargets.ToArray());
 		}
 
-		private static Assembly Compile(string[] sources)
+		private Assembly Compile(string[] sources)
 		{
-			var dir = new DirectoryInfo(AssemblyDirectoryPath);
+			var dir = new DirectoryInfo(this._assemblyDirectoryPath);
 			if (!dir.Exists) dir.Create();
 
 			using (var provider = new CSharpCodeProvider())

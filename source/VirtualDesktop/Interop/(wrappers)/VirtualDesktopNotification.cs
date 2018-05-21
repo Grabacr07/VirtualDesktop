@@ -11,7 +11,7 @@ namespace WindowsDesktop.Interop
 	{
 		public static VirtualDesktopNotification CreateInstance()
 		{
-			var type = ComActivator.GetType("VirtualDesktopNotificationListener");
+			var type = VirtualDesktop.ProviderInternal.GetType("VirtualDesktopNotificationListener");
 			var instance = (VirtualDesktopNotification)Activator.CreateInstance(type);
 
 			return instance;
