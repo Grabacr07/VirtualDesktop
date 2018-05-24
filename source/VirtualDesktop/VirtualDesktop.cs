@@ -1,40 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using WindowsDesktop.Interop;
+using JetBrains.Annotations;
 
 namespace WindowsDesktop
 {
 	/// <summary>
 	/// Encapsulates a virtual desktop on Windows 10.
 	/// </summary>
+	[ComInterfaceWrapper]
 	[DebuggerDisplay("{Id}")]
-	public partial class VirtualDesktop
+	[UsedImplicitly(ImplicitUseTargetFlags.Members)]
+	public partial class VirtualDesktop : ComInterfaceWrapperBase
 	{
 		/// <summary>
 		/// Gets the unique identifier for the virtual desktop.
 		/// </summary>
 		public Guid Id { get; }
 
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public IVirtualDesktop ComObject => ComObjects.GetVirtualDesktop(this.Id);
-
-		private VirtualDesktop(IVirtualDesktop comObject)
+		[UsedImplicitly]
+		internal VirtualDesktop(ComInterfaceAssembly assembly, Guid id, object comObject)
+			: base(assembly, comObject)
 		{
-			ComObjects.Register(comObject);
-			this.Id = comObject.GetID();
+			this.Id = id;
 		}
-
 
 		/// <summary>
 		/// Display the virtual desktop.
 		/// </summary>
 		public void Switch()
 		{
-			ComObjects.VirtualDesktopManagerInternal.SwitchDesktop(this.ComObject);
+			ComInterface.VirtualDesktopManagerInternal.SwitchDesktop(this);
 		}
 
 		/// <summary>
@@ -42,7 +41,8 @@ namespace WindowsDesktop
 		/// </summary>
 		public void Remove()
 		{
-			this.Remove(GetDesktopsInternal().FirstOrDefault(x => x.Id != this.Id) ?? Create());
+			var fallback = ComInterface.VirtualDesktopManagerInternal.GetDesktops().FirstOrDefault(x => x.Id != this.Id) ?? Create();
+			this.Remove(fallback);
 		}
 
 		/// <summary>
@@ -52,7 +52,7 @@ namespace WindowsDesktop
 		{
 			if (fallbackDesktop == null) throw new ArgumentNullException(nameof(fallbackDesktop));
 
-			ComObjects.VirtualDesktopManagerInternal.RemoveDesktop(this.ComObject, fallbackDesktop.ComObject);
+			ComInterface.VirtualDesktopManagerInternal.RemoveDesktop(this, fallbackDesktop);
 		}
 
 		/// <summary>
@@ -60,18 +60,14 @@ namespace WindowsDesktop
 		/// </summary>
 		public VirtualDesktop GetLeft()
 		{
-			IVirtualDesktop desktop;
 			try
 			{
-				desktop = ComObjects.VirtualDesktopManagerInternal.GetAdjacentDesktop(this.ComObject, AdjacentDesktop.LeftDirection);
+				return ComInterface.VirtualDesktopManagerInternal.GetAdjacentDesktop(this, AdjacentDesktop.LeftDirection);
 			}
 			catch (COMException ex) when (ex.Match(HResult.TYPE_E_OUTOFBOUNDS))
 			{
 				return null;
 			}
-			var wrapper = _wrappers.GetOrAdd(desktop.GetID(), _ => new VirtualDesktop(desktop));
-
-			return wrapper;
 		}
 
 		/// <summary>
@@ -79,18 +75,14 @@ namespace WindowsDesktop
 		/// </summary>
 		public VirtualDesktop GetRight()
 		{
-			IVirtualDesktop desktop;
 			try
 			{
-				desktop = ComObjects.VirtualDesktopManagerInternal.GetAdjacentDesktop(this.ComObject, AdjacentDesktop.RightDirection);
+				return ComInterface.VirtualDesktopManagerInternal.GetAdjacentDesktop(this, AdjacentDesktop.RightDirection);
 			}
 			catch (COMException ex) when (ex.Match(HResult.TYPE_E_OUTOFBOUNDS))
 			{
 				return null;
 			}
-			var wrapper = _wrappers.GetOrAdd(desktop.GetID(), _ => new VirtualDesktop(desktop));
-
-			return wrapper;
 		}
 	}
 }

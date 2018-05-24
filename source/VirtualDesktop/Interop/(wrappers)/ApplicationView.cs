@@ -9,8 +9,8 @@ namespace WindowsDesktop.Interop
 	[ComInterfaceWrapper]
 	internal class ApplicationView : ComInterfaceWrapperBase
 	{
-		public ApplicationView(object instance, string comInterfaceName = null)
-			: base(instance, comInterfaceName) { }
+		public ApplicationView(ComInterfaceAssembly assembly, object comObject, string comInterfaceName = null)
+			: base(assembly, comObject, comInterfaceName) { }
 
 		public string GetAppUserModelId()
 		{

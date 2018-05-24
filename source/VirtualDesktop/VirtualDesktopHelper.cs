@@ -19,7 +19,7 @@ namespace WindowsDesktop
 		{
 			ThrowIfNotSupported();
 
-			return ComObjects.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle);
+			return ComInterface.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle);
 		}
 
 		public static void MoveToDesktop(IntPtr hWnd, VirtualDesktop virtualDesktop)
@@ -31,12 +31,12 @@ namespace WindowsDesktop
 			if (Process.GetCurrentProcess().Id == processId)
 			{
 				var guid = virtualDesktop.Id;
-				ComObjects.VirtualDesktopManager.MoveWindowToDesktop(hWnd, ref guid);
+				ComInterface.VirtualDesktopManager.MoveWindowToDesktop(hWnd, ref guid);
 			}
 			else
 			{
-				var view = ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd);
-				ComObjects.VirtualDesktopManagerInternal.MoveViewToDesktop(view, virtualDesktop.ComObject);
+				var view = ComInterface.ApplicationViewCollection.GetViewForHwnd(hWnd);
+				ComInterface.VirtualDesktopManagerInternal.MoveViewToDesktop(view, virtualDesktop);
 			}
 		}
 	}

@@ -9,42 +9,48 @@ namespace WindowsDesktop.Interop
 	[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 	public abstract class VirtualDesktopNotification
 	{
-		public static VirtualDesktopNotification CreateInstance()
+		private VirtualDesktopFactory _factory;
+
+		internal static VirtualDesktopNotification CreateInstance(ComInterfaceAssembly assembly)
 		{
-			var type = VirtualDesktop.ProviderInternal.GetType("VirtualDesktopNotificationListener");
+			var type = assembly.GetType("VirtualDesktopNotificationListener");
 			var instance = (VirtualDesktopNotification)Activator.CreateInstance(type);
+			instance._factory = new VirtualDesktopFactory(assembly);
 
 			return instance;
 		}
 
-		public void VirtualDesktopCreated(IVirtualDesktop pDesktop)
+		protected VirtualDesktop GetDesktop(object comObject)
+			=> this._factory.Get(comObject);
+
+		protected void VirtualDesktopCreatedCore(object pDesktop)
 		{
-			VirtualDesktop.EventRaiser.RaiseCreated(this, pDesktop);
+			VirtualDesktop.EventRaiser.RaiseCreated(this, this._factory.Get(pDesktop));
 		}
 
-		public void VirtualDesktopDestroyBegin(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
+		protected void VirtualDesktopDestroyBeginCore(object pDesktopDestroyed, object pDesktopFallback)
 		{
-			VirtualDesktop.EventRaiser.RaiseDestroyBegin(this, pDesktopDestroyed, pDesktopFallback);
+			VirtualDesktop.EventRaiser.RaiseDestroyBegin(this, this._factory.Get(pDesktopDestroyed), this._factory.Get(pDesktopFallback));
 		}
 
-		public void VirtualDesktopDestroyFailed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
+		protected void VirtualDesktopDestroyFailedCore(object pDesktopDestroyed, object pDesktopFallback)
 		{
-			VirtualDesktop.EventRaiser.RaiseDestroyFailed(this, pDesktopDestroyed, pDesktopFallback);
+			VirtualDesktop.EventRaiser.RaiseDestroyFailed(this, this._factory.Get(pDesktopDestroyed), this._factory.Get(pDesktopFallback));
 		}
 
-		public void VirtualDesktopDestroyed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
+		protected void VirtualDesktopDestroyedCore(object pDesktopDestroyed, object pDesktopFallback)
 		{
-			VirtualDesktop.EventRaiser.RaiseDestroyed(this, pDesktopDestroyed, pDesktopFallback);
+			VirtualDesktop.EventRaiser.RaiseDestroyed(this, this._factory.Get(pDesktopDestroyed), this._factory.Get(pDesktopFallback));
 		}
 
-		public void ViewVirtualDesktopChanged(IntPtr pView)
+		protected void ViewVirtualDesktopChangedCore(IntPtr pView)
 		{
 			VirtualDesktop.EventRaiser.RaiseApplicationViewChanged(this, pView);
 		}
 
-		public void CurrentVirtualDesktopChanged(IVirtualDesktop pDesktopOld, IVirtualDesktop pDesktopNew)
+		protected void CurrentVirtualDesktopChangedCore(object pDesktopOld, object pDesktopNew)
 		{
-			VirtualDesktop.EventRaiser.RaiseCurrentChanged(this, pDesktopOld, pDesktopNew);
+			VirtualDesktop.EventRaiser.RaiseCurrentChanged(this, this._factory.Get(pDesktopOld), this._factory.Get(pDesktopNew));
 		}
 	}
 }

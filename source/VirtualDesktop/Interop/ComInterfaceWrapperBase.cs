@@ -6,26 +6,30 @@ using System.Runtime.CompilerServices;
 
 namespace WindowsDesktop.Interop
 {
-	internal abstract class ComInterfaceWrapperBase
+	public abstract class ComInterfaceWrapperBase
 	{
 		private readonly Dictionary<string, MethodInfo> _methods = new Dictionary<string, MethodInfo>();
+		
+		private protected ComInterfaceAssembly ComInterfaceAssembly { get; }
 
-		public Type InterfaceType { get; }
+		public Type ComInterfaceType { get; }
 
-		public object Instance { get; }
+		public object ComObject { get; }
 
-		protected ComInterfaceWrapperBase(string comInterfaceName = null, Guid? service = null)
+		private protected ComInterfaceWrapperBase(ComInterfaceAssembly assembly, string comInterfaceName = null, Guid? service = null)
 		{
-			var (type, instance) = VirtualDesktop.ProviderInternal.CreateInstance(comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper(), service);
+			var (type, instance) = assembly.CreateInstance(comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper(), service);
 
-			this.InterfaceType = type;
-			this.Instance = instance;
+			this.ComInterfaceAssembly = assembly;
+			this.ComInterfaceType = type;
+			this.ComObject = instance;
 		}
 
-		protected ComInterfaceWrapperBase(object instance, string comInterfaceName = null)
+		private protected ComInterfaceWrapperBase(ComInterfaceAssembly assembly, object comObject, string comInterfaceName = null)
 		{
-			this.InterfaceType = VirtualDesktop.ProviderInternal.GetType(comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper());
-			this.Instance = instance;
+			this.ComInterfaceAssembly = assembly;
+			this.ComInterfaceType = assembly.GetType(comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper());
+			this.ComObject = comObject;
 		}
 
 		protected static object[] Args(params object[] args)
@@ -38,7 +42,7 @@ namespace WindowsDesktop.Interop
 		{
 			if (!this._methods.TryGetValue(methodName, out var methodInfo))
 			{
-				this._methods[methodName] = methodInfo = this.InterfaceType.GetMethod(methodName);
+				this._methods[methodName] = methodInfo = this.ComInterfaceType.GetMethod(methodName);
 
 				if (methodInfo == null)
 				{
@@ -46,7 +50,7 @@ namespace WindowsDesktop.Interop
 				}
 			}
 
-			return (T)methodInfo.Invoke(this.Instance, parameters);
+			return (T)methodInfo.Invoke(this.ComObject, parameters);
 		}
 	}
 }

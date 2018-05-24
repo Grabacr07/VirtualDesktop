@@ -128,6 +128,19 @@ namespace VirtualDesktopShowcase
 			}
 		}
 
+		private async void Remove(object sender, RoutedEventArgs e)
+		{
+			if (this.ThisWindowMenu.IsChecked ?? false)
+			{
+				this.GetCurrentDesktop().Remove();
+			}
+			else
+			{
+				await Task.Delay(_delay);
+				this.GetCurrentDesktop().Remove();
+			}
+		}
+
 
 		[DllImport("user32.dll")]
 		private static extern IntPtr GetForegroundWindow();

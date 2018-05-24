@@ -1,51 +1,69 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace WindowsDesktop.Interop
 {
 	[ComInterfaceWrapper]
 	internal class VirtualDesktopManagerInternal : ComInterfaceWrapperBase
 	{
-		public VirtualDesktopManagerInternal()
-			: base(service: CLSID.VirtualDesktopAPIUnknown) { }
-		
-		public void MoveViewToDesktop(ApplicationView pView, IVirtualDesktop desktop)
+		private readonly VirtualDesktopFactory _factory;
+
+		public VirtualDesktopManagerInternal(ComInterfaceAssembly assembly)
+			: base(assembly, service: CLSID.VirtualDesktopAPIUnknown)
 		{
-			this.Invoke(Args(pView.Instance, desktop));
+			this._factory = new VirtualDesktopFactory(assembly);
 		}
 
-		public IVirtualDesktop GetCurrentDesktop()
+		public void MoveViewToDesktop(ApplicationView pView, VirtualDesktop desktop)
 		{
-			return this.Invoke<IVirtualDesktop>();
+			this.Invoke(Args(pView.ComObject, desktop.ComObject));
 		}
 
-		public IObjectArray GetDesktops()
+		public VirtualDesktop GetCurrentDesktop()
 		{
-			return this.Invoke<IObjectArray>();
+			return this.GetDesktop();
 		}
 
-		public IVirtualDesktop GetAdjacentDesktop(IVirtualDesktop pDesktopReference, AdjacentDesktop uDirection)
+		public IEnumerable<VirtualDesktop> GetDesktops()
 		{
-			return this.Invoke<IVirtualDesktop>(Args(pDesktopReference, uDirection));
+			var array = this.Invoke<IObjectArray>();
+			var count = array.GetCount();
+			var vdType = this.ComInterfaceAssembly.GetType("IVirtualDesktop");
+
+			for (var i = 0u; i < count; i++)
+			{
+				array.GetAt(i, vdType.GUID, out var ppvObject);
+				yield return this._factory.Get(ppvObject);
+			}
 		}
 
-		public void SwitchDesktop(IVirtualDesktop desktop)
+		public VirtualDesktop GetAdjacentDesktop(VirtualDesktop pDesktopReference, AdjacentDesktop uDirection)
 		{
-			this.Invoke<IVirtualDesktop>(Args(desktop));
+			return this.GetDesktop(Args(pDesktopReference.ComObject, uDirection));
 		}
 
-		public IVirtualDesktop CreateDesktopW()
+		public void SwitchDesktop(VirtualDesktop desktop)
 		{
-			return this.Invoke<IVirtualDesktop>();
+			this.Invoke(Args(desktop.ComObject));
 		}
 
-		public void RemoveDesktop(IVirtualDesktop pRemove, IVirtualDesktop pFallbackDesktop)
+		public VirtualDesktop CreateDesktopW()
 		{
-			this.Invoke(Args(pRemove, pFallbackDesktop));
+			return this.GetDesktop();
 		}
 
-		public IVirtualDesktop FindDesktop(ref Guid desktopId)
+		public void RemoveDesktop(VirtualDesktop pRemove, VirtualDesktop pFallbackDesktop)
 		{
-			return this.Invoke<IVirtualDesktop>(Args(desktopId));
+			this.Invoke(Args(pRemove.ComObject, pFallbackDesktop.ComObject));
 		}
+
+		public VirtualDesktop FindDesktop(ref Guid desktopId)
+		{
+			return this.GetDesktop(Args(desktopId));
+		}
+
+		private VirtualDesktop GetDesktop(object[] parameters = null, [CallerMemberName] string methodName = "")
+			=> this._factory.Get(this.Invoke<object>(parameters, methodName));
 	}
 }

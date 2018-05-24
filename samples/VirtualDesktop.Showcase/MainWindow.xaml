@@ -54,6 +54,8 @@
 					Click="Pin" />
 			<Button Content="Pin/Unpin (App)"
 					Click="PinApp" />
+			<Button Content="Remove"
+					Click="Remove" />
 		</StackPanel>
 	</ScrollViewer>
 </Window>

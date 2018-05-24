@@ -1,70 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using WindowsDesktop.Interop;
 
 namespace WindowsDesktop
 {
-	public class VirtualDesktopProvider
+	public class VirtualDesktopProvider : IDisposable
 	{
 		#region Default instance
 
-		private static readonly Lazy<VirtualDesktopProvider> _default = new Lazy<VirtualDesktopProvider>(() => new VirtualDesktopProvider(null));
+		private static readonly Lazy<VirtualDesktopProvider> _default = new Lazy<VirtualDesktopProvider>(() => new VirtualDesktopProvider());
 
 		public static VirtualDesktopProvider Default => _default.Value;
 
 		#endregion
 
 		private Task _initializationTask;
-		private Assembly _compiledAssembly;
 		
-		public string ComInterfaceAssemblyPath { get; }
+		public string ComInterfaceAssemblyPath { get; set; }
 
-		public VirtualDesktopProvider(string comInterfaceAssemblyPath)
-		{
-			this.ComInterfaceAssemblyPath = comInterfaceAssemblyPath;
-		}
+		public bool AutoRestart { get; set; } = true;
 
+		internal ComObjects ComObjects { get; private set; }
+		
 		public Task Initialize()
+			=> this.Initialize(TaskScheduler.FromCurrentSynchronizationContext());
+
+		public Task Initialize(TaskScheduler scheduler)
 		{
-			return this._initializationTask ?? (this._initializationTask = Task.Run(() => Core()));
+			if (this._initializationTask == null)
+			{
+				this._initializationTask = Task.Run(() => Core());
+
+				if (this.AutoRestart && scheduler != null)
+				{
+					this._initializationTask.ContinueWith(
+						_ => this.ComObjects.Listen(),
+						CancellationToken.None,
+						TaskContinuationOptions.OnlyOnRanToCompletion,
+						scheduler);
+				}
+			}
+
+			return this._initializationTask;
 
 			void Core()
 			{
 				var assemblyProvider = new ComInterfaceAssemblyProvider(this.ComInterfaceAssemblyPath);
-				this._compiledAssembly = assemblyProvider.GetAssembly();
+				var assembly = new ComInterfaceAssembly(assemblyProvider.GetAssembly());
+
+				this.ComObjects = new ComObjects(assembly);
 			}
 		}
 
-		internal Type GetType(string typeName)
+		public void Dispose()
 		{
-			this.Initialize().Wait();
-
-			return this._compiledAssembly
-				.GetTypes()
-				.Single(x => x.Name.Split('.').Last() == typeName);
-		}
-
-		internal object CreateInstance(Type type, Guid? guidService)
-		{
-			this.Initialize().Wait();
-
-			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
-			var shell = (Interop.IServiceProvider)Activator.CreateInstance(shellType);
-
-			shell.QueryService(guidService ?? type.GUID, type.GUID, out var ppvObject);
-
-			return ppvObject;
-		}
-
-		internal (Type type, object instance) CreateInstance(string comInterfaceName, Guid? guidService)
-		{
-			var type = this.GetType(comInterfaceName);
-			var instance = this.CreateInstance(type, guidService);
-
-			return (type, instance);
+			this.ComObjects?.Dispose();
 		}
 	}
 

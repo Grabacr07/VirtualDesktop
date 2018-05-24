@@ -32,26 +32,26 @@ namespace WindowsDesktop
 		
 		internal static class EventRaiser
 		{
-			public static void RaiseCreated(object sender, IVirtualDesktop pDesktop)
+			public static void RaiseCreated(object sender, VirtualDesktop pDesktop)
 			{
-				Created?.Invoke(sender, FromComObject(pDesktop));
+				Created?.Invoke(sender, pDesktop);
 			}
 
-			public static void RaiseDestroyBegin(object sender, IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
+			public static void RaiseDestroyBegin(object sender, VirtualDesktop pDesktopDestroyed, VirtualDesktop pDesktopFallback)
 			{
-				var args = new VirtualDesktopDestroyEventArgs(FromComObject(pDesktopDestroyed), FromComObject(pDesktopFallback));
+				var args = new VirtualDesktopDestroyEventArgs(pDesktopDestroyed, pDesktopFallback);
 				DestroyBegin?.Invoke(sender, args);
 			}
 
-			public static void RaiseDestroyFailed(object sender, IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
+			public static void RaiseDestroyFailed(object sender, VirtualDesktop pDesktopDestroyed, VirtualDesktop pDesktopFallback)
 			{
-				var args = new VirtualDesktopDestroyEventArgs(FromComObject(pDesktopDestroyed), FromComObject(pDesktopFallback));
+				var args = new VirtualDesktopDestroyEventArgs(pDesktopDestroyed, pDesktopFallback);
 				DestroyFailed?.Invoke(sender, args);
 			}
 
-			public static void RaiseDestroyed(object sender, IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
+			public static void RaiseDestroyed(object sender, VirtualDesktop pDesktopDestroyed, VirtualDesktop pDesktopFallback)
 			{
-				var args = new VirtualDesktopDestroyEventArgs(FromComObject(pDesktopDestroyed), FromComObject(pDesktopFallback));
+				var args = new VirtualDesktopDestroyEventArgs(pDesktopDestroyed, pDesktopFallback);
 				Destroyed?.Invoke(sender, args);
 			}
 
@@ -60,9 +60,9 @@ namespace WindowsDesktop
 				ApplicationViewChanged?.Invoke(sender, EventArgs.Empty);
 			}
 
-			public static void RaiseCurrentChanged(object sender, IVirtualDesktop pDesktopOld, IVirtualDesktop pDesktopNew)
+			public static void RaiseCurrentChanged(object sender, VirtualDesktop pDesktopOld, VirtualDesktop pDesktopNew)
 			{
-				var args = new VirtualDesktopChangedEventArgs(FromComObject(pDesktopOld), FromComObject(pDesktopNew));
+				var args = new VirtualDesktopChangedEventArgs(pDesktopOld, pDesktopNew);
 				CurrentChanged?.Invoke(sender, args);
 			}
 		}
