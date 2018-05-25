@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -88,6 +88,7 @@
     <Compile Include="Internal\Disposable.cs" />
     <Compile Include="Internal\RawWindow.cs" />
     <Compile Include="Internal\TransparentWindow.cs" />
+    <EmbeddedResource Include="Interop\%28interfaces%29\AssemblyInfo.cs" />
     <Compile Include="Interop\%28wrappers%29\VirtualDesktopNotification.cs" />
     <Compile Include="Interop\%28wrappers%29\VirtualDesktopNotificationService.cs" />
     <Compile Include="Interop\AdjacentDesktop.cs" />

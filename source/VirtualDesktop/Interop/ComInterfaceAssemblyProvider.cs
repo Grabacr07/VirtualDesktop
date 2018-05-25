@@ -18,6 +18,7 @@ namespace WindowsDesktop.Interop
 
 		private static readonly Regex _assemblyRegex = new Regex(@"VirtualDesktop\.(?<build>\d{5}?)(\.\w*|)\.dll");
 		private static readonly string _defaultAssemblyDirectoryPath = Path.Combine(ProductInfo.LocalAppData.FullName, "assemblies");
+		private static readonly Version _requireVersion = new Version("1.0");
 
 		private readonly string _assemblyDirectoryPath;
 		
@@ -54,8 +55,12 @@ namespace WindowsDesktop.Interop
 					if (int.TryParse(_assemblyRegex.Match(file.Name).Groups["build"]?.ToString(), out var build)
 						&& build == ProductInfo.OSBuild)
 					{
-						System.Diagnostics.Debug.WriteLine($"Assembly found: {file.FullName}");
-						return Assembly.LoadFile(file.FullName);
+						var name = AssemblyName.GetAssemblyName(file.FullName);
+						if (name.Version >= _requireVersion)
+						{
+							System.Diagnostics.Debug.WriteLine($"Assembly found: {file.FullName}");
+							return Assembly.LoadFile(file.FullName);
+						}
 					}
 				}
 			}
@@ -73,6 +78,18 @@ namespace WindowsDesktop.Interop
 				.ToArray();
 			var iids = IID.GetIIDs(interfaceNames);
 			var compileTargets = new List<string>();
+			{
+				var assemblyInfo = executingAssembly.GetManifestResourceNames().Single(x => x.Contains("AssemblyInfo"));
+				var stream = executingAssembly.GetManifestResourceStream(assemblyInfo);
+				if (stream != null)
+				{
+					using (var reader = new StreamReader(stream, Encoding.UTF8))
+					{
+						var sourceCode = reader.ReadToEnd().Replace("{VERSION}", ProductInfo.OSBuild.ToString());
+						compileTargets.Add(sourceCode);
+					}
+				}
+			}
 
 			foreach (var name in executingAssembly.GetManifestResourceNames())
 			{
