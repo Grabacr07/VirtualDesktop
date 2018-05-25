@@ -24,32 +24,8 @@ namespace WindowsDesktop
 			get
 			{
 				VirtualDesktopHelper.ThrowIfNotSupported();
+
 				return ComInterface.VirtualDesktopManagerInternal.GetCurrentDesktop();
-			}
-		}
-
-		internal static bool GetIsSupported()
-		{
-			return _isSupported ?? (_isSupported = Core()).Value;
-			
-			bool Core()
-			{
-#if DEBUG
-				if (Environment.OSVersion.Version.Major < 10) return false;
-#endif
-				try
-				{
-					ProviderInternal.Initialize().Wait();
-				}
-				catch (Exception ex)
-				{
-					System.Diagnostics.Debug.WriteLine("VirtualDesktop initialization error:");
-					System.Diagnostics.Debug.WriteLine(ex);
-
-					return false;
-				}
-
-				return true;
 			}
 		}
 
@@ -108,6 +84,31 @@ namespace WindowsDesktop
 			catch (COMException ex) when (ex.Match(HResult.REGDB_E_CLASSNOTREG, HResult.TYPE_E_ELEMENTNOTFOUND))
 			{
 				return null;
+			}
+		}
+
+		internal static bool GetIsSupported()
+		{
+			return _isSupported ?? (_isSupported = Core()).Value;
+
+			bool Core()
+			{
+#if DEBUG
+				if (Environment.OSVersion.Version.Major < 10) return false;
+#endif
+				try
+				{
+					ProviderInternal.Initialize().Wait();
+				}
+				catch (Exception ex)
+				{
+					System.Diagnostics.Debug.WriteLine("VirtualDesktop initialization error:");
+					System.Diagnostics.Debug.WriteLine(ex);
+
+					return false;
+				}
+
+				return true;
 			}
 		}
 	}

@@ -7,8 +7,6 @@ configuration: Release
 platform: Any CPU
 init:
 - cmd: git config --global core.autocrlf true
-environment:
-  PATH: C:\Program Files (x86)\MSBuild\15.0\Bin;%PATH%
 nuget:
   disable_publish_on_pr: true
 build:
