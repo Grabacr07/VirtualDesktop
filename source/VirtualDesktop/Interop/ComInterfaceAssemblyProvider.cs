@@ -59,7 +59,9 @@ namespace WindowsDesktop.Interop
 						if (name.Version >= _requireVersion)
 						{
 							System.Diagnostics.Debug.WriteLine($"Assembly found: {file.FullName}");
+#if !DEBUG
 							return Assembly.LoadFile(file.FullName);
+#endif
 						}
 					}
 				}
