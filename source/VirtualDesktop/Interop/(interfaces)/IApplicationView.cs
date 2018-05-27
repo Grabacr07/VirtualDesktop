@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace WindowsDesktop.Interop
 {
@@ -30,7 +31,7 @@ namespace WindowsDesktop.Interop
 
 		int GetExtendedFramePosition(out Rect rect);
 
-		int GetAppUserModelId([Out, MarshalAs(UnmanagedType.LPWStr)] string id);
+		int GetAppUserModelId([MarshalAs(UnmanagedType.LPWStr)] StringBuilder id);
 
 		int SetAppUserModelId(string id);
 
