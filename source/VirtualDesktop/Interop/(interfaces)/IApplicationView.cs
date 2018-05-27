@@ -30,7 +30,7 @@ namespace WindowsDesktop.Interop
 
 		int GetExtendedFramePosition(out Rect rect);
 
-		int GetAppUserModelId([MarshalAs(UnmanagedType.LPWStr)] out string id);
+		int GetAppUserModelId([Out, MarshalAs(UnmanagedType.LPWStr)] string id);
 
 		int SetAppUserModelId(string id);
 
