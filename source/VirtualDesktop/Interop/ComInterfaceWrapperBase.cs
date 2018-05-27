@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace WindowsDesktop.Interop
 {
@@ -50,7 +51,14 @@ namespace WindowsDesktop.Interop
 				}
 			}
 
-			return (T)methodInfo.Invoke(this.ComObject, parameters);
+			try
+			{
+				return (T)methodInfo.Invoke(this.ComObject, parameters);
+			}
+			catch (TargetInvocationException ex) when (ex.InnerException != null)
+			{
+				throw ex.InnerException;
+			}
 		}
 	}
 }
