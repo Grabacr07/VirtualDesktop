@@ -14,13 +14,13 @@ namespace WindowsDesktop.Interop
 		Guid GetID();
 	}
 
-	public class VirtualDesktopFactoryImpl : IVirtualDesktopFactory
+	public class VirtualDesktopCacheImpl : IVirtualDesktopCache
 	{
 		private readonly ConcurrentDictionary<Guid, VirtualDesktop> _wrappers = new ConcurrentDictionary<Guid, VirtualDesktop>();
 
 		public Func<Guid, object, VirtualDesktop> Factory { get; set; }
 
-		public VirtualDesktop Get(object comObject)
+		public VirtualDesktop GetOrCreate(object comObject)
 		{
 			if (comObject is IVirtualDesktop)
 			{
@@ -28,6 +28,11 @@ namespace WindowsDesktop.Interop
 			}
 
 			throw new ArgumentException();
+		}
+
+		public void Clear()
+		{
+			this._wrappers.Clear();
 		}
 	}
 }

@@ -7,12 +7,9 @@ namespace WindowsDesktop.Interop
 	[ComInterfaceWrapper]
 	internal class VirtualDesktopManagerInternal : ComInterfaceWrapperBase
 	{
-		private readonly VirtualDesktopFactory _factory;
-
 		public VirtualDesktopManagerInternal(ComInterfaceAssembly assembly)
 			: base(assembly, service: CLSID.VirtualDesktopAPIUnknown)
 		{
-			this._factory = new VirtualDesktopFactory(assembly);
 		}
 
 		public void MoveViewToDesktop(ApplicationView pView, VirtualDesktop desktop)
@@ -34,7 +31,7 @@ namespace WindowsDesktop.Interop
 			for (var i = 0u; i < count; i++)
 			{
 				array.GetAt(i, vdType.GUID, out var ppvObject);
-				yield return this._factory.Get(ppvObject);
+				yield return VirtualDesktopCache.GetOrCreate(ppvObject);
 			}
 		}
 
@@ -64,6 +61,6 @@ namespace WindowsDesktop.Interop
 		}
 
 		private VirtualDesktop GetDesktop(object[] parameters = null, [CallerMemberName] string methodName = "")
-			=> this._factory.Get(this.Invoke<object>(parameters, methodName));
+			=> VirtualDesktopCache.GetOrCreate(this.Invoke<object>(parameters, methodName));
 	}
 }

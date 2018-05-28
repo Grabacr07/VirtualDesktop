@@ -9,38 +9,35 @@ namespace WindowsDesktop.Interop
 	[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 	public abstract class VirtualDesktopNotification
 	{
-		private VirtualDesktopFactory _factory;
-
 		internal static VirtualDesktopNotification CreateInstance(ComInterfaceAssembly assembly)
 		{
 			var type = assembly.GetType("VirtualDesktopNotificationListener");
 			var instance = (VirtualDesktopNotification)Activator.CreateInstance(type);
-			instance._factory = new VirtualDesktopFactory(assembly);
 
 			return instance;
 		}
 
 		protected VirtualDesktop GetDesktop(object comObject)
-			=> this._factory.Get(comObject);
+			=> VirtualDesktopCache.GetOrCreate(comObject);
 
 		protected void VirtualDesktopCreatedCore(object pDesktop)
 		{
-			VirtualDesktop.EventRaiser.RaiseCreated(this, this._factory.Get(pDesktop));
+			VirtualDesktop.EventRaiser.RaiseCreated(this, VirtualDesktopCache.GetOrCreate(pDesktop));
 		}
 
 		protected void VirtualDesktopDestroyBeginCore(object pDesktopDestroyed, object pDesktopFallback)
 		{
-			VirtualDesktop.EventRaiser.RaiseDestroyBegin(this, this._factory.Get(pDesktopDestroyed), this._factory.Get(pDesktopFallback));
+			VirtualDesktop.EventRaiser.RaiseDestroyBegin(this, VirtualDesktopCache.GetOrCreate(pDesktopDestroyed), VirtualDesktopCache.GetOrCreate(pDesktopFallback));
 		}
 
 		protected void VirtualDesktopDestroyFailedCore(object pDesktopDestroyed, object pDesktopFallback)
 		{
-			VirtualDesktop.EventRaiser.RaiseDestroyFailed(this, this._factory.Get(pDesktopDestroyed), this._factory.Get(pDesktopFallback));
+			VirtualDesktop.EventRaiser.RaiseDestroyFailed(this, VirtualDesktopCache.GetOrCreate(pDesktopDestroyed), VirtualDesktopCache.GetOrCreate(pDesktopFallback));
 		}
 
 		protected void VirtualDesktopDestroyedCore(object pDesktopDestroyed, object pDesktopFallback)
 		{
-			VirtualDesktop.EventRaiser.RaiseDestroyed(this, this._factory.Get(pDesktopDestroyed), this._factory.Get(pDesktopFallback));
+			VirtualDesktop.EventRaiser.RaiseDestroyed(this, VirtualDesktopCache.GetOrCreate(pDesktopDestroyed), VirtualDesktopCache.GetOrCreate(pDesktopFallback));
 		}
 
 		protected void ViewVirtualDesktopChangedCore(IntPtr pView)
@@ -50,7 +47,7 @@ namespace WindowsDesktop.Interop
 
 		protected void CurrentVirtualDesktopChangedCore(object pDesktopOld, object pDesktopNew)
 		{
-			VirtualDesktop.EventRaiser.RaiseCurrentChanged(this, this._factory.Get(pDesktopOld), this._factory.Get(pDesktopNew));
+			VirtualDesktop.EventRaiser.RaiseCurrentChanged(this, VirtualDesktopCache.GetOrCreate(pDesktopOld), VirtualDesktopCache.GetOrCreate(pDesktopNew));
 		}
 	}
 }

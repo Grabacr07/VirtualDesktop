@@ -36,6 +36,8 @@ namespace WindowsDesktop.Interop
 
 		private void Initialize()
 		{
+			VirtualDesktopCache.Initialize(this._assembly);
+
 			this.VirtualDesktopManager = (IVirtualDesktopManager)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID.VirtualDesktopManager));
 			this.VirtualDesktopManagerInternal = new VirtualDesktopManagerInternal(this._assembly);
 			this.VirtualDesktopNotificationService = new VirtualDesktopNotificationService(this._assembly);

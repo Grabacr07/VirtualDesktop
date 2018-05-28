@@ -103,7 +103,7 @@
     <Compile Include="Interop\ComInterfaceWrapperBase.cs" />
     <Compile Include="Interop\ComObjects.cs" />
     <Compile Include="Interop\HResult.cs" />
-    <Compile Include="VirtualDesktopFactory.cs" />
+    <Compile Include="VirtualDesktopCache.cs" />
     <Compile Include="VirtualDesktopProvider.cs" />
     <EmbeddedResource Include="Interop\%28interfaces%29\IApplicationView.cs" />
     <EmbeddedResource Include="Interop\%28interfaces%29\IApplicationViewCollection.cs" />
