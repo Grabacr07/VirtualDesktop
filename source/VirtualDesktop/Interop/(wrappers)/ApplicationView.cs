@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using JetBrains.Annotations;
 
 namespace WindowsDesktop.Interop
@@ -15,10 +14,10 @@ namespace WindowsDesktop.Interop
 
 		public string GetAppUserModelId()
 		{
-			var param = Args(new StringBuilder(1024));
+			var param = Args((string)null);
 			this.Invoke(param);
 
-			return ((StringBuilder)param[0]).ToString();
+			return (string)param[0];
 		}
 	}
 
