@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WindowsDesktop.Interop;
+using JetBrains.Annotations;
 
 namespace WindowsDesktop
 {
@@ -38,14 +39,14 @@ namespace WindowsDesktop
 			}
 		}
 
-		public static bool IsPinnedApplication(string appId)
+		public static bool IsPinnedApplication([NotNull] string appId)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
 
 			return ComInterface.VirtualDesktopPinnedApps.IsAppIdPinned(appId);
 		}
 
-		public static void PinApplication(string appId)
+		public static void PinApplication([NotNull] string appId)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
 
@@ -55,7 +56,7 @@ namespace WindowsDesktop
 			}
 		}
 
-		public static void UnpinApplication(string appId)
+		public static void UnpinApplication([NotNull] string appId)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
 
