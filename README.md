@@ -1,6 +1,6 @@
 ## VirtualDesktop
 
-VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://msdn.microsoft.com/en-us/library/windows/desktop/mt186440%28v%3Dvs.85%29.aspx) on Windows 10.
+VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl/nn-shobjidl-ivirtualdesktopmanager) on Windows 10.
 
 
 ## Features
@@ -19,8 +19,8 @@ PM> Install-Package VirtualDesktop
 ```
 
 * [VirtualDesktop](https://www.nuget.org/packages/VirtualDesktop/) - Core classes for VirtualDesktop.
-* [VirtualDesktop.WPF](https://www.nuget.org/packages/VirtualDesktop.WPF/) - Provides extension methods for WPF [Window class](https://msdn.microsoft.com/en-us/library/system.windows.window(v=vs.110).aspx).
-* [VirtualDesktop.WinForms](https://www.nuget.org/packages/VirtualDesktop.WinForms/) - Provides extension methods for [Form class](https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx).
+* [VirtualDesktop.WPF](https://www.nuget.org/packages/VirtualDesktop.WPF/) - Provides extension methods for WPF [Window class](https://docs.microsoft.com/en-us/dotnet/api/system.windows.window).
+* [VirtualDesktop.WinForms](https://www.nuget.org/packages/VirtualDesktop.WinForms/) - Provides extension methods for [Form class](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.form).
 
 
 
