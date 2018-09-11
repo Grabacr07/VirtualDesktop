@@ -1,55 +1,57 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Threading;
 using WindowsDesktop.Internal;
 
 namespace WindowsDesktop.Interop
 {
-	public static class ComObjects
+	internal class ComObjects : IDisposable
 	{
-		private static IDisposable _listener;
-		private static ExplorerRestartListenerWindow _listenerWindow;
-		private static readonly ConcurrentDictionary<Guid, IVirtualDesktop> _virtualDesktops = new ConcurrentDictionary<Guid, IVirtualDesktop>();
+		private readonly ComInterfaceAssembly _assembly;
+		private ExplorerRestartListenerWindow _listenerWindow;
+		private IDisposable _listener;
 
-		internal static IVirtualDesktopManager VirtualDesktopManager { get; private set; }
-		internal static VirtualDesktopManagerInternal VirtualDesktopManagerInternal { get; private set; }
-		internal static IVirtualDesktopNotificationService VirtualDesktopNotificationService { get; private set; }
-		internal static IVirtualDesktopPinnedApps VirtualDesktopPinnedApps { get; private set; }
-		internal static IApplicationViewCollection ApplicationViewCollection { get; private set; }
+		public IVirtualDesktopManager VirtualDesktopManager { get; private set; }
 
-		internal static void Initialize()
+		public VirtualDesktopManagerInternal VirtualDesktopManagerInternal { get; private set; }
+
+		public VirtualDesktopNotificationService VirtualDesktopNotificationService { get; private set; }
+
+		public VirtualDesktopPinnedApps VirtualDesktopPinnedApps { get; private set; }
+
+		public ApplicationViewCollection ApplicationViewCollection { get; private set; }
+
+		public ComObjects(ComInterfaceAssembly assembly)
 		{
-			if (_listenerWindow == null)
-			{
-				_listenerWindow = new ExplorerRestartListenerWindow(() => Initialize());
-				_listenerWindow.Show();
-			}
-
-			VirtualDesktopManager = GetVirtualDesktopManager();
-			VirtualDesktopManagerInternal = VirtualDesktopManagerInternal.GetInstance();
-			VirtualDesktopNotificationService = GetVirtualDesktopNotificationService();
-			VirtualDesktopPinnedApps = GetVirtualDesktopPinnedApps();
-			ApplicationViewCollection = GetApplicationViewCollection();
-
-			_virtualDesktops.Clear();
-			_listener = VirtualDesktop.RegisterListener();
+			this._assembly = assembly;
+			this.Initialize();
 		}
 
-		internal static void Register(IVirtualDesktop vd)
+		public void Listen()
 		{
-			_virtualDesktops.AddOrUpdate(vd.GetID(), vd, (guid, desktop) => vd);
+			this._listenerWindow = new ExplorerRestartListenerWindow(() => this.Initialize());
+			this._listenerWindow.Show();
 		}
 
-		internal static IVirtualDesktop GetVirtualDesktop(Guid id)
+		private void Initialize()
 		{
-			return _virtualDesktops.GetOrAdd(id, x => VirtualDesktopManagerInternal.FindDesktop(ref x));
+			VirtualDesktopCache.Initialize(this._assembly);
+
+			this.VirtualDesktopManager = (IVirtualDesktopManager)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID.VirtualDesktopManager));
+			this.VirtualDesktopManagerInternal = new VirtualDesktopManagerInternal(this._assembly);
+			this.VirtualDesktopNotificationService = new VirtualDesktopNotificationService(this._assembly);
+			this.VirtualDesktopPinnedApps = new VirtualDesktopPinnedApps(this._assembly);
+			this.ApplicationViewCollection = new ApplicationViewCollection(this._assembly);
+
+			this._listener?.Dispose();
+			this._listener = this.VirtualDesktopNotificationService.Register(VirtualDesktopNotification.CreateInstance(this._assembly));
 		}
 
-		internal static void Terminate()
+		public void Dispose()
 		{
-			_listener?.Dispose();
-			_listenerWindow?.Close();
+			this._listener?.Dispose();
+			this._listenerWindow?.Close();
 		}
 
 		private class ExplorerRestartListenerWindow : TransparentWindow
@@ -80,51 +82,5 @@ namespace WindowsDesktop.Interop
 				return base.WndProc(hwnd, msg, wParam, lParam, ref handled);
 			}
 		}
-
-
-		#region public methods
-
-		public static IVirtualDesktopManager GetVirtualDesktopManager()
-		{
-			var vdmType = Type.GetTypeFromCLSID(CLSID.VirtualDesktopManager);
-			var instance = Activator.CreateInstance(vdmType);
-
-			return (IVirtualDesktopManager)instance;
-		}
-
-		public static IVirtualDesktopNotificationService GetVirtualDesktopNotificationService()
-		{
-			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
-			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
-
-			object ppvObject;
-			shell.QueryService(CLSID.VirtualDesktopNotificationService, typeof(IVirtualDesktopNotificationService).GUID, out ppvObject);
-
-			return (IVirtualDesktopNotificationService)ppvObject;
-		}
-
-		public static IVirtualDesktopPinnedApps GetVirtualDesktopPinnedApps()
-		{
-			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
-			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
-
-			object ppvObject;
-			shell.QueryService(CLSID.VirtualDesktopPinnedApps, typeof(IVirtualDesktopPinnedApps).GUID, out ppvObject);
-
-			return (IVirtualDesktopPinnedApps)ppvObject;
-		}
-
-		public static IApplicationViewCollection GetApplicationViewCollection()
-		{
-			var shellType = Type.GetTypeFromCLSID(CLSID.ImmersiveShell);
-			var shell = (IServiceProvider)Activator.CreateInstance(shellType);
-
-			object ppvObject;
-			shell.QueryService(typeof(IApplicationViewCollection).GUID, typeof(IApplicationViewCollection).GUID, out ppvObject);
-
-			return (IApplicationViewCollection)ppvObject;
-		}
-
-		#endregion
 	}
 }

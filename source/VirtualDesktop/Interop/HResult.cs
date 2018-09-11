@@ -9,6 +9,7 @@ namespace WindowsDesktop.Interop
 		TYPE_E_OUTOFBOUNDS = 0x80028CA1,
 		TYPE_E_ELEMENTNOTFOUND = 0x8002802B,
 		REGDB_E_CLASSNOTREG = 0x80040154,
+		RPC_S_SERVER_UNAVAILABLE = 0x800706BA,
 	}
 
 	public static class HResultExtensions

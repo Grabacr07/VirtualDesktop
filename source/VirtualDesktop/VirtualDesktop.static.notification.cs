@@ -2,22 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
-using WindowsDesktop.Internal;
 using WindowsDesktop.Interop;
 
 namespace WindowsDesktop
 {
 	partial class VirtualDesktop
 	{
-		private static uint? dwCookie;
-		private static VirtualDesktopNotificationListener listener;
-
 		/// <summary>
 		/// Occurs when a virtual desktop is created.
 		/// </summary>
 		public static event EventHandler<VirtualDesktop> Created;
+
 		public static event EventHandler<VirtualDesktopDestroyEventArgs> DestroyBegin;
+
 		public static event EventHandler<VirtualDesktopDestroyEventArgs> DestroyFailed;
 
 		/// <summary>
@@ -32,51 +29,41 @@ namespace WindowsDesktop
 		/// Occurs when a current virtual desktop is changed.
 		/// </summary>
 		public static event EventHandler<VirtualDesktopChangedEventArgs> CurrentChanged;
-
-
-		internal static IDisposable RegisterListener()
+		
+		internal static class EventRaiser
 		{
-			var service = ComObjects.VirtualDesktopNotificationService;
-			listener = new VirtualDesktopNotificationListener();
-			dwCookie = service.Register(listener);
-
-			return Disposable.Create(() => service.Unregister(dwCookie.Value));
-		}
-
-		private class VirtualDesktopNotificationListener : IVirtualDesktopNotification
-		{
-			void IVirtualDesktopNotification.VirtualDesktopCreated(IVirtualDesktop pDesktop)
+			public static void RaiseCreated(object sender, VirtualDesktop pDesktop)
 			{
-				Created?.Invoke(this, FromComObject(pDesktop));
+				Created?.Invoke(sender, pDesktop);
 			}
 
-			void IVirtualDesktopNotification.VirtualDesktopDestroyBegin(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
+			public static void RaiseDestroyBegin(object sender, VirtualDesktop pDesktopDestroyed, VirtualDesktop pDesktopFallback)
 			{
-				var args = new VirtualDesktopDestroyEventArgs(FromComObject(pDesktopDestroyed), FromComObject(pDesktopFallback));
-				DestroyBegin?.Invoke(this, args);
+				var args = new VirtualDesktopDestroyEventArgs(pDesktopDestroyed, pDesktopFallback);
+				DestroyBegin?.Invoke(sender, args);
 			}
 
-			void IVirtualDesktopNotification.VirtualDesktopDestroyFailed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
+			public static void RaiseDestroyFailed(object sender, VirtualDesktop pDesktopDestroyed, VirtualDesktop pDesktopFallback)
 			{
-				var args = new VirtualDesktopDestroyEventArgs(FromComObject(pDesktopDestroyed), FromComObject(pDesktopFallback));
-				DestroyFailed?.Invoke(this, args);
+				var args = new VirtualDesktopDestroyEventArgs(pDesktopDestroyed, pDesktopFallback);
+				DestroyFailed?.Invoke(sender, args);
 			}
 
-			void IVirtualDesktopNotification.VirtualDesktopDestroyed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
+			public static void RaiseDestroyed(object sender, VirtualDesktop pDesktopDestroyed, VirtualDesktop pDesktopFallback)
 			{
-				var args = new VirtualDesktopDestroyEventArgs(FromComObject(pDesktopDestroyed), FromComObject(pDesktopFallback));
-				Destroyed?.Invoke(this, args);
+				var args = new VirtualDesktopDestroyEventArgs(pDesktopDestroyed, pDesktopFallback);
+				Destroyed?.Invoke(sender, args);
 			}
 
-			void IVirtualDesktopNotification.ViewVirtualDesktopChanged(IntPtr pView)
+			public static void RaiseApplicationViewChanged(object sender, IntPtr pView)
 			{
-				ApplicationViewChanged?.Invoke(this, EventArgs.Empty);
+				ApplicationViewChanged?.Invoke(sender, EventArgs.Empty);
 			}
 
-			void IVirtualDesktopNotification.CurrentVirtualDesktopChanged(IVirtualDesktop pDesktopOld, IVirtualDesktop pDesktopNew)
+			public static void RaiseCurrentChanged(object sender, VirtualDesktop pDesktopOld, VirtualDesktop pDesktopNew)
 			{
-				var args = new VirtualDesktopChangedEventArgs(FromComObject(pDesktopOld), FromComObject(pDesktopNew));
-				CurrentChanged?.Invoke(this, args);
+				var args = new VirtualDesktopChangedEventArgs(pDesktopOld, pDesktopNew);
+				CurrentChanged?.Invoke(sender, args);
 			}
 		}
 	}

@@ -9,22 +9,32 @@ namespace WindowsDesktop
 	{
 		public static bool IsPinned(this Application app)
 		{
-			return VirtualDesktop.IsPinnedApplication(ApplicationHelper.GetAppId(app.GetWindowHandle()));
+			var appId = ApplicationHelper.GetAppId(app.GetWindowHandle());
+			if (appId == null) return false;
+
+			return VirtualDesktop.IsPinnedApplication(appId);
 		}
 
 		public static void Pin(this Application app)
 		{
-			VirtualDesktop.PinApplication(ApplicationHelper.GetAppId(app.GetWindowHandle()));
+			var appId = ApplicationHelper.GetAppId(app.GetWindowHandle());
+			if (appId == null) return;
+
+			VirtualDesktop.PinApplication(appId);
 		}
 
 		public static void Unpin(this Application app)
 		{
-			VirtualDesktop.UnpinApplication(ApplicationHelper.GetAppId(app.GetWindowHandle()));
+			var appId = ApplicationHelper.GetAppId(app.GetWindowHandle());
+			if (appId == null) return;
+
+			VirtualDesktop.UnpinApplication(appId);
 		}
 
 		public static void TogglePin(this Application app)
 		{
 			var appId = ApplicationHelper.GetAppId(app.GetWindowHandle());
+			if (appId == null) return;
 
 			if (VirtualDesktop.IsPinnedApplication(appId))
 			{

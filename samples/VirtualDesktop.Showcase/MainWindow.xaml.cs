@@ -15,11 +15,21 @@ namespace VirtualDesktopShowcase
 		public MainWindow()
 		{
 			this.InitializeComponent();
+			InitializeComObjects();
+		}
 
-			foreach (var id in VirtualDesktop.GetDesktops().Select(x => x.Id))
+		private static async void InitializeComObjects()
+		{
+			try
 			{
-				System.Diagnostics.Debug.WriteLine(id);
+				await VirtualDesktopProvider.Default.Initialize();
 			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Failed to initialize.");
+			}
+
+			VirtualDesktop.CurrentChanged += (sender, args) => System.Diagnostics.Debug.WriteLine($"Desktop changed: {args.NewDesktop.Id}");
 		}
 
 		private void CreateNew(object sender, RoutedEventArgs e)
@@ -115,6 +125,19 @@ namespace VirtualDesktopShowcase
 				await Task.Delay(_delay);
 				var appId = ApplicationHelper.GetAppId(GetForegroundWindow());
 				(VirtualDesktop.IsPinnedApplication(appId) ? VirtualDesktop.UnpinApplication : (Action<string>)VirtualDesktop.PinApplication)(appId);
+			}
+		}
+
+		private async void Remove(object sender, RoutedEventArgs e)
+		{
+			if (this.ThisWindowMenu.IsChecked ?? false)
+			{
+				this.GetCurrentDesktop().Remove();
+			}
+			else
+			{
+				await Task.Delay(_delay);
+				this.GetCurrentDesktop().Remove();
 			}
 		}
 

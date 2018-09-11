@@ -4,8 +4,8 @@ using System.Runtime.InteropServices;
 namespace WindowsDesktop.Interop
 {
 	[ComImport]
-	[Guid("9ac0b5c8-1484-4c5b-9533-4134a0f97cea")]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("00000000-0000-0000-0000-000000000000") /* replace at runtime */]
+	[InterfaceType(ComInterfaceType.InterfaceIsIInspectable)]
 	public interface IApplicationView
 	{
 		int SetFocus();
@@ -20,7 +20,7 @@ namespace WindowsDesktop.Interop
 
 		int GetVisibility(out int visibility);
 
-		int SetCloak(APPLICATION_VIEW_CLOAK_TYPE cloakType, int unknown);
+		int SetCloak(ApplicationViewCloakType cloakType, int unknown);
 
 		int GetPosition(ref Guid guid /* GUID for IApplicationViewPosition */, out IntPtr /* IApplicationViewPosition** */ position);
 
@@ -58,9 +58,9 @@ namespace WindowsDesktop.Interop
 
 		int CanReceiveInput(out bool canReceiveInput);
 
-		int GetCompatibilityPolicyType(out APPLICATION_VIEW_COMPATIBILITY_POLICY flags);
+		int GetCompatibilityPolicyType(out ApplicationViewCompatibilityPolicy flags);
 
-		int SetCompatibilityPolicyType(APPLICATION_VIEW_COMPATIBILITY_POLICY flags);
+		int SetCompatibilityPolicyType(ApplicationViewCompatibilityPolicy flags);
 
 		int GetPositionPriority(out IntPtr /* IShellPositionerPriority** */ priority);
 
@@ -95,38 +95,5 @@ namespace WindowsDesktop.Interop
 		int GetEnterpriseId([MarshalAs(UnmanagedType.LPWStr)] out string enterpriseId);
 
 		int IsMirrored(out bool isMirrored);
-	}
-
-
-	[StructLayout(LayoutKind.Sequential)]
-	public struct Size
-	{
-		public int X;
-		public int Y;
-	}
-
-	[StructLayout(LayoutKind.Sequential)]
-	public struct Rect
-	{
-		public int Left;
-		public int Top;
-		public int Right;
-		public int Bottom;
-	}
-
-	public enum APPLICATION_VIEW_CLOAK_TYPE : int
-	{
-		AVCT_NONE = 0,
-		AVCT_DEFAULT = 1,
-		AVCT_VIRTUAL_DESKTOP = 2
-	}
-
-	public enum APPLICATION_VIEW_COMPATIBILITY_POLICY : int
-	{
-		AVCP_NONE = 0,
-		AVCP_SMALL_SCREEN = 1,
-		AVCP_TABLET_SMALL_SCREEN = 2,
-		AVCP_VERY_SMALL_SCREEN = 3,
-		AVCP_HIGH_SCALE_FACTOR = 4
 	}
 }

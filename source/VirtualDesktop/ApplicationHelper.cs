@@ -1,26 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using WindowsDesktop.Interop;
+using JetBrains.Annotations;
 
 namespace WindowsDesktop
 {
 	public static class ApplicationHelper
 	{
-		internal static IApplicationView GetApplicationView(this IntPtr hWnd)
+		internal static ApplicationView GetApplicationView(this IntPtr hWnd)
 		{
-			IApplicationView view;
-			ComObjects.ApplicationViewCollection.GetViewForHwnd(hWnd, out view);
-
-			return view;
+			return ComInterface.ApplicationViewCollection.GetViewForHwnd(hWnd);
 		}
 
+		[CanBeNull]
 		public static string GetAppId(IntPtr hWnd)
 		{
-			string appId;
-			hWnd.GetApplicationView().GetAppUserModelId(out appId);
+			VirtualDesktopHelper.ThrowIfNotSupported();
 
-			return appId;
+			try
+			{
+				return hWnd.GetApplicationView().GetAppUserModelId();
+			}
+			catch (COMException ex) when (ex.Match(HResult.TYPE_E_ELEMENTNOTFOUND))
+			{
+				return null;
+			}
 		}
 	}
 }

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace WindowsDesktop.Interop
 {
 	[ComImport]
-	[Guid("2c08adf0-a386-4b35-9250-0fe183476fcc")]
+	[Guid("00000000-0000-0000-0000-000000000000") /* replace at runtime */]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IApplicationViewCollection
 	{
@@ -22,7 +22,7 @@ namespace WindowsDesktop.Interop
 
 		int GetViewInFocus(out IntPtr view);
 
-		void outreshCollection();
+		void RefreshCollection();
 
 		int RegisterForApplicationViewChanges(object listener, out int cookie);
 

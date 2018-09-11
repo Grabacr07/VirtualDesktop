@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WindowsDesktop</RootNamespace>
     <AssemblyName>VirtualDesktop</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <TargetPlatformVersion>10.0</TargetPlatformVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\VirtualDesktop.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
@@ -83,25 +85,47 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationHelper.cs" />
+    <Compile Include="App_Packages\Source.JetBrains.Annotations_11.1.1\JetBrains.Annotations.cs" />
     <Compile Include="Internal\Disposable.cs" />
     <Compile Include="Internal\RawWindow.cs" />
     <Compile Include="Internal\TransparentWindow.cs" />
+    <EmbeddedResource Include="Interop\%28interfaces%29\AssemblyInfo.cs" />
+    <Compile Include="Interop\%28wrappers%29\VirtualDesktopNotification.cs" />
+    <Compile Include="Interop\%28wrappers%29\VirtualDesktopNotificationService.cs" />
+    <Compile Include="Interop\AdjacentDesktop.cs" />
+    <Compile Include="Interop\%28wrappers%29\ApplicationView.cs" />
+    <Compile Include="Interop\%28wrappers%29\ApplicationViewCollection.cs" />
     <Compile Include="Interop\CLSID.cs" />
+    <Compile Include="Interop\ComInterface.cs" />
+    <Compile Include="Interop\ComInterfaceAssemblyProvider.cs" />
+    <Compile Include="Interop\ComInterfaceAssembly.cs" />
+    <Compile Include="Interop\ComInterfaceWrapperAttribute.cs" />
+    <Compile Include="Interop\ComInterfaceWrapperBase.cs" />
     <Compile Include="Interop\ComObjects.cs" />
     <Compile Include="Interop\HResult.cs" />
-    <Compile Include="Interop\IApplicationView.cs" />
-    <Compile Include="Interop\IApplicationViewCollection.cs" />
+    <Compile Include="VirtualDesktopCache.cs" />
+    <Compile Include="VirtualDesktopProvider.cs" />
+    <EmbeddedResource Include="Interop\%28interfaces%29\IApplicationView.cs" />
+    <EmbeddedResource Include="Interop\%28interfaces%29\IApplicationViewCollection.cs" />
+    <Compile Include="Interop\IID.cs" />
     <Compile Include="Interop\IObjectArray.cs" />
     <Compile Include="Interop\IServiceProvider.cs" />
-    <Compile Include="Interop\IVirtualDesktop.cs" />
+    <EmbeddedResource Include="Interop\%28interfaces%29\IVirtualDesktop.cs" />
     <Compile Include="Interop\IVirtualDesktopManager.cs" />
-    <Compile Include="Interop\IVirtualDesktopManagerInternal.cs" />
-    <Compile Include="Interop\IVirtualDesktopNotification.cs" />
-    <Compile Include="Interop\IVirtualDesktopNotificationService.cs" />
-    <Compile Include="Interop\IVirtualDesktopPinnedApps.cs" />
+    <EmbeddedResource Include="Interop\%28interfaces%29\IVirtualDesktopManagerInternal.cs" />
+    <EmbeddedResource Include="Interop\%28interfaces%29\IVirtualDesktopNotification.cs" />
+    <EmbeddedResource Include="Interop\%28interfaces%29\IVirtualDesktopNotificationService.cs" />
+    <EmbeddedResource Include="Interop\%28interfaces%29\IVirtualDesktopPinnedApps.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
-    <Compile Include="Interop\VirtualDesktopManagerInternal.cs" />
+    <Compile Include="Interop\%28wrappers%29\VirtualDesktopManagerInternal.cs" />
+    <Compile Include="Interop\%28wrappers%29\VirtualDesktopPinnedApps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\ProductInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="VirtualDesktop.static.pin.cs" />
     <Compile Include="VirtualDesktop.static.cs" />
     <Compile Include="VirtualDesktop.cs" />
@@ -111,8 +135,15 @@
     <Compile Include="VirtualDesktop.static.notification.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="VirtualDesktop.nuspec" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

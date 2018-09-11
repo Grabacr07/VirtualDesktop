@@ -1,0 +1,36 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WindowsDesktop.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="v_17134" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;IApplicationView,{871F602A-2B58-42B4-8C4B-6C43D642C06F}&lt;/string&gt;
+  &lt;string&gt;IApplicationViewCollection,{2C08ADF0-A386-4B35-9250-0FE183476FCC} &lt;/string&gt;
+  &lt;string&gt;IObjectArray,{92CA9DCD-5622-4BBA-A805-5E9F541BD8C9} &lt;/string&gt;
+  &lt;string&gt;IServiceProvider,{6D5140C1-7436-11CE-8034-00AA006009FA} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktop,{FF72FFDD-BE7E-43FC-9C03-AD81681E88E4} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktopManager,{A5CD92FF-29BE-454C-8D04-D82879FB3F1B} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktopManagerInternal,{F31574D6-B682-4CDC-BD56-1827860ABEC6} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktopNotification,{C179334C-4295-40D3-BEA1-C654D965605A} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktopNotificationService,{0CD45E71-D927-4F15-8B0A-8FEF525337BF} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktopPinnedApps,{4CE81583-1E4C-4632-A621-07A53543148F} &lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="v_16299" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;IApplicationView,{9AC0B5C8-1484-4C5B-9533-4134A0F97CEA} &lt;/string&gt;
+  &lt;string&gt;IApplicationViewCollection,{2C08ADF0-A386-4B35-9250-0FE183476FCC} &lt;/string&gt;
+  &lt;string&gt;IObjectArray,{92CA9DCD-5622-4BBA-A805-5E9F541BD8C9} &lt;/string&gt;
+  &lt;string&gt;IServiceProvider,{6D5140C1-7436-11CE-8034-00AA006009FA} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktop,{FF72FFDD-BE7E-43FC-9C03-AD81681E88E4} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktopManager,{A5CD92FF-29BE-454C-8D04-D82879FB3F1B} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktopManagerInternal,{F31574D6-B682-4CDC-BD56-1827860ABEC6} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktopNotification,{C179334C-4295-40D3-BEA1-C654D965605A} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktopNotificationService,{0CD45E71-D927-4F15-8B0A-8FEF525337BF} &lt;/string&gt;
+  &lt;string&gt;IVirtualDesktopPinnedApps,{4CE81583-1E4C-4632-A621-07A53543148F} &lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
