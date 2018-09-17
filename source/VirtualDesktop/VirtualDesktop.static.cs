@@ -9,7 +9,7 @@ namespace WindowsDesktop
 {
 	partial class VirtualDesktop
 	{
-		private static bool? _isSupported = true;
+		private static bool? _isSupported = null;
 
 		/// <summary>
 		/// Gets a value indicating whether the operating system is support virtual desktop.
