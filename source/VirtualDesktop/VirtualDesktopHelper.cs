@@ -6,6 +6,9 @@ namespace WindowsDesktop
 {
 	public static class VirtualDesktopHelper
 	{
+		/// <summary>
+		/// Throws a <see cref="NotSupportedException" /> if virtual desktops are not supported.
+		/// </summary>
 		internal static void ThrowIfNotSupported()
 		{
 			if (!VirtualDesktop.IsSupported)
@@ -14,14 +17,22 @@ namespace WindowsDesktop
 			}
 		}
 
-
-		public static bool IsCurrentVirtualDesktop(IntPtr handle)
+		/// <summary>
+		/// Returns a bool indicating whether the window is on the current virtual desktop.
+		/// </summary>
+		/// <param name="hWnd">The handle of the window.</param>
+		public static bool IsCurrentVirtualDesktop(IntPtr hWnd)
 		{
 			ThrowIfNotSupported();
 
-			return ComInterface.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle);
+			return ComInterface.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(hWnd);
 		}
 
+		/// <summary>
+		/// Moves a window to the specified virtual desktop.
+		/// </summary>
+		/// <param name="hWnd">The handle of the window to be moved.</param>
+		/// <param name="virtualDesktop">The virtual desktop to move the window to.</param>
 		public static void MoveToDesktop(IntPtr hWnd, VirtualDesktop virtualDesktop)
 		{
 			ThrowIfNotSupported();

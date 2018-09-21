@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace WindowsDesktop
 {
 	/// <summary>
-	/// Encapsulates a virtual desktop on Windows 10.
+	/// Encapsulates a Windows 10 virtual desktop.
 	/// </summary>
 	[ComInterfaceWrapper]
 	[DebuggerDisplay("{Id}")]
@@ -29,7 +29,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Display the virtual desktop.
+		/// Displays the virtual desktop.
 		/// </summary>
 		public void Switch()
 		{
@@ -37,7 +37,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Remove the virtual desktop.
+		/// Removes the virtual desktop.
 		/// </summary>
 		public void Remove()
 		{
@@ -46,8 +46,9 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Remove the virtual desktop, specifying a virtual desktop that display after destroyed.
+		/// Removes the virtual desktop.
 		/// </summary>
+		/// <param name="fallbackDesktop">A virtual desktop to be displayed after the virtual desktop is removed.</param>
 		public void Remove(VirtualDesktop fallbackDesktop)
 		{
 			if (fallbackDesktop == null) throw new ArgumentNullException(nameof(fallbackDesktop));
@@ -56,7 +57,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns a virtual desktop on the left.
+		/// Returns the adjacent virtual desktop on the left, or null if there are no virtual desktops to the left.
 		/// </summary>
 		public VirtualDesktop GetLeft()
 		{
@@ -71,7 +72,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns a virtual desktop on the right.
+		/// Returns the adjacent virtual desktop on the right, or null if there are no virtual desktops to the right.
 		/// </summary>
 		public VirtualDesktop GetRight()
 		{
