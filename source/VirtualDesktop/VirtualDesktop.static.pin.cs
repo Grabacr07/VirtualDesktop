@@ -8,6 +8,10 @@ namespace WindowsDesktop
 {
 	partial class VirtualDesktop
 	{
+		/// <summary>
+		/// Returns a bool indicating whether the specified window is pinned.
+		/// </summary>
+		/// <param name="hWnd">The handle of the window.</param>
 		public static bool IsPinnedWindow(IntPtr hWnd)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
@@ -15,6 +19,10 @@ namespace WindowsDesktop
 			return ComInterface.VirtualDesktopPinnedApps.IsViewPinned(hWnd.GetApplicationView());
 		}
 
+		/// <summary>
+		/// Pins the specified window. A pinned window will be shown on all virtual desktops.
+		/// </summary>
+		/// <param name="hWnd">The handle of the window.</param>
 		public static void PinWindow(IntPtr hWnd)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
@@ -27,6 +35,10 @@ namespace WindowsDesktop
 			}
 		}
 
+		/// <summary>
+		/// Unpins the specified window.
+		/// </summary>
+		/// <param name="hWnd">The handle of the window.</param>
 		public static void UnpinWindow(IntPtr hWnd)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
@@ -39,6 +51,10 @@ namespace WindowsDesktop
 			}
 		}
 
+		/// <summary>
+		/// Returns a bool indicating whether the specified app is pinned.
+		/// </summary>
+		/// <param name="appId">The identifier of the app.</param>
 		public static bool IsPinnedApplication([NotNull] string appId)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
@@ -46,6 +62,10 @@ namespace WindowsDesktop
 			return ComInterface.VirtualDesktopPinnedApps.IsAppIdPinned(appId);
 		}
 
+		/// <summary>
+		/// Pins the specified app.
+		/// </summary>
+		/// <param name="appId">The identifier of the app.</param>
 		public static void PinApplication([NotNull] string appId)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
@@ -56,6 +76,10 @@ namespace WindowsDesktop
 			}
 		}
 
+		/// <summary>
+		/// Unpins the specified app.
+		/// </summary>
+		/// <param name="appId">The identifier of the app.</param>
 		public static void UnpinApplication([NotNull] string appId)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();

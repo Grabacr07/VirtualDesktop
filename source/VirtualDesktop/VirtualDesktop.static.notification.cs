@@ -26,7 +26,7 @@ namespace WindowsDesktop
 		public static event EventHandler ApplicationViewChanged;
 
 		/// <summary>
-		/// Occurs when a current virtual desktop is changed.
+		/// Occurs when the current virtual desktop is changed.
 		/// </summary>
 		public static event EventHandler<VirtualDesktopChangedEventArgs> CurrentChanged;
 		
