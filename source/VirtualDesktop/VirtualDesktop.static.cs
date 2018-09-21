@@ -70,16 +70,16 @@ namespace WindowsDesktop
 		/// <summary>
 		/// Returns the virtual desktop the specified window is located on, or null if the window cannot be found.
 		/// </summary>
-		/// <param name="hwnd">The handle of the window.</param>
-		public static VirtualDesktop FromHwnd(IntPtr hwnd)
+		/// <param name="hWnd">The handle of the window.</param>
+		public static VirtualDesktop FromHwnd(IntPtr hWnd)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
 
-			if (hwnd == IntPtr.Zero) return null;
+			if (hWnd == IntPtr.Zero) return null;
 
 			try
 			{
-				var desktopId = ComInterface.VirtualDesktopManager.GetWindowDesktopId(hwnd);
+				var desktopId = ComInterface.VirtualDesktopManager.GetWindowDesktopId(hWnd);
 				return ComInterface.VirtualDesktopManagerInternal.FindDesktop(ref desktopId);
 			}
 			catch (COMException ex) when (ex.Match(HResult.REGDB_E_CLASSNOTREG, HResult.TYPE_E_ELEMENTNOTFOUND))

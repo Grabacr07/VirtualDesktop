@@ -20,12 +20,12 @@ namespace WindowsDesktop
 		/// <summary>
 		/// Returns a bool indicating whether the window is on the current virtual desktop.
 		/// </summary>
-		/// <param name="handle">The handle of the window.</param>
-		public static bool IsCurrentVirtualDesktop(IntPtr handle)
+		/// <param name="hWnd">The handle of the window.</param>
+		public static bool IsCurrentVirtualDesktop(IntPtr hWnd)
 		{
 			ThrowIfNotSupported();
 
-			return ComInterface.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(handle);
+			return ComInterface.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(hWnd);
 		}
 
 		/// <summary>
