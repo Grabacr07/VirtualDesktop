@@ -9,7 +9,7 @@
     <licenseUrl>https://github.com/Grabacr07/VirtualDesktop/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/Grabacr07/VirtualDesktop</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$ You need to include the app manifest in your project so as to target Windows 10.</description>
+    <description>$description$ You must target Windows 10 in your app.manifest.</description>
     <language>en-US</language>
     <tags>Windows Windows10 Desktop VirtualDesktop</tags>
   </metadata>
