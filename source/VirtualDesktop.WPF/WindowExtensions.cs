@@ -19,7 +19,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns the virtual desktop a window is located on, or null if the window cannot be found.
+		/// Returns the virtual desktop this window is located on.
 		/// </summary>
 		public static VirtualDesktop GetCurrentDesktop(this Window window)
 		{
@@ -35,7 +35,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Switches to a virtual desktop and moves the specified window to the virtual desktop.
+		/// Switches to a virtual desktop and moves the specified window to that desktop.
 		/// </summary>
 		/// <param name="window">The window to move.</param>
 		public static void SwitchAndMove(this VirtualDesktop virtualDesktop, Window window)
@@ -86,11 +86,11 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns the handle for a <see cref="Visual" />.
+		/// Returns the handle for this <see cref="Visual" />.
 		/// </summary>
-		internal static IntPtr GetHandle(this Visual window)
+		internal static IntPtr GetHandle(this Visual visual)
 		{
-			var hwndSource = (HwndSource)PresentationSource.FromVisual(window);
+			var hwndSource = (HwndSource)PresentationSource.FromVisual(visual);
 			if (hwndSource == null) throw new InvalidOperationException();
 
 			return hwndSource.Handle;

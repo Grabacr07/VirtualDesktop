@@ -25,7 +25,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns the virtual desktop the form is located on, or null if the form cannot be found.
+		/// Returns the virtual desktop this form is located on.
 		/// </summary>
 		public static VirtualDesktop GetCurrentDesktop(this Form form)
 		{

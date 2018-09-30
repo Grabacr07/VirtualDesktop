@@ -58,7 +58,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns the adjacent virtual desktop on the left, or null if there are no virtual desktops to the left.
+		/// Returns the adjacent virtual desktop on the left, or null if there isn't one.
 		/// </summary>
 		public VirtualDesktop GetLeft()
 		{
@@ -73,7 +73,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns the adjacent virtual desktop on the right, or null if there are no virtual desktops to the right.
+		/// Returns the adjacent virtual desktop on the right, or null if there isn't one.
 		/// </summary>
 		public VirtualDesktop GetRight()
 		{
