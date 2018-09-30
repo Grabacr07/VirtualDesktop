@@ -13,12 +13,12 @@ namespace WindowsDesktop
 		{
 			if (!VirtualDesktop.IsSupported)
 			{
-				throw new NotSupportedException("Need to include the app manifest in your project so as to target Windows 10. And, run without debugging.");
+				throw new NotSupportedException("You must target Windows 10 in your app.manifest, and run without debugging.");
 			}
 		}
 
 		/// <summary>
-		/// Returns a bool indicating whether the window is on the current virtual desktop.
+		/// Determines whether the specified window is on the current virtual desktop.
 		/// </summary>
 		/// <param name="hWnd">The handle of the window.</param>
 		public static bool IsCurrentVirtualDesktop(IntPtr hWnd)

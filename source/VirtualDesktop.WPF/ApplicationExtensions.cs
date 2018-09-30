@@ -7,6 +7,9 @@ namespace WindowsDesktop
 {
 	public static class ApplicationExtensions
 	{
+		/// <summary>
+		/// Determines whether this application is pinned.
+		/// </summary>
 		public static bool IsPinned(this Application app)
 		{
 			var appId = ApplicationHelper.GetAppId(app.GetWindowHandle());
@@ -15,6 +18,9 @@ namespace WindowsDesktop
 			return VirtualDesktop.IsPinnedApplication(appId);
 		}
 
+		/// <summary>
+		/// Pins an application, showing it on all virtual desktops.
+		/// </summary>
 		public static void Pin(this Application app)
 		{
 			var appId = ApplicationHelper.GetAppId(app.GetWindowHandle());
@@ -23,6 +29,9 @@ namespace WindowsDesktop
 			VirtualDesktop.PinApplication(appId);
 		}
 
+		/// <summary>
+		/// Unpins an application.
+		/// </summary>
 		public static void Unpin(this Application app)
 		{
 			var appId = ApplicationHelper.GetAppId(app.GetWindowHandle());
@@ -31,6 +40,9 @@ namespace WindowsDesktop
 			VirtualDesktop.UnpinApplication(appId);
 		}
 
+		/// <summary>
+		/// Toggles an application between being pinned and unpinned.
+		/// </summary>
 		public static void TogglePin(this Application app)
 		{
 			var appId = ApplicationHelper.GetAppId(app.GetWindowHandle());
