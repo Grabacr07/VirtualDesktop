@@ -99,7 +99,7 @@ namespace WindowsDesktop
 #endif
 				try
 				{
-					ProviderInternal.Initialize().Wait();
+					ProviderInternal.Initialize();
 				}
 				catch (Exception ex)
 				{
