@@ -37,6 +37,7 @@ namespace WindowsDesktop
 		/// <summary>
 		/// Switches to a virtual desktop and moves the specified window to that desktop.
 		/// </summary>
+		/// <param name="virtualDesktop">The virtual desktop to move the window to.</param>
 		/// <param name="window">The window to move.</param>
 		public static void SwitchAndMove(this VirtualDesktop virtualDesktop, Window window)
 		{
@@ -86,7 +87,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns the handle for this <see cref="Visual" />.
+		/// Returns the window handle for this <see cref="Visual" />.
 		/// </summary>
 		internal static IntPtr GetHandle(this Visual visual)
 		{
