@@ -24,7 +24,14 @@ namespace WindowsDesktop
 		internal ComObjects ComObjects { get; private set; }
 
 		public Task InitializeAsync()
-			=> Task.Run(Initialize);
+			=> this.InitializeAsync(TaskScheduler.FromCurrentSynchronizationContext());
+
+		public Task InitializeAsync(TaskScheduler scheduler)
+			=> Task.Factory.StartNew(
+				() => this.Initialize(),
+				CancellationToken.None,
+				TaskCreationOptions.None,
+				scheduler);
 
 		public void Initialize()
 		{
