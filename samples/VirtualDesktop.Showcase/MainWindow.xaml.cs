@@ -22,7 +22,7 @@ namespace VirtualDesktopShowcase
 		{
 			try
 			{
-				await VirtualDesktopProvider.Default.Initialize();
+				await VirtualDesktopProvider.Default.InitializeAsync();
 			}
 			catch (Exception ex)
 			{

@@ -17,42 +17,31 @@ namespace WindowsDesktop
 
 		#endregion
 
-		private Task _initializationTask;
-		
 		public string ComInterfaceAssemblyPath { get; set; }
 
 		public bool AutoRestart { get; set; } = true;
 
 		internal ComObjects ComObjects { get; private set; }
-		
-		public Task Initialize()
-			=> this.Initialize(TaskScheduler.FromCurrentSynchronizationContext());
 
-		public Task Initialize(TaskScheduler scheduler)
+		public Task InitializeAsync()
+			=> this.InitializeAsync(TaskScheduler.FromCurrentSynchronizationContext());
+
+		public Task InitializeAsync(TaskScheduler scheduler)
+			=> Task.Factory.StartNew(
+				() => this.Initialize(),
+				CancellationToken.None,
+				TaskCreationOptions.None,
+				scheduler);
+
+		public void Initialize()
 		{
-			if (this._initializationTask == null)
-			{
-				this._initializationTask = Task.Run(() => Core());
+			var assemblyProvider = new ComInterfaceAssemblyProvider(this.ComInterfaceAssemblyPath);
+			var assembly = new ComInterfaceAssembly(assemblyProvider.GetAssembly());
 
-				if (this.AutoRestart && scheduler != null)
-				{
-					this._initializationTask.ContinueWith(
-						_ => this.ComObjects.Listen(),
-						CancellationToken.None,
-						TaskContinuationOptions.OnlyOnRanToCompletion,
-						scheduler);
-				}
-			}
+			this.ComObjects = new ComObjects(assembly);
 
-			return this._initializationTask;
-
-			void Core()
-			{
-				var assemblyProvider = new ComInterfaceAssemblyProvider(this.ComInterfaceAssemblyPath);
-				var assembly = new ComInterfaceAssembly(assemblyProvider.GetAssembly());
-
-				this.ComObjects = new ComObjects(assembly);
-			}
+			if (this.AutoRestart)
+				this.ComObjects.Listen();
 		}
 
 		public void Dispose()
