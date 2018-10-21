@@ -11,7 +11,7 @@ namespace WindowsDesktop
 	public static class WindowExtensions
 	{
 		/// <summary>
-		/// Returns a bool indicating whether the specified window is on the current virtual desktop.
+		/// Determines whether this window is on the current virtual desktop.
 		/// </summary>
 		public static bool IsCurrentVirtualDesktop(this Window window)
 		{
@@ -19,7 +19,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns the virtual desktop the specified window is located on, or null if the window cannot be found.
+		/// Returns the virtual desktop this window is located on.
 		/// </summary>
 		public static VirtualDesktop GetCurrentDesktop(this Window window)
 		{
@@ -35,8 +35,9 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Switches to the specified virtual desktop and moves the specified window to the virtual desktop.
+		/// Switches to a virtual desktop and moves the specified window to that desktop.
 		/// </summary>
+		/// <param name="virtualDesktop">The virtual desktop to move the window to.</param>
 		/// <param name="window">The window to move.</param>
 		public static void SwitchAndMove(this VirtualDesktop virtualDesktop, Window window)
 		{
@@ -45,7 +46,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns a bool indicating whether the specified window is pinned.
+		/// Determines whether this window is pinned.
 		/// </summary>
 		public static bool IsPinned(this Window window)
 		{
@@ -53,7 +54,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Pins the specified window. A pinned window will be shown on all virtual desktops.
+		/// Pins a window, showing it on all virtual desktops.
 		/// </summary>
 		public static void Pin(this Window window)
 		{
@@ -61,7 +62,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Unpins the specified window.
+		/// Unpins a window.
 		/// </summary>
 		public static void Unpin(this Window window)
 		{
@@ -69,7 +70,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Toggles the specified window between being pinned and unpinned.
+		/// Toggles a window between being pinned and unpinned.
 		/// </summary>
 		public static void TogglePin(this Window window)
 		{
@@ -86,11 +87,11 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Gets the window handle for this <see cref="Visual" />.
+		/// Returns the window handle for this <see cref="Visual" />.
 		/// </summary>
-		internal static IntPtr GetHandle(this Visual window)
+		internal static IntPtr GetHandle(this Visual visual)
 		{
-			var hwndSource = (HwndSource)PresentationSource.FromVisual(window);
+			var hwndSource = (HwndSource)PresentationSource.FromVisual(visual);
 			if (hwndSource == null) throw new InvalidOperationException();
 
 			return hwndSource.Handle;

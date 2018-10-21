@@ -9,7 +9,7 @@ namespace WindowsDesktop
 	partial class VirtualDesktop
 	{
 		/// <summary>
-		/// Returns a bool indicating whether the specified window is pinned.
+		/// Determines whether the specified window is pinned.
 		/// </summary>
 		/// <param name="hWnd">The handle of the window.</param>
 		public static bool IsPinnedWindow(IntPtr hWnd)
@@ -20,7 +20,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Pins the specified window. A pinned window will be shown on all virtual desktops.
+		/// Pins the specified window, showing it on all virtual desktops.
 		/// </summary>
 		/// <param name="hWnd">The handle of the window.</param>
 		public static void PinWindow(IntPtr hWnd)
@@ -52,7 +52,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns a bool indicating whether the specified app is pinned.
+		/// Determines whether the specified app is pinned.
 		/// </summary>
 		/// <param name="appId">The identifier of the app.</param>
 		public static bool IsPinnedApplication([NotNull] string appId)
@@ -63,7 +63,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Pins the specified app.
+		/// Pins the specified app, showing it on all virtual desktops.
 		/// </summary>
 		/// <param name="appId">The identifier of the app.</param>
 		public static void PinApplication([NotNull] string appId)

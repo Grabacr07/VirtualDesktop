@@ -9,7 +9,7 @@ namespace WindowsDesktop
 	public static class FormExtensions
 	{
 		/// <summary>
-		/// Returns a bool indicating whether the form is on the current virtual desktop.
+		/// Determines whether this form is on the current virtual desktop.
 		/// </summary>
 		public static bool IsCurrentVirtualDesktop(this Form form)
 		{
@@ -23,8 +23,9 @@ namespace WindowsDesktop
 		{
 			VirtualDesktopHelper.MoveToDesktop(form.Handle, virtualDesktop);
 		}
+
 		/// <summary>
-		/// Returns the virtual desktop the specified form is located on, or null if the form cannot be found.
+		/// Returns the virtual desktop this form is located on.
 		/// </summary>
 		public static VirtualDesktop GetCurrentDesktop(this Form form)
 		{

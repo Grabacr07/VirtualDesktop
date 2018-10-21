@@ -12,7 +12,7 @@ namespace WindowsDesktop
 		private static bool? _isSupported = null;
 
 		/// <summary>
-		/// Gets a value indicating whether virtual desktops are supported by the operating system.
+		/// Gets a value indicating virtual desktops are supported by the host.
 		/// </summary>
 		public static bool IsSupported => GetIsSupported();
 
@@ -50,9 +50,10 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns the virtual desktop of the specified identifier, or null if not found.
+		/// Returns a virtual desktop matching the specified identifier.
 		/// </summary>
-		/// <param name="desktopId">The identifier of the virtual desktop.</param>
+		/// <param name="desktopId">The identifier of the virtual desktop to return.</param>
+		/// <remarks>Returns null if the identifier is not associated with any available desktops.</remarks>
 		public static VirtualDesktop FromId(Guid desktopId)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();
@@ -68,9 +69,10 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns the virtual desktop the specified window is located on, or null if the window cannot be found.
+		/// Returns the virtual desktop the window is located on.
 		/// </summary>
 		/// <param name="hWnd">The handle of the window.</param>
+		/// <remarks>Returns null if the handle is not associated with any open windows.</remarks>
 		public static VirtualDesktop FromHwnd(IntPtr hWnd)
 		{
 			VirtualDesktopHelper.ThrowIfNotSupported();

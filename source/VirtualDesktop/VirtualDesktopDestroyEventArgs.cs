@@ -3,7 +3,7 @@
 namespace WindowsDesktop
 {
 	/// <summary>
-	/// Provides data for the <see cref="VirtualDesktop.DestroyBegin" /> and <see cref="VirtualDesktop.DestroyFailed" />, <see cref="VirtualDesktop.Destroyed" /> event.
+	/// Provides data for the <see cref="VirtualDesktop.DestroyBegin" />, <see cref="VirtualDesktop.DestroyFailed" />, and <see cref="VirtualDesktop.Destroyed" /> events.
 	/// </summary>
 	public class VirtualDesktopDestroyEventArgs : EventArgs
 	{
@@ -13,7 +13,7 @@ namespace WindowsDesktop
 		public VirtualDesktop Destroyed { get; }
 
 		/// <summary>
-		/// Gets the virtual desktop displayed after <see cref="Destroyed" /> is destroyed.
+		/// Gets the virtual desktop to be displayed after <see cref="Destroyed" /> is destroyed.
 		/// </summary>
 		public VirtualDesktop Fallback { get; }
 

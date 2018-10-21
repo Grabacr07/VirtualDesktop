@@ -17,7 +17,7 @@ namespace WindowsDesktop
 	public partial class VirtualDesktop : ComInterfaceWrapperBase
 	{
 		/// <summary>
-		/// Gets the unique identifier for the virtual desktop.
+		/// Gets the unique identifier for this virtual desktop.
 		/// </summary>
 		public Guid Id { get; }
 
@@ -29,7 +29,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Displays the virtual desktop.
+		/// Switches to this virtual desktop.
 		/// </summary>
 		public void Switch()
 		{
@@ -37,8 +37,9 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Removes the virtual desktop.
+		/// Removes this virtual desktop and switches to an available one.
 		/// </summary>
+		/// <remarks>If this is the last virtual desktop, a new one will be created to switch to.</remarks>
 		public void Remove()
 		{
 			var fallback = ComInterface.VirtualDesktopManagerInternal.GetDesktops().FirstOrDefault(x => x.Id != this.Id) ?? Create();
@@ -46,7 +47,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Removes the virtual desktop.
+		/// Removes this virtual desktop and switches to <paramref name="fallbackDesktop" />.
 		/// </summary>
 		/// <param name="fallbackDesktop">A virtual desktop to be displayed after the virtual desktop is removed.</param>
 		public void Remove(VirtualDesktop fallbackDesktop)
@@ -57,7 +58,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns the adjacent virtual desktop on the left, or null if there are no virtual desktops to the left.
+		/// Returns the adjacent virtual desktop on the left, or null if there isn't one.
 		/// </summary>
 		public VirtualDesktop GetLeft()
 		{
@@ -72,7 +73,7 @@ namespace WindowsDesktop
 		}
 
 		/// <summary>
-		/// Returns the adjacent virtual desktop on the right, or null if there are no virtual desktops to the right.
+		/// Returns the adjacent virtual desktop on the right, or null if there isn't one.
 		/// </summary>
 		public VirtualDesktop GetRight()
 		{
