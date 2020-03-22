@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Interop;
+using System.Windows.Threading;
 using WindowsDesktop.Interop;
 
 namespace WindowsDesktop.Internal
@@ -28,7 +27,9 @@ namespace WindowsDesktop.Internal
 		public virtual void Close()
 		{
 			this.Source?.RemoveHook(this.WndProc);
-			this.Source?.Dispose();
+			// Source could have been created on a different thread, which means we 
+			// have to Dispose of it on the UI thread or it will crash.
+			this.Source?.Dispatcher?.BeginInvoke(DispatcherPriority.Send, (Action)(() => this.Source?.Dispose()));
 			this.Source = null;
 
 			NativeMethods.CloseWindow(this.Handle);
