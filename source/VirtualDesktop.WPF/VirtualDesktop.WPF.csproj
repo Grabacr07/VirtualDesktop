@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <Version>4.0.0</Version>
+    <Version>4.0.1</Version>
     <Authors>Manato KAMEYA</Authors>
     <Company>grabacr.net</Company>
     <Description>C# wrapper for IVirtualDesktopManager on Windows 10.</Description>
@@ -16,13 +16,8 @@
     <PackageTags>Windows;Windows10;Desktop;VirtualDesktop;</PackageTags>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net472|AnyCPU'">
-    <DocumentationFile>bin\Release\net472\VirtualDesktop.WPF.xml</DocumentationFile>
-    <NoWarn>1701,1702,1591</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
-    <DocumentationFile>bin\Release\netcoreapp3.1\VirtualDesktop.WPF.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\$(TargetFramework)\VirtualDesktop.WPF.xml</DocumentationFile>
     <NoWarn>1701,1702,1591</NoWarn>
   </PropertyGroup>
 

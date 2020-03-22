@@ -124,7 +124,7 @@ namespace VirtualDesktopShowcase
 			{
 				await Task.Delay(_delay);
 				var appId = ApplicationHelper.GetAppId(GetForegroundWindow());
-				(VirtualDesktop.IsPinnedApplication(appId) ? VirtualDesktop.UnpinApplication : (Action<string>)VirtualDesktop.PinApplication)(appId);
+				if (appId != null) (VirtualDesktop.IsPinnedApplication(appId) ? VirtualDesktop.UnpinApplication : (Action<string>)VirtualDesktop.PinApplication)(appId);
 			}
 		}
 
