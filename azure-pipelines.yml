@@ -3,14 +3,6 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
-trigger:
-  branches:
-    include:
-    - master
-
-pr:
-- master
-
 pool:
   vmImage: 'windows-latest'
 
@@ -36,7 +28,7 @@ steps:
     nobuild: true
     versioningScheme: 'off'
     arguments: '-c $(buildConfiguration)'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
 
 - task: PublishBuildArtifacts@1
   displayName: 'publish artifact: drop'
@@ -44,4 +36,4 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/release'))
