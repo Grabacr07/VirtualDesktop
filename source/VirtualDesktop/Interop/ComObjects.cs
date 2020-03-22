@@ -56,7 +56,7 @@ namespace WindowsDesktop.Interop
 
 		private class ExplorerRestartListenerWindow : TransparentWindow
 		{
-			private uint _explorerRestertedMessage;
+			private uint _explorerRestartedMessage;
 			private readonly Action _action;
 
 			public ExplorerRestartListenerWindow(Action action)
@@ -68,12 +68,12 @@ namespace WindowsDesktop.Interop
 			public override void Show()
 			{
 				base.Show();
-				this._explorerRestertedMessage = NativeMethods.RegisterWindowMessage("TaskbarCreated");
+				this._explorerRestartedMessage = NativeMethods.RegisterWindowMessage("TaskbarCreated");
 			}
 
 			protected override IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
 			{
-				if (msg == this._explorerRestertedMessage)
+				if (msg == this._explorerRestartedMessage)
 				{
 					this._action();
 					return IntPtr.Zero;

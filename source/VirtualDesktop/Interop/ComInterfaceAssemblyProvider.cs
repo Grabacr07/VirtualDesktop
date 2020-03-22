@@ -1,13 +1,14 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Text;
 using System.Text.RegularExpressions;
 using WindowsDesktop.Properties;
-using Microsoft.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace WindowsDesktop.Interop
 {
@@ -29,13 +30,13 @@ namespace WindowsDesktop.Interop
 
 		public Assembly GetAssembly()
 		{
-			var assembly = this.GetExisitingAssembly();
+			var assembly = this.GetExistingAssembly();
 			if (assembly != null) return assembly;
 
 			return this.CreateAssembly();
 		}
 
-		private Assembly GetExisitingAssembly()
+		private Assembly GetExistingAssembly()
 		{
 			var searchTargets = new[]
 			{
@@ -114,35 +115,35 @@ namespace WindowsDesktop.Interop
 			return this.Compile(compileTargets.ToArray());
 		}
 
-		private Assembly Compile(string[] sources)
+		private Assembly Compile(IEnumerable<string> sources)
 		{
 			var dir = new DirectoryInfo(this._assemblyDirectoryPath);
-			if (!dir.Exists) dir.Create();
+			if (dir.Exists == false) dir.Create();
 
-			using (var provider = new CSharpCodeProvider())
+			var path = Path.Combine(dir.FullName, string.Format(_assemblyName, ProductInfo.OSBuild));
+			var syntaxTrees = sources.Select(x => SyntaxFactory.ParseSyntaxTree(x));
+			var references = AppDomain.CurrentDomain.GetAssemblies()
+				.Concat(new[] { Assembly.GetExecutingAssembly(), })
+				.Select(x => x.Location)
+				.Select(x => MetadataReference.CreateFromFile(x));
+			var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+			var compilation = CSharpCompilation.Create(_assemblyName)
+				.WithOptions(options)
+				.WithReferences(references)
+				.AddSyntaxTrees(syntaxTrees);
+
+			var result = compilation.Emit(path);
+			if (result.Success)
 			{
-				var path = Path.Combine(dir.FullName, string.Format(_assemblyName, ProductInfo.OSBuild));
-				var cp = new CompilerParameters
-				{
-					OutputAssembly = path,
-					GenerateExecutable = false,
-					GenerateInMemory = false,
-				};
-				cp.ReferencedAssemblies.Add("System.dll");
-				cp.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
-
-				var result = provider.CompileAssemblyFromSource(cp, sources);
-				if (result.Errors.Count > 0)
-				{
-					var nl = Environment.NewLine;
-					var message = $"Failed to compile COM interfaces assembly.{nl}{string.Join(nl, result.Errors.OfType<CompilerError>().Select(x => $"  {x}"))}";
-
-					throw new Exception(message);
-				}
-
-				System.Diagnostics.Debug.WriteLine($"Assembly compiled: {path}");
-				return result.CompiledAssembly;
+				return AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
 			}
+
+			File.Delete(path);
+
+			var nl = Environment.NewLine;
+			var message = $"Failed to compile COM interfaces assembly.{nl}{string.Join(nl, result.Diagnostics.Select(x => $"  {x.GetMessage()}"))}";
+
+			throw new Exception(message);
 		}
 	}
 }

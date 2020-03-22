@@ -1,14 +1,4 @@
-﻿using System.Reflection;
-using System.Runtime.InteropServices;
-
-[assembly: AssemblyTitle("VirtualDesktop.WPF")]
-[assembly: AssemblyCompany("grabacr.net")]
-[assembly: AssemblyProduct("VirtualDesktop")]
-[assembly: AssemblyDescription("C# wrapper for IVirtualDesktopManager on Windows 10.")]
-[assembly: AssemblyCopyright("Copyright © 2015 Manato KAMEYA")]
+﻿using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
 [assembly: Guid("9dd597c6-065a-4764-a96c-1b18c4eded78")]
-
-[assembly: AssemblyVersion("2.0.0")]
-[assembly: AssemblyInformationalVersion("2.0.0-beta3")]
