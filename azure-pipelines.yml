@@ -38,11 +38,10 @@ steps:
     arguments: '-c $(buildConfiguration)'
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
-- task: NuGetCommand@2
-  displayName: 'nuget push'
+- task: PublishBuildArtifacts@1
+  displayName: 'publish artifact: drop'
   inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'nuget.org'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
