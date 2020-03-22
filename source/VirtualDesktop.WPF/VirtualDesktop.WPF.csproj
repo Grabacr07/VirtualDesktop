@@ -18,10 +18,12 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net472|AnyCPU'">
     <DocumentationFile>bin\Release\net472\VirtualDesktop.WPF.xml</DocumentationFile>
+    <NoWarn>1701,1702,1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
     <DocumentationFile>bin\Release\netcoreapp3.1\VirtualDesktop.WPF.xml</DocumentationFile>
+    <NoWarn>1701,1702,1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
