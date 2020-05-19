@@ -124,6 +124,7 @@ namespace WindowsDesktop.Interop
 			var syntaxTrees = sources.Select(x => SyntaxFactory.ParseSyntaxTree(x));
 			var references = AppDomain.CurrentDomain.GetAssemblies()
 				.Concat(new[] { Assembly.GetExecutingAssembly(), })
+				.Where(x => !x.IsDynamic) //fix per this issue: https://stackoverflow.com/questions/44446720/notsupportedexception-the-invoked-member-is-not-supported-in-a-dynamic-module-i/44446796#44446796
 				.Select(x => x.Location)
 				.Select(x => MetadataReference.CreateFromFile(x));
 			var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
