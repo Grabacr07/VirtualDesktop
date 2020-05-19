@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
+#if NETCORE //fix: https://stackoverflow.com/questions/45741039/could-not-load-file-or-assembly-system-runtime-loader-for-adding-application-p/54827796#54827796
+using System.Runtime.Loader; 
+#endif
 using System.Text;
 using System.Text.RegularExpressions;
 using WindowsDesktop.Properties;
@@ -136,7 +138,12 @@ namespace WindowsDesktop.Interop
 			var result = compilation.Emit(path);
 			if (result.Success)
 			{
+#if NETCORE //fix: https://stackoverflow.com/questions/45741039/could-not-load-file-or-assembly-system-runtime-loader-for-adding-application-p/54827796#54827796
 				return AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+#endif
+#if NETFRAMEWORK
+				return Assembly.LoadFile(path);
+#endif
 			}
 
 			File.Delete(path);
