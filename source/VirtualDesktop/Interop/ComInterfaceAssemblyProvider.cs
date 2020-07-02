@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+#if !NETFRAMEWORK
 using System.Runtime.Loader;
+#endif
 using System.Text;
 using System.Text.RegularExpressions;
 using WindowsDesktop.Properties;
@@ -22,7 +24,7 @@ namespace WindowsDesktop.Interop
 		private static readonly Version _requireVersion = new Version("1.0");
 
 		private readonly string _assemblyDirectoryPath;
-		
+
 		public ComInterfaceAssemblyProvider(string assemblyDirectoryPath)
 		{
 			this._assemblyDirectoryPath = assemblyDirectoryPath ?? _defaultAssemblyDirectoryPath;
@@ -135,7 +137,11 @@ namespace WindowsDesktop.Interop
 			var result = compilation.Emit(path);
 			if (result.Success)
 			{
+#if NETFRAMEWORK
+				return Assembly.LoadFrom(path);
+#else
 				return AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+#endif
 			}
 
 			File.Delete(path);
