@@ -30,6 +30,7 @@ namespace VirtualDesktopShowcase
 			}
 
 			VirtualDesktop.CurrentChanged += (sender, args) => System.Diagnostics.Debug.WriteLine($"Desktop changed: {args.NewDesktop.Id}");
+			VirtualDesktop.Renamed += (sender, args) => System.Diagnostics.Debug.WriteLine($"Desktop renamed: {args.OldName} -> {args.NewName} ({args.Source.Id})");
 		}
 
 		private void CreateNew(object sender, RoutedEventArgs e)

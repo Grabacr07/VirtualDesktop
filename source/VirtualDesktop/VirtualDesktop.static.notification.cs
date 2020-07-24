@@ -29,6 +29,11 @@ namespace WindowsDesktop
 		/// Occurs when the current virtual desktop is changed.
 		/// </summary>
 		public static event EventHandler<VirtualDesktopChangedEventArgs> CurrentChanged;
+
+		/// <summary>
+		/// Occurs when a virtual desktop is renamed.
+		/// </summary>
+		public static event EventHandler<VirtualDesktopRenamedEventArgs> Renamed;
 		
 		internal static class EventRaiser
 		{
@@ -64,6 +69,15 @@ namespace WindowsDesktop
 			{
 				var args = new VirtualDesktopChangedEventArgs(pDesktopOld, pDesktopNew);
 				CurrentChanged?.Invoke(sender, args);
+			}
+
+			public static void RaiseRenamed(object sender, VirtualDesktop pDesktop, string name)
+			{
+				var oldName = pDesktop.Name;
+				pDesktop.SetNameToCache(name);
+
+				var args = new VirtualDesktopRenamedEventArgs(pDesktop, oldName, name);
+				Renamed?.Invoke(sender, args);
 			}
 		}
 	}
