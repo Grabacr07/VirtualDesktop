@@ -17,20 +17,45 @@ namespace WindowsDesktop.Interop
 
 		public object ComObject { get; }
 
-		private protected ComInterfaceWrapperBase(ComInterfaceAssembly assembly, string comInterfaceName = null, Guid? service = null)
-		{
-			var (type, instance) = assembly.CreateInstance(comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper(), service);
+		public uint ComVersion { get; }
 
-			this.ComInterfaceAssembly = assembly;
-			this.ComInterfaceType = type;
-			this.ComObject = instance;
+		private protected ComInterfaceWrapperBase(ComInterfaceAssembly assembly, string comInterfaceName = null, uint latestVersion = 1, Guid? service = null)
+		{
+			var comInterfaceName2 = comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper();
+			for (var version = latestVersion; version >= 1; version--)
+			{
+				var type = assembly.GetType(version != 1 ? $"{comInterfaceName2}{version}" : comInterfaceName2);
+				if (type != null)
+				{
+					var instance = assembly.CreateInstance(type, service);
+					this.ComInterfaceAssembly = assembly;
+					this.ComInterfaceType = type;
+					this.ComObject = instance;
+					this.ComVersion = version;
+					return;
+				}
+			}
+
+			throw new InvalidOperationException($"{comInterfaceName2} or later version is not found.");
 		}
 
-		private protected ComInterfaceWrapperBase(ComInterfaceAssembly assembly, object comObject, string comInterfaceName = null)
+		private protected ComInterfaceWrapperBase(ComInterfaceAssembly assembly, object comObject, string comInterfaceName = null, uint latestVersion = 1)
 		{
-			this.ComInterfaceAssembly = assembly;
-			this.ComInterfaceType = assembly.GetType(comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper());
-			this.ComObject = comObject;
+			var comInterfaceName2 = comInterfaceName ?? this.GetType().GetComInterfaceNameIfWrapper();
+			for (var version = latestVersion; version >= 1; version--)
+			{
+				var type = assembly.GetType(version != 1 ? $"{comInterfaceName2}{version}" : comInterfaceName2);
+				if (type != null)
+				{
+					this.ComInterfaceAssembly = assembly;
+					this.ComInterfaceType = type;
+					this.ComObject = comObject;
+					this.ComVersion = version;
+					return;
+				}
+			}
+
+			throw new InvalidOperationException($"{comInterfaceName2} or later version is not found.");
 		}
 
 		protected static object[] Args(params object[] args)

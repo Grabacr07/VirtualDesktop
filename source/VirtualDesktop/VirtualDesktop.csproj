@@ -30,7 +30,9 @@
     <Compile Remove="Interop\%28interfaces%29\IApplicationView.cs" />
     <Compile Remove="Interop\%28interfaces%29\IApplicationViewCollection.cs" />
     <Compile Remove="Interop\%28interfaces%29\IVirtualDesktop.cs" />
+    <Compile Remove="Interop\%28interfaces%29\IVirtualDesktop2.cs" />
     <Compile Remove="Interop\%28interfaces%29\IVirtualDesktopManagerInternal.cs" />
+    <Compile Remove="Interop\%28interfaces%29\IVirtualDesktopManagerInternal2.cs" />
     <Compile Remove="Interop\%28interfaces%29\IVirtualDesktopNotification.cs" />
     <Compile Remove="Interop\%28interfaces%29\IVirtualDesktopNotificationService.cs" />
     <Compile Remove="Interop\%28interfaces%29\IVirtualDesktopPinnedApps.cs" />
@@ -42,7 +44,9 @@
     <EmbeddedResource Include="Interop\(interfaces)\IApplicationView.cs" />
     <EmbeddedResource Include="Interop\(interfaces)\IApplicationViewCollection.cs" />
     <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktop.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktop2.cs" />
     <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktopManagerInternal.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktopManagerInternal2.cs" />
     <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktopNotification.cs" />
     <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktopNotificationService.cs" />
     <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktopPinnedApps.cs" />

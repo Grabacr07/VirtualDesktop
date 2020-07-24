@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 
 namespace WindowsDesktop.Interop
 {
-	[ComInterfaceWrapper]
+	[ComInterfaceWrapper(2)]
 	internal class VirtualDesktopManagerInternal : ComInterfaceWrapperBase
 	{
 		public VirtualDesktopManagerInternal(ComInterfaceAssembly assembly)
-			: base(assembly, service: CLSID.VirtualDesktopAPIUnknown)
+			: base(assembly, latestVersion: 2, service: CLSID.VirtualDesktopAPIUnknown)
 		{
 		}
 
@@ -62,5 +63,12 @@ namespace WindowsDesktop.Interop
 
 		private VirtualDesktop GetDesktop(object[] parameters = null, [CallerMemberName] string methodName = "")
 			=> VirtualDesktopCache.GetOrCreate(this.Invoke<object>(parameters, methodName));
+
+		public void SetName(VirtualDesktop desktop, string name)
+		{
+			if (this.ComVersion < 2) throw new PlatformNotSupportedException("This Windows 10 version is not supported.");
+
+			this.Invoke(Args(desktop.ComObject, name));
+		}
 	}
 }

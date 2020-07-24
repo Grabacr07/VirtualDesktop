@@ -141,6 +141,48 @@ namespace VirtualDesktopShowcase
 			}
 		}
 
+		private async void GetName(object sender, RoutedEventArgs e)
+		{
+			if (this.ThisWindowMenu.IsChecked ?? false)
+			{
+				var name = this.GetCurrentDesktop().Name;
+				MessageBox.Show(name, "Current desktop name");
+			}
+			else
+			{
+				await Task.Delay(_delay);
+				var name = this.GetCurrentDesktop().Name;
+				MessageBox.Show(name, "Current desktop name");
+			}
+		}
+
+		private async void SetName(object sender, RoutedEventArgs e)
+		{
+			if (this.ThisWindowMenu.IsChecked ?? false)
+			{
+				try
+				{
+					this.GetCurrentDesktop().Name = this.NameTextBlock.Text;
+				}
+				catch (PlatformNotSupportedException ex)
+				{
+					MessageBox.Show(ex.Message, "Error");
+				}
+			}
+			else
+			{
+				await Task.Delay(_delay);
+				try
+				{
+					this.GetCurrentDesktop().Name = this.NameTextBlock.Text;
+				}
+				catch (PlatformNotSupportedException ex)
+				{
+					MessageBox.Show(ex.Message, "Error");
+				}
+			}
+		}
+
 
 		[DllImport("user32.dll")]
 		private static extern IntPtr GetForegroundWindow();
