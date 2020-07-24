@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using WindowsDesktop.Interop;
 using JetBrains.Annotations;
 
@@ -22,26 +21,14 @@ namespace WindowsDesktop
 		/// </summary>
 		public Guid Id { get; }
 
+		private string _name = null;
+
 		/// <summary>
 		/// Gets the name for the virtual desktop.
 		/// </summary>
 		public string Name
 		{
-			get
-			{
-				if (this.ComVersion >= 2)
-				{
-					var name = this.Invoke<string>(Args(), "GetName");
-					if (!string.IsNullOrEmpty(name))
-					{
-						return name;
-					}
-				}
-
-				var desktops = GetDesktops();
-				var index = Array.IndexOf(desktops, this) + 1;
-				return $"Desktop {index}";
-			}
+			get => this._name;
 			set
 			{
 				if (this.ComVersion < 2) throw new PlatformNotSupportedException("This Windows 10 version is not supported.");
@@ -55,6 +42,11 @@ namespace WindowsDesktop
 			: base(assembly, comObject, latestVersion: 2)
 		{
 			this.Id = id;
+			
+			if (this.ComVersion >= 2)
+			{
+				this._name = this.Invoke<string>(Args(), "GetName");
+			}
 		}
 
 		/// <summary>
@@ -114,6 +106,11 @@ namespace WindowsDesktop
 			{
 				return null;
 			}
+		}
+
+		private void SetNameToCache(string name)
+		{
+			this._name = name;
 		}
 	}
 }
