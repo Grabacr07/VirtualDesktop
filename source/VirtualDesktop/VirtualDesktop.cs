@@ -110,7 +110,11 @@ namespace WindowsDesktop
 
 		private void SetNameToCache(string name)
 		{
+			if (this._name == name) return;
+
+			this.RaisePropertyChanging(nameof(this.Name));
 			this._name = name;
+			this.RaisePropertyChanged(nameof(this.Name));
 		}
 	}
 }
