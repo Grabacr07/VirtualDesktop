@@ -14,7 +14,7 @@ namespace WindowsDesktop
 	[ComInterfaceWrapper]
 	[DebuggerDisplay("{Id}")]
 	[UsedImplicitly(ImplicitUseTargetFlags.Members)]
-	public partial class VirtualDesktop : ComInterfaceWrapperBase
+	public partial class VirtualDesktop : ComInterfaceWrapperBase, IDisposable
 	{
 		/// <summary>
 		/// Gets the unique identifier for this virtual desktop.
@@ -86,5 +86,35 @@ namespace WindowsDesktop
 				return null;
 			}
 		}
+
+#region IDisposable
+		private bool disposed = false;
+
+		/// <summary>
+		/// Disposes of this <see cref="VirtualDesktop"/>.
+		/// </summary>
+		/// <param name="disposeOfManagedObjects">If <see langword="true"/>, disposes of managed objects.</param>
+		protected virtual void Dispose(bool disposeOfManagedObjects)
+		{
+			if(!disposed)
+			{
+				if(disposeOfManagedObjects)
+				{
+					Remove();
+				}
+
+				disposed = true;
+			}
+		}
+
+		/// <summary>
+		/// Disposes of this <see cref="VirtualDesktop"/>.
+		/// </summary>
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+#endregion
 	}
 }
