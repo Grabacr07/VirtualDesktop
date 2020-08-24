@@ -88,7 +88,7 @@ namespace WindowsDesktop
 		}
 
 #region IDisposable
-		private bool disposed = false;
+		private bool _disposed = false;
 
 		/// <summary>
 		/// Disposes of this <see cref="VirtualDesktop"/>.
@@ -96,14 +96,14 @@ namespace WindowsDesktop
 		/// <param name="disposeOfManagedObjects">If <see langword="true"/>, disposes of managed objects.</param>
 		protected virtual void Dispose(bool disposeOfManagedObjects)
 		{
-			if(!disposed)
+			if (!this._disposed)
 			{
-				if(disposeOfManagedObjects)
+				if (disposeOfManagedObjects)
 				{
-					Remove();
+					this.Remove();
 				}
 
-				disposed = true;
+				this._disposed = true;
 			}
 		}
 
@@ -112,7 +112,7 @@ namespace WindowsDesktop
 		/// </summary>
 		public void Dispose()
 		{
-			Dispose(true);
+			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 #endregion
