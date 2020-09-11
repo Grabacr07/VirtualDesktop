@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
+#if NETCORE //fix: https://stackoverflow.com/questions/45741039/could-not-load-file-or-assembly-system-runtime-loader-for-adding-application-p/54827796#54827796
+using System.Runtime.Loader; 
+#endif
 using System.Text;
 using System.Text.RegularExpressions;
 using WindowsDesktop.Properties;
@@ -124,6 +126,7 @@ namespace WindowsDesktop.Interop
 			var syntaxTrees = sources.Select(x => SyntaxFactory.ParseSyntaxTree(x));
 			var references = AppDomain.CurrentDomain.GetAssemblies()
 				.Concat(new[] { Assembly.GetExecutingAssembly(), })
+				.Where(x => !x.IsDynamic) //fix per this issue: https://stackoverflow.com/questions/44446720/notsupportedexception-the-invoked-member-is-not-supported-in-a-dynamic-module-i/44446796#44446796
 				.Select(x => x.Location)
 				.Select(x => MetadataReference.CreateFromFile(x));
 			var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
@@ -135,7 +138,12 @@ namespace WindowsDesktop.Interop
 			var result = compilation.Emit(path);
 			if (result.Success)
 			{
+#if NETCORE //fix: https://stackoverflow.com/questions/45741039/could-not-load-file-or-assembly-system-runtime-loader-for-adding-application-p/54827796#54827796
 				return AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+#endif
+#if NETFRAMEWORK
+				return Assembly.LoadFile(path);
+#endif
 			}
 
 			File.Delete(path);
