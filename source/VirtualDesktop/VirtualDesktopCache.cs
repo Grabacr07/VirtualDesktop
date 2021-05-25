@@ -20,9 +20,18 @@ namespace WindowsDesktop
 		{
 			if (_cache == null)
 			{
-				var type = assembly.GetType("VirtualDesktopCacheImpl");
-				_cache = (IVirtualDesktopCache)Activator.CreateInstance(type);
-				_cache.Factory = (id, comObject) => new VirtualDesktop(assembly, id, comObject);
+				var type2 = assembly.GetType("VirtualDesktopCacheImpl2");
+				if (type2 != null)
+				{
+					_cache = (IVirtualDesktopCache)Activator.CreateInstance(type2);
+					_cache.Factory = (id, comObject) => new VirtualDesktop(assembly, id, comObject);
+				}
+				else
+				{
+					var type = assembly.GetType("VirtualDesktopCacheImpl");
+					_cache = (IVirtualDesktopCache)Activator.CreateInstance(type);
+					_cache.Factory = (id, comObject) => new VirtualDesktop(assembly, id, comObject);
+				}
 			}
 			else
 			{

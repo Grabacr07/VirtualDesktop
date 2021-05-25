@@ -11,7 +11,7 @@ namespace WindowsDesktop
 	/// <summary>
 	/// Encapsulates a Windows 10 virtual desktop.
 	/// </summary>
-	[ComInterfaceWrapper]
+	[ComInterfaceWrapper(2)]
 	[DebuggerDisplay("{Id}")]
 	[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 	public partial class VirtualDesktop : ComInterfaceWrapperBase, IDisposable
@@ -21,11 +21,32 @@ namespace WindowsDesktop
 		/// </summary>
 		public Guid Id { get; }
 
+		private string _name = null;
+
+		/// <summary>
+		/// Gets the name for the virtual desktop.
+		/// </summary>
+		public string Name
+		{
+			get => this._name;
+			set
+			{
+				if (this.ComVersion < 2) throw new PlatformNotSupportedException("This Windows 10 version is not supported.");
+
+				ComInterface.VirtualDesktopManagerInternal.SetName(this, value);
+			}
+		}
+
 		[UsedImplicitly]
 		internal VirtualDesktop(ComInterfaceAssembly assembly, Guid id, object comObject)
-			: base(assembly, comObject)
+			: base(assembly, comObject, latestVersion: 2)
 		{
 			this.Id = id;
+			
+			if (this.ComVersion >= 2)
+			{
+				this._name = this.Invoke<string>(Args(), "GetName");
+			}
 		}
 
 		/// <summary>
@@ -87,6 +108,15 @@ namespace WindowsDesktop
 			}
 		}
 
+		private void SetNameToCache(string name)
+		{
+			if (this._name == name) return;
+
+			this.RaisePropertyChanging(nameof(this.Name));
+			this._name = name;
+			this.RaisePropertyChanged(nameof(this.Name));
+		}
+		
 #region IDisposable
 		private bool _disposed = false;
 

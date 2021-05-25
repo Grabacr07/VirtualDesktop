@@ -76,7 +76,7 @@ namespace WindowsDesktop.Interop
 			var executingAssembly = Assembly.GetExecutingAssembly();
 			var interfaceNames = executingAssembly
 				.GetTypes()
-				.Select(x => x.GetComInterfaceNameIfWrapper())
+				.SelectMany(x => x.GetComInterfaceNamesIfWrapper())
 				.Where(x => x != null)
 				.ToArray();
 			var iids = IID.GetIIDs(interfaceNames);
@@ -101,6 +101,7 @@ namespace WindowsDesktop.Interop
 
 				var interfaceName = interfaceNames.FirstOrDefault(x => typeName == x);
 				if (interfaceName == null) continue;
+				if (!iids.ContainsKey(interfaceName)) continue;
 
 				var stream = executingAssembly.GetManifestResourceStream(name);
 				if (stream == null) continue;
