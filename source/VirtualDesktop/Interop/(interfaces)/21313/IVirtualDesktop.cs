@@ -9,10 +9,22 @@ namespace WindowsDesktop.Interop
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IVirtualDesktop
 	{
-		bool IsViewVisible(object pView);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		bool IsViewVisible(IApplicationView pView);
 
 		Guid GetID();
+
+		IntPtr Unknown1();
+
+		[return: MarshalAs(UnmanagedType.HString)]
+		string GetName();
+
+		[return: MarshalAs(UnmanagedType.HString)]
+		string GetWallpaperPath();
 	}
+
+	// see also:
+	//  https://github.com/MScholtes/VirtualDesktop/blob/f7c0018069f5500bce3b170a53fb71edee44ebec/VirtualDesktop.cs#L156-L173
 
 	public class VirtualDesktopCacheImpl : IVirtualDesktopCache
 	{

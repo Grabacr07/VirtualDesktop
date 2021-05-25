@@ -9,7 +9,8 @@ namespace WindowsDesktop.Interop
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IVirtualDesktop2
 	{
-		bool IsViewVisible(object pView);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		bool IsViewVisible(IApplicationView pView);
 
 		Guid GetID();
 

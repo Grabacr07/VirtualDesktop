@@ -60,7 +60,7 @@ namespace WindowsDesktop
 				Destroyed?.Invoke(sender, args);
 			}
 
-			public static void RaiseApplicationViewChanged(object sender, IntPtr pView)
+			public static void RaiseApplicationViewChanged(object sender, object pView)
 			{
 				ApplicationViewChanged?.Invoke(sender, EventArgs.Empty);
 			}

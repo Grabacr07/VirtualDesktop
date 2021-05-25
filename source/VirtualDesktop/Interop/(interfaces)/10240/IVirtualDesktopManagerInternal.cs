@@ -6,12 +6,13 @@ namespace WindowsDesktop.Interop
 	[ComImport]
 	[Guid("00000000-0000-0000-0000-000000000000") /* replace at runtime */]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	internal interface IVirtualDesktopManagerInternal2
+	internal interface IVirtualDesktopManagerInternal
 	{
 		int GetCount();
 
-		void MoveViewToDesktop(IApplicationView pView, IVirtualDesktop desktop);
+		void MoveViewToDesktop(IApplicationView pView, IVirtualDesktop pDesktop);
 
+		[return: MarshalAs(UnmanagedType.Bool)]
 		bool CanViewMoveDesktops(IApplicationView pView);
 
 		IVirtualDesktop GetCurrentDesktop();
@@ -20,19 +21,12 @@ namespace WindowsDesktop.Interop
 
 		IVirtualDesktop GetAdjacentDesktop(IVirtualDesktop pDesktopReference, AdjacentDesktop uDirection);
 
-		void SwitchDesktop(IVirtualDesktop desktop);
+		void SwitchDesktop(IVirtualDesktop pDesktop);
 
 		IVirtualDesktop CreateDesktopW();
 
 		void RemoveDesktop(IVirtualDesktop pRemove, IVirtualDesktop pFallbackDesktop);
 
-		IVirtualDesktop FindDesktop(ref Guid desktopId);
-
-		void Unknown1(IVirtualDesktop desktop, out IntPtr unknown1, out IntPtr unknown2);
-
-		void SetName(IVirtualDesktop desktop, [MarshalAs(UnmanagedType.HString)] string name);
+		IVirtualDesktop FindDesktop([In, MarshalAs(UnmanagedType.LPStruct)] Guid desktopId);
 	}
-
-	// see also:
-	//  https://github.com/MScholtes/VirtualDesktop/blob/f7c0018069f5500bce3b170a53fb71edee44ebec/VirtualDesktop.cs#L193-L211
 }

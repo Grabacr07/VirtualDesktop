@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using WindowsDesktop.Interop;
+using WindowsDesktop.Properties;
 using JetBrains.Annotations;
 
 namespace WindowsDesktop
@@ -31,7 +32,7 @@ namespace WindowsDesktop
 			get => this._name;
 			set
 			{
-				if (this.ComVersion < 2) throw new PlatformNotSupportedException("This Windows 10 version is not supported.");
+				if (ProductInfo.OSBuild < 20231 && this.ComVersion < 2) throw new PlatformNotSupportedException("This Windows 10 version is not supported.");
 
 				ComInterface.VirtualDesktopManagerInternal.SetName(this, value);
 			}
@@ -43,7 +44,7 @@ namespace WindowsDesktop
 		{
 			this.Id = id;
 			
-			if (this.ComVersion >= 2)
+			if (ProductInfo.OSBuild >= 20231 || this.ComVersion >= 2)
 			{
 				this._name = this.Invoke<string>(Args(), "GetName");
 			}

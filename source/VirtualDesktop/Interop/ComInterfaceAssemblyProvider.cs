@@ -20,6 +20,7 @@ namespace WindowsDesktop.Interop
 		private static readonly Regex _assemblyRegex = new Regex(@"VirtualDesktop\.(?<build>\d{5}?)(\.\w*|)\.dll");
 		private static readonly string _defaultAssemblyDirectoryPath = Path.Combine(ProductInfo.LocalAppData.FullName, "assemblies");
 		private static readonly Version _requireVersion = new Version("1.0");
+		private static readonly int[] _interfaceVersions = new[] { 10240, 20231, 21313 };
 
 		private readonly string _assemblyDirectoryPath;
 		
@@ -74,9 +75,12 @@ namespace WindowsDesktop.Interop
 		private Assembly CreateAssembly()
 		{
 			var executingAssembly = Assembly.GetExecutingAssembly();
+			var interfaceVersion = _interfaceVersions
+				.Reverse()
+				.First(build => build <= ProductInfo.OSBuild);
 			var interfaceNames = executingAssembly
 				.GetTypes()
-				.SelectMany(x => x.GetComInterfaceNamesIfWrapper())
+				.SelectMany(x => x.GetComInterfaceNamesIfWrapper(interfaceVersion))
 				.Where(x => x != null)
 				.ToArray();
 			var iids = IID.GetIIDs(interfaceNames);
@@ -88,7 +92,9 @@ namespace WindowsDesktop.Interop
 				{
 					using (var reader = new StreamReader(stream, Encoding.UTF8))
 					{
-						var sourceCode = reader.ReadToEnd().Replace("{VERSION}", ProductInfo.OSBuild.ToString());
+						var sourceCode = reader.ReadToEnd()
+							.Replace("{VERSION}", ProductInfo.OSBuild.ToString())
+							.Replace("{BUILD}", interfaceVersion.ToString());
 						compileTargets.Add(sourceCode);
 					}
 				}
@@ -96,8 +102,11 @@ namespace WindowsDesktop.Interop
 
 			foreach (var name in executingAssembly.GetManifestResourceNames())
 			{
-				var typeName = Path.GetFileNameWithoutExtension(name)?.Split('.').LastOrDefault();
+				var texts = Path.GetFileNameWithoutExtension(name)?.Split('.');
+				var typeName = texts.LastOrDefault();
 				if (typeName == null) continue;
+
+				if (int.TryParse(string.Concat(texts[texts.Length - 2].Skip(1)), out var build) && build != interfaceVersion) continue;
 
 				var interfaceName = interfaceNames.FirstOrDefault(x => typeName == x);
 				if (interfaceName == null) continue;

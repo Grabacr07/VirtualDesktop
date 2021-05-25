@@ -60,7 +60,7 @@ namespace WindowsDesktop
 
 			try
 			{
-				return ComInterface.VirtualDesktopManagerInternal.FindDesktop(ref desktopId);
+				return ComInterface.VirtualDesktopManagerInternal.FindDesktop(desktopId);
 			}
 			catch (COMException ex) when (ex.Match(HResult.TYPE_E_ELEMENTNOTFOUND))
 			{
@@ -82,7 +82,7 @@ namespace WindowsDesktop
 			try
 			{
 				var desktopId = ComInterface.VirtualDesktopManager.GetWindowDesktopId(hWnd);
-				return ComInterface.VirtualDesktopManagerInternal.FindDesktop(ref desktopId);
+				return ComInterface.VirtualDesktopManagerInternal.FindDesktop(desktopId);
 			}
 			catch (COMException ex) when (ex.Match(HResult.REGDB_E_CLASSNOTREG, HResult.TYPE_E_ELEMENTNOTFOUND))
 			{
