@@ -51,6 +51,22 @@ namespace WindowsDesktop
 			}
 		}
 
+		private string _wallpaperPath = null;
+
+		/// <summary>
+		/// Gets the name for the virtual desktop.
+		/// </summary>
+		public string WallpaperPath
+		{
+			get => this._wallpaperPath;
+			set
+			{
+				if (ProductInfo.OSBuild < 21313) throw new PlatformNotSupportedException("This Windows 10 version is not supported.");
+
+				ComInterface.VirtualDesktopManagerInternal.SetWallpaperPath(this, value);
+			}
+		}
+
 		[UsedImplicitly]
 		internal VirtualDesktop(ComInterfaceAssembly assembly, Guid id, object comObject)
 			: base(assembly, comObject, latestVersion: 2)
@@ -60,6 +76,11 @@ namespace WindowsDesktop
 			if (ProductInfo.OSBuild >= 20231 || this.ComVersion >= 2)
 			{
 				this._name = this.Invoke<string>(Args(), "GetName");
+
+				if (ProductInfo.OSBuild >= 21313)
+				{
+					this._wallpaperPath = this.Invoke<string>(Args(), "GetWallpaperPath");
+				}
 			}
 		}
 
@@ -138,6 +159,15 @@ namespace WindowsDesktop
 			this.RaisePropertyChanging(nameof(this.Name));
 			this._name = name;
 			this.RaisePropertyChanged(nameof(this.Name));
+		}
+
+		private void SetWallpaperPathToCache(string path)
+		{
+			if (this._wallpaperPath == path) return;
+
+			this.RaisePropertyChanging(nameof(this.WallpaperPath));
+			this._wallpaperPath = path;
+			this.RaisePropertyChanged(nameof(this.WallpaperPath));
 		}
 		
 #region IDisposable

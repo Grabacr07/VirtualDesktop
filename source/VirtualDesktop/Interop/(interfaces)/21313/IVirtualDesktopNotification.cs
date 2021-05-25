@@ -77,6 +77,7 @@ namespace WindowsDesktop.Interop
 
 		public void VirtualDesktopWallpaperChanged(IVirtualDesktop pDesktop, [MarshalAs(UnmanagedType.HString)] string chName)
 		{
+			this.VirtualDesktopWallpaperChangedCore(pDesktop, chName);
 		}
 	}
 }

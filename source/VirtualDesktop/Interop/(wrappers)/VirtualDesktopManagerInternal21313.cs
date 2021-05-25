@@ -72,5 +72,10 @@ namespace WindowsDesktop.Interop
 		{
 			this.Invoke(Args(desktop.ComObject, name));
 		}
+
+		public override void SetWallpaperPath(VirtualDesktop desktop, string path)
+		{
+			this.Invoke(Args(desktop.ComObject, path));
+		}
 	}
 }

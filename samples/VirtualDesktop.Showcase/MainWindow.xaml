@@ -75,6 +75,8 @@
 					Content="Set name"
 					Click="SetName"
 					Margin="8,0,8,8" />
+			<Button Content="Get wallpaper path"
+					Click="GetWallpaperPath" />
 			<Button Content="Move to previous"
 					Click="MovePrevious" />
 			<Button Content="Move to next"

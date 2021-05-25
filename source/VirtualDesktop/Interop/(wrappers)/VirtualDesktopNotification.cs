@@ -67,5 +67,10 @@ namespace WindowsDesktop.Interop
 		{
 			VirtualDesktop.EventRaiser.RaiseRenamed(this, VirtualDesktopCache.GetOrCreate(pDesktop), chName);
 		}
+
+		protected void VirtualDesktopWallpaperChangedCore(object pDesktop, string chPath)
+		{
+			VirtualDesktop.EventRaiser.RaiseWallpaperChanged(this, VirtualDesktopCache.GetOrCreate(pDesktop), chPath);
+		}
 	}
 }

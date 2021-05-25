@@ -185,6 +185,21 @@ namespace VirtualDesktopShowcase
 			}
 		}
 
+		private async void GetWallpaperPath(object sender, RoutedEventArgs e)
+		{
+			if (this.ThisWindowMenu.IsChecked ?? false)
+			{
+				var name = this.GetCurrentDesktop().WallpaperPath;
+				MessageBox.Show(name, "Current wallpaper path");
+			}
+			else
+			{
+				await Task.Delay(_delay);
+				var name = this.GetCurrentDesktop().WallpaperPath;
+				MessageBox.Show(name, "Current wallpaper path");
+			}
+		}
+
 		private void MovePrevious(object sender, RoutedEventArgs e)
 		{
 			var desktop = this.GetCurrentDesktop();

@@ -72,5 +72,10 @@ namespace WindowsDesktop.Interop
 		{
 			this.Invoke(Args(desktop.ComObject, name));
 		}
+
+		public override void SetWallpaperPath(VirtualDesktop desktop, string path)
+		{
+			throw new PlatformNotSupportedException("This Windows 10 version is not supported.");
+		}
 	}
 }

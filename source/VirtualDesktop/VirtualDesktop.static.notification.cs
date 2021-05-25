@@ -34,11 +34,17 @@ namespace WindowsDesktop
 		/// Occurs when a virtual desktop is moved.
 		/// </summary>
 		public static event EventHandler<VirtualDesktopMovedEventArgs> Moved;
+
 		/// <summary>
 		/// Occurs when a virtual desktop is renamed.
 		/// </summary>
 		public static event EventHandler<VirtualDesktopRenamedEventArgs> Renamed;
-		
+
+		/// <summary>
+		/// Occurs when the wallpaper in the virtual desktop is changed.
+		/// </summary>
+		public static event EventHandler<VirtualDesktopWallpaperChangedEventArgs> WallpaperChanged;
+
 		internal static class EventRaiser
 		{
 			public static void RaiseCreated(object sender, VirtualDesktop pDesktop)
@@ -88,6 +94,15 @@ namespace WindowsDesktop
 
 				var args = new VirtualDesktopRenamedEventArgs(pDesktop, oldName, name);
 				Renamed?.Invoke(sender, args);
+			}
+
+			public static void RaiseWallpaperChanged(object sender, VirtualDesktop pDesktop, string path)
+			{
+				var oldPath = pDesktop.WallpaperPath;
+				pDesktop.SetWallpaperPathToCache(path);
+
+				var args = new VirtualDesktopWallpaperChangedEventArgs(pDesktop, oldPath, path);
+				WallpaperChanged?.Invoke(sender, args);
 			}
 		}
 	}
