@@ -56,14 +56,18 @@ namespace WindowsDesktop.Interop
 					if (int.TryParse(_assemblyRegex.Match(file.Name).Groups["build"]?.ToString(), out var build)
 						&& build == ProductInfo.OSBuild)
 					{
-						var name = AssemblyName.GetAssemblyName(file.FullName);
-						if (name.Version >= _requireVersion)
+						try
 						{
-							System.Diagnostics.Debug.WriteLine($"Assembly found: {file.FullName}");
+							var name = AssemblyName.GetAssemblyName(file.FullName);
+							if (name.Version >= _requireVersion)
+							{
+								System.Diagnostics.Debug.WriteLine($"Assembly found: {file.FullName}");
 #if !DEBUG
-							return Assembly.LoadFile(file.FullName);
+								return Assembly.LoadFile(file.FullName);
 #endif
+							}
 						}
+						catch (BadImageFormatException) { }
 					}
 				}
 			}
