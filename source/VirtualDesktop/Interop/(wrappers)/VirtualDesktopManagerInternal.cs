@@ -22,6 +22,8 @@ namespace WindowsDesktop.Interop
 
 		public abstract VirtualDesktop CreateDesktopW();
 
+		public abstract void MoveDesktop(VirtualDesktop desktop, int index);
+
 		public abstract void RemoveDesktop(VirtualDesktop pRemove, VirtualDesktop pFallbackDesktop);
 
 		public abstract VirtualDesktop FindDesktop(Guid desktopId);

@@ -22,6 +22,19 @@ namespace WindowsDesktop
 		/// </summary>
 		public Guid Id { get; }
 
+		/// <summary>
+		/// Gets the index for the virtual desktop.
+		/// </summary>
+		public int Index
+		{
+			get
+			{
+				var desktops = GetDesktops();
+				var index = Array.IndexOf(desktops, this);
+				return index;
+			}
+		}
+
 		private string _name = null;
 
 		/// <summary>
@@ -56,6 +69,15 @@ namespace WindowsDesktop
 		public void Switch()
 		{
 			ComInterface.VirtualDesktopManagerInternal.SwitchDesktop(this);
+		}
+
+		/// <summary>
+		/// Moves this virtual desktop to a new location.
+		/// </summary>
+		/// <param name="index">The zero-based index specifying the new location of the virtual desktop.</param>
+		public void Move(int index)
+		{
+			ComInterface.VirtualDesktopManagerInternal.MoveDesktop(this, index);
 		}
 
 		/// <summary>

@@ -50,6 +50,11 @@ namespace WindowsDesktop.Interop
 			return this.GetDesktop(Args(IntPtr.Zero));
 		}
 
+		public override void MoveDesktop(VirtualDesktop desktop, int index)
+		{
+			this.Invoke(Args(desktop.ComObject, IntPtr.Zero, index));
+		}
+
 		public override void RemoveDesktop(VirtualDesktop pRemove, VirtualDesktop pFallbackDesktop)
 		{
 			this.Invoke(Args(pRemove.ComObject, pFallbackDesktop.ComObject));

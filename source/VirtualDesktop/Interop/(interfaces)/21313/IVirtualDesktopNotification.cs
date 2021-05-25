@@ -57,6 +57,7 @@ namespace WindowsDesktop.Interop
 
 		public void VirtualDesktopMoved(IVirtualDesktop pDesktop, int nFromIndex, int nToIndex)
 		{
+			this.VirtualDesktopMovedCore(pDesktop, nFromIndex, nToIndex);
 		}
 
 		public void VirtualDesktopRenamed(IVirtualDesktop pDesktop, [MarshalAs(UnmanagedType.HString)] string chName)

@@ -48,6 +48,11 @@ namespace WindowsDesktop.Interop
 			VirtualDesktop.EventRaiser.RaiseDestroyed(this, VirtualDesktopCache.GetOrCreate(pDesktopDestroyed), VirtualDesktopCache.GetOrCreate(pDesktopFallback));
 		}
 
+		protected void VirtualDesktopMovedCore(object pDesktop, int nFromIndex, int nToIndex)
+		{
+			VirtualDesktop.EventRaiser.RaiseMoved(this, VirtualDesktopCache.GetOrCreate(pDesktop), nFromIndex, nToIndex);
+		}
+
 		protected void ViewVirtualDesktopChangedCore(object pView)
 		{
 			VirtualDesktop.EventRaiser.RaiseApplicationViewChanged(this, pView);

@@ -50,6 +50,11 @@ namespace WindowsDesktop.Interop
 			return this.GetDesktop(Args(IntPtr.Zero));
 		}
 
+		public override void MoveDesktop(VirtualDesktop desktop, int index)
+		{
+			throw new PlatformNotSupportedException("This Windows 10 version is not supported.");
+		}
+
 		public override void RemoveDesktop(VirtualDesktop pRemove, VirtualDesktop pFallbackDesktop)
 		{
 			this.Invoke(Args(pRemove.ComObject, pFallbackDesktop.ComObject));
