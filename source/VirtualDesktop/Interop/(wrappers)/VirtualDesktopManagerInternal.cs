@@ -1,66 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace WindowsDesktop.Interop
 {
-	[ComInterfaceWrapper]
-	internal class VirtualDesktopManagerInternal : ComInterfaceWrapperBase
+	internal abstract class VirtualDesktopManagerInternal : ComInterfaceWrapperBase
 	{
-		public VirtualDesktopManagerInternal(ComInterfaceAssembly assembly)
-			: base(assembly, service: CLSID.VirtualDesktopAPIUnknown)
+		public VirtualDesktopManagerInternal(ComInterfaceAssembly assembly, uint latestVersion = 1)
+			: base(assembly, "IVirtualDesktopManagerInternal", latestVersion, service: CLSID.VirtualDesktopAPIUnknown)
 		{
 		}
 
-		public void MoveViewToDesktop(ApplicationView pView, VirtualDesktop desktop)
-		{
-			this.Invoke(Args(pView.ComObject, desktop.ComObject));
-		}
+		public abstract void MoveViewToDesktop(ApplicationView pView, VirtualDesktop desktop);
 
-		public VirtualDesktop GetCurrentDesktop()
-		{
-			return this.GetDesktop();
-		}
+		public abstract VirtualDesktop GetCurrentDesktop();
 
-		public IEnumerable<VirtualDesktop> GetDesktops()
-		{
-			var array = this.Invoke<IObjectArray>();
-			var count = array.GetCount();
-			var vdType = this.ComInterfaceAssembly.GetType("IVirtualDesktop");
+		public abstract IEnumerable<VirtualDesktop> GetDesktops();
 
-			for (var i = 0u; i < count; i++)
-			{
-				array.GetAt(i, vdType.GUID, out var ppvObject);
-				yield return VirtualDesktopCache.GetOrCreate(ppvObject);
-			}
-		}
+		public abstract VirtualDesktop GetAdjacentDesktop(VirtualDesktop pDesktopReference, AdjacentDesktop uDirection);
 
-		public VirtualDesktop GetAdjacentDesktop(VirtualDesktop pDesktopReference, AdjacentDesktop uDirection)
-		{
-			return this.GetDesktop(Args(pDesktopReference.ComObject, uDirection));
-		}
+		public abstract void SwitchDesktop(VirtualDesktop desktop);
 
-		public void SwitchDesktop(VirtualDesktop desktop)
-		{
-			this.Invoke(Args(desktop.ComObject));
-		}
+		public abstract VirtualDesktop CreateDesktopW();
 
-		public VirtualDesktop CreateDesktopW()
-		{
-			return this.GetDesktop();
-		}
+		public abstract void MoveDesktop(VirtualDesktop desktop, int index);
 
-		public void RemoveDesktop(VirtualDesktop pRemove, VirtualDesktop pFallbackDesktop)
-		{
-			this.Invoke(Args(pRemove.ComObject, pFallbackDesktop.ComObject));
-		}
+		public abstract void RemoveDesktop(VirtualDesktop pRemove, VirtualDesktop pFallbackDesktop);
 
-		public VirtualDesktop FindDesktop(ref Guid desktopId)
-		{
-			return this.GetDesktop(Args(desktopId));
-		}
+		public abstract VirtualDesktop FindDesktop(Guid desktopId);
 
-		private VirtualDesktop GetDesktop(object[] parameters = null, [CallerMemberName] string methodName = "")
-			=> VirtualDesktopCache.GetOrCreate(this.Invoke<object>(parameters, methodName));
+		public abstract void SetName(VirtualDesktop desktop, string name);
+
+		public abstract void SetWallpaperPath(VirtualDesktop desktop, string path);
 	}
 }

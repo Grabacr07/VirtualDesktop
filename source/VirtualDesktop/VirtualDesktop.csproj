@@ -26,14 +26,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Interop\%28interfaces%29\AssemblyInfo.cs" />
-    <Compile Remove="Interop\%28interfaces%29\IApplicationView.cs" />
-    <Compile Remove="Interop\%28interfaces%29\IApplicationViewCollection.cs" />
-    <Compile Remove="Interop\%28interfaces%29\IVirtualDesktop.cs" />
-    <Compile Remove="Interop\%28interfaces%29\IVirtualDesktopManagerInternal.cs" />
-    <Compile Remove="Interop\%28interfaces%29\IVirtualDesktopNotification.cs" />
-    <Compile Remove="Interop\%28interfaces%29\IVirtualDesktopNotificationService.cs" />
-    <Compile Remove="Interop\%28interfaces%29\IVirtualDesktopPinnedApps.cs" />
+    <Compile Remove="Interop\(interfaces)\AssemblyInfo.cs" />
+    <Compile Remove="Interop\(interfaces)\IApplicationView.cs" />
+    <Compile Remove="Interop\(interfaces)\IApplicationViewCollection.cs" />
+    <Compile Remove="Interop\(interfaces)\10240\IVirtualDesktop.cs" />
+    <Compile Remove="Interop\(interfaces)\10240\IVirtualDesktop2.cs" />
+    <Compile Remove="Interop\(interfaces)\10240\IVirtualDesktopManagerInternal.cs" />
+    <Compile Remove="Interop\(interfaces)\10240\IVirtualDesktopManagerInternal2.cs" />
+    <Compile Remove="Interop\(interfaces)\10240\IVirtualDesktopManagerInternal3.cs" />
+    <Compile Remove="Interop\(interfaces)\10240\IVirtualDesktopNotification.cs" />
+    <Compile Remove="Interop\(interfaces)\10240\IVirtualDesktopNotification2.cs" />
+    <Compile Remove="Interop\(interfaces)\20231\IVirtualDesktop.cs" />
+    <Compile Remove="Interop\(interfaces)\20231\IVirtualDesktopManagerInternal.cs" />
+    <Compile Remove="Interop\(interfaces)\20231\IVirtualDesktopNotification.cs" />
+    <Compile Remove="Interop\(interfaces)\21313\IVirtualDesktop.cs" />
+    <Compile Remove="Interop\(interfaces)\21313\IVirtualDesktopManagerInternal.cs" />
+    <Compile Remove="Interop\(interfaces)\21313\IVirtualDesktopNotification.cs" />
+    <Compile Remove="Interop\(interfaces)\21359\IVirtualDesktop.cs" />
+    <Compile Remove="Interop\(interfaces)\21359\IVirtualDesktopManagerInternal.cs" />
+    <Compile Remove="Interop\(interfaces)\21359\IVirtualDesktopNotification.cs" />
+    <Compile Remove="Interop\(interfaces)\IVirtualDesktopNotificationService.cs" />
+    <Compile Remove="Interop\(interfaces)\IVirtualDesktopPinnedApps.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,9 +54,22 @@
     <EmbeddedResource Include="Interop\(interfaces)\AssemblyInfo.cs" />
     <EmbeddedResource Include="Interop\(interfaces)\IApplicationView.cs" />
     <EmbeddedResource Include="Interop\(interfaces)\IApplicationViewCollection.cs" />
-    <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktop.cs" />
-    <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktopManagerInternal.cs" />
-    <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktopNotification.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\10240\IVirtualDesktop.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\10240\IVirtualDesktop2.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\10240\IVirtualDesktopManagerInternal.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\10240\IVirtualDesktopManagerInternal2.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\10240\IVirtualDesktopManagerInternal3.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\10240\IVirtualDesktopNotification.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\10240\IVirtualDesktopNotification2.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\20231\IVirtualDesktop.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\20231\IVirtualDesktopManagerInternal.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\20231\IVirtualDesktopNotification.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\21313\IVirtualDesktop.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\21313\IVirtualDesktopManagerInternal.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\21313\IVirtualDesktopNotification.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\21359\IVirtualDesktop.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\21359\IVirtualDesktopManagerInternal.cs" />
+    <EmbeddedResource Include="Interop\(interfaces)\21359\IVirtualDesktopNotification.cs" />
     <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktopNotificationService.cs" />
     <EmbeddedResource Include="Interop\(interfaces)\IVirtualDesktopPinnedApps.cs" />
     <None Include="..\..\LICENSE">

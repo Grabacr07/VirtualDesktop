@@ -22,6 +22,16 @@
 					<Setter Property="BorderThickness"
 							Value="0.99" />
 				</Style>
+				<Style TargetType="{x:Type TextBox}">
+					<Setter Property="Padding"
+							Value="18,4" />
+					<Setter Property="HorizontalContentAlignment"
+							Value="Left" />
+					<Setter Property="Margin"
+							Value="8" />
+					<Setter Property="BorderThickness"
+							Value="0.99" />
+				</Style>
 			</Panel.Resources>
 			<StackPanel Margin="8">
 				<RadioButton x:Name="ThisWindowMenu"
@@ -56,6 +66,21 @@
 					Click="PinApp" />
 			<Button Content="Remove"
 					Click="Remove" />
+			<Button Content="Get name"
+					Click="GetName" />
+			<TextBox x:Name="NameTextBlock"
+					 Margin="8,8,8,0"
+					 Text="Desktop name" />
+			<Button Grid.Column="1"
+					Content="Set name"
+					Click="SetName"
+					Margin="8,0,8,8" />
+			<Button Content="Get wallpaper path"
+					Click="GetWallpaperPath" />
+			<Button Content="Move to previous"
+					Click="MovePrevious" />
+			<Button Content="Move to next"
+					Click="MoveNext" />
 		</StackPanel>
 	</ScrollViewer>
 </Window>

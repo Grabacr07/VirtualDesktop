@@ -7,4 +7,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("COM interface definitions for virtual desktop on Windows 10 build {VERSION}.")]
 [assembly: AssemblyCopyright("Copyright © 2018 Manato KAMEYA")]
 
-[assembly: AssemblyVersion("1.0.0")]
+[assembly: AssemblyVersion("1.0.0.{BUILD}")]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
 using WindowsDesktop.Internal;
+using WindowsDesktop.Properties;
 
 namespace WindowsDesktop.Interop
 {
@@ -39,7 +40,22 @@ namespace WindowsDesktop.Interop
 			VirtualDesktopCache.Initialize(this._assembly);
 
 			this.VirtualDesktopManager = (IVirtualDesktopManager)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID.VirtualDesktopManager));
-			this.VirtualDesktopManagerInternal = new VirtualDesktopManagerInternal(this._assembly);
+			if (ProductInfo.OSBuild >= 21359)
+			{
+				this.VirtualDesktopManagerInternal = new VirtualDesktopManagerInternal21359(this._assembly);
+			}
+			else if (ProductInfo.OSBuild >= 21313)
+			{
+				this.VirtualDesktopManagerInternal = new VirtualDesktopManagerInternal21313(this._assembly);
+			}
+			else if (ProductInfo.OSBuild >= 20231)
+			{
+				this.VirtualDesktopManagerInternal = new VirtualDesktopManagerInternal20231(this._assembly);
+			}
+			else
+			{
+				this.VirtualDesktopManagerInternal = new VirtualDesktopManagerInternal10240(this._assembly);
+			}
 			this.VirtualDesktopNotificationService = new VirtualDesktopNotificationService(this._assembly);
 			this.VirtualDesktopPinnedApps = new VirtualDesktopPinnedApps(this._assembly);
 			this.ApplicationViewCollection = new ApplicationViewCollection(this._assembly);

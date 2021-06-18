@@ -22,7 +22,7 @@ namespace WindowsDesktop.Interop
 			{
 				type = this._knownTypes[typeName] = this._compiledAssembly
 					.GetTypes()
-					.Single(x => x.Name.Split('.').Last() == typeName);
+					.SingleOrDefault(x => x.Name.Split('.').Last() == typeName);
 			}
 
 			return type;

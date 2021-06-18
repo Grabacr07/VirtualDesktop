@@ -10,8 +10,9 @@ namespace WindowsDesktop.Interop
 	{
 		int GetCount();
 
-		void MoveViewToDesktop(IApplicationView pView, IVirtualDesktop desktop);
+		void MoveViewToDesktop(IApplicationView pView, IVirtualDesktop pDesktop);
 
+		[return: MarshalAs(UnmanagedType.Bool)]
 		bool CanViewMoveDesktops(IApplicationView pView);
 
 		IVirtualDesktop GetCurrentDesktop();
@@ -20,12 +21,12 @@ namespace WindowsDesktop.Interop
 
 		IVirtualDesktop GetAdjacentDesktop(IVirtualDesktop pDesktopReference, AdjacentDesktop uDirection);
 
-		void SwitchDesktop(IVirtualDesktop desktop);
+		void SwitchDesktop(IVirtualDesktop pDesktop);
 
 		IVirtualDesktop CreateDesktopW();
 
 		void RemoveDesktop(IVirtualDesktop pRemove, IVirtualDesktop pFallbackDesktop);
 
-		IVirtualDesktop FindDesktop(ref Guid desktopId);
+		IVirtualDesktop FindDesktop([In, MarshalAs(UnmanagedType.LPStruct)] Guid desktopId);
 	}
 }

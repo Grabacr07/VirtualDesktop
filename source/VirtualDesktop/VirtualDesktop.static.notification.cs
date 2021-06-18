@@ -29,7 +29,22 @@ namespace WindowsDesktop
 		/// Occurs when the current virtual desktop is changed.
 		/// </summary>
 		public static event EventHandler<VirtualDesktopChangedEventArgs> CurrentChanged;
-		
+
+		/// <summary>
+		/// Occurs when a virtual desktop is moved.
+		/// </summary>
+		public static event EventHandler<VirtualDesktopMovedEventArgs> Moved;
+
+		/// <summary>
+		/// Occurs when a virtual desktop is renamed.
+		/// </summary>
+		public static event EventHandler<VirtualDesktopRenamedEventArgs> Renamed;
+
+		/// <summary>
+		/// Occurs when the wallpaper in the virtual desktop is changed.
+		/// </summary>
+		public static event EventHandler<VirtualDesktopWallpaperChangedEventArgs> WallpaperChanged;
+
 		internal static class EventRaiser
 		{
 			public static void RaiseCreated(object sender, VirtualDesktop pDesktop)
@@ -55,7 +70,7 @@ namespace WindowsDesktop
 				Destroyed?.Invoke(sender, args);
 			}
 
-			public static void RaiseApplicationViewChanged(object sender, IntPtr pView)
+			public static void RaiseApplicationViewChanged(object sender, object pView)
 			{
 				ApplicationViewChanged?.Invoke(sender, EventArgs.Empty);
 			}
@@ -64,6 +79,30 @@ namespace WindowsDesktop
 			{
 				var args = new VirtualDesktopChangedEventArgs(pDesktopOld, pDesktopNew);
 				CurrentChanged?.Invoke(sender, args);
+			}
+
+			public static void RaiseMoved(object sender, VirtualDesktop pDesktopMoved, int oldIndex, int newIndex)
+			{
+				var args = new VirtualDesktopMovedEventArgs(pDesktopMoved, oldIndex, newIndex);
+				Moved?.Invoke(sender, args);
+			}
+
+			public static void RaiseRenamed(object sender, VirtualDesktop pDesktop, string name)
+			{
+				var oldName = pDesktop.Name;
+				pDesktop.SetNameToCache(name);
+
+				var args = new VirtualDesktopRenamedEventArgs(pDesktop, oldName, name);
+				Renamed?.Invoke(sender, args);
+			}
+
+			public static void RaiseWallpaperChanged(object sender, VirtualDesktop pDesktop, string path)
+			{
+				var oldPath = pDesktop.WallpaperPath;
+				pDesktop.SetWallpaperPathToCache(path);
+
+				var args = new VirtualDesktopWallpaperChangedEventArgs(pDesktop, oldPath, path);
+				WallpaperChanged?.Invoke(sender, args);
 			}
 		}
 	}

@@ -16,7 +16,7 @@ namespace WindowsDesktop.Interop
 
 		void VirtualDesktopDestroyed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback);
 
-		void ViewVirtualDesktopChanged(IntPtr pView);
+		void ViewVirtualDesktopChanged(IApplicationView pView);
 
 		void CurrentVirtualDesktopChanged(IVirtualDesktop pDesktopOld, IVirtualDesktop pDesktopNew);
 	}
@@ -43,7 +43,7 @@ namespace WindowsDesktop.Interop
 			this.VirtualDesktopDestroyedCore(pDesktopDestroyed, pDesktopFallback);
 		}
 
-		public void ViewVirtualDesktopChanged(IntPtr pView)
+		public void ViewVirtualDesktopChanged(IApplicationView pView)
 		{
 			this.ViewVirtualDesktopChangedCore(pView);
 		}
