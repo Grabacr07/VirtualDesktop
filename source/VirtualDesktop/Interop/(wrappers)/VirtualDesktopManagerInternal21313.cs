@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 namespace WindowsDesktop.Interop
 {
 	[ComInterfaceWrapper("IVirtualDesktopManagerInternal", 21313)]
-	internal sealed class VirtualDesktopManagerInternal21313 : VirtualDesktopManagerInternal
+	internal class VirtualDesktopManagerInternal21313 : VirtualDesktopManagerInternal
 	{
 		public VirtualDesktopManagerInternal21313(ComInterfaceAssembly assembly)
 			: base(assembly)
