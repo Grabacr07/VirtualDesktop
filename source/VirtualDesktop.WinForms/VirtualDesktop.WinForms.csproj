@@ -5,8 +5,8 @@
     <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <Version>4.0.1</Version>
-    <Authors>Manato KAMEYA</Authors>
-    <Company>grabacr.net</Company>
+    <Authors>ppare@devolutions.net</Authors>
+    <Company>Devolutions</Company>
     <Description>C# wrapper for IVirtualDesktopManager on Windows 10.</Description>
     <Copyright>Copyright © 2020 Manato KAMEYA</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -14,6 +14,7 @@
     <RepositoryUrl>https://github.com/Grabacr07/VirtualDesktop</RepositoryUrl>
     <Product>VirtualDesktop</Product>
     <RootNamespace>WindowsDesktop</RootNamespace>
+    <PackageId>Devolutions.VirtualDesktop.WindowsDesktop</PackageId>
     <PackageTags>Windows;Windows10;Desktop;VirtualDesktop;</PackageTags>
   </PropertyGroup>
 

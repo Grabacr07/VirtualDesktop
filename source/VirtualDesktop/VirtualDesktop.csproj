@@ -6,12 +6,13 @@
     <RootNamespace>WindowsDesktop</RootNamespace>
     <PackageId>VirtualDesktop</PackageId>
     <Version>4.0.1</Version>
-    <Company>grabacr.net</Company>
+    <Company>Devolutions</Company>
     <Description>C# wrapper for IVirtualDesktopManager on Windows 10.</Description>
     <Copyright>Copyright © 2020 Manato KAMEYA</Copyright>
     <PackageProjectUrl>https://github.com/Grabacr07/VirtualDesktop</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Grabacr07/VirtualDesktop</RepositoryUrl>
-    <Authors>Manato KAMEYA</Authors>
+    <PackageId>Devolutions.VirtualDesktop</PackageId>
+    <Authors>ppare@devolutions.net</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageTags>Windows;Windows10;Desktop;VirtualDesktop;</PackageTags>
   </PropertyGroup>
