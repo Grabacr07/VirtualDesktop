@@ -1,0 +1,7 @@
+﻿CloseWindow
+GetForegroundWindow
+GetWindowThreadProcessId
+RegisterWindowMessage
+IServiceProvider
+IObjectArray
+IVirtualDesktopManager

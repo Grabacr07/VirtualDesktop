@@ -2,24 +2,16 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Authors>Manato KAMEYA</Authors>
-    <Company>grabacr.net</Company>
-    <Product>VirtualDesktop</Product>
-    <Description>C# wrapper for IVirtualDesktopManager on Windows 10.</Description>
-    <Copyright>Copyright © 2020 Manato KAMEYA</Copyright>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/Grabacr07/VirtualDesktop</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Grabacr07/VirtualDesktop</RepositoryUrl>
-    <PackageTags>Windows;Windows10;Desktop;VirtualDesktop;</PackageTags>
     <RootNamespace>VirtualDesktopShowcase</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\source\VirtualDesktop.WPF\VirtualDesktop.WPF.csproj" />
-    <ProjectReference Include="..\..\source\VirtualDesktop\VirtualDesktop.csproj" />
+    <ProjectReference Include="..\..\src\VirtualDesktop.Unsafe\VirtualDesktop.Unsafe.csproj" />
+    <ProjectReference Include="..\..\src\VirtualDesktop.WPF\VirtualDesktop.WPF.csproj" />
+    <ProjectReference Include="..\..\src\VirtualDesktop\VirtualDesktop.csproj" />
   </ItemGroup>
 
   <ItemGroup>

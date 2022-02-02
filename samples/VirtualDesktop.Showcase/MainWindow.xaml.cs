@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using WindowsDesktop;
+using WindowsDesktop.Properties;
 
 namespace VirtualDesktopShowcase
 {
@@ -18,26 +20,23 @@ namespace VirtualDesktopShowcase
 			InitializeComObjects();
 		}
 
-		private static async void InitializeComObjects()
-		{
-			try
-			{
-				await VirtualDesktopProvider.Default.Initialize(TaskScheduler.FromCurrentSynchronizationContext());
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Failed to initialize.");
-			}
+		private static void InitializeComObjects()
+        {
+            VirtualDesktop.Configure(new VirtualDesktopConfiguration());
 
-			VirtualDesktop.CurrentChanged += (sender, args) => System.Diagnostics.Debug.WriteLine($"Desktop changed: {args.NewDesktop.Id}");
-		}
+            VirtualDesktop.CurrentChanged += (_, args) => Debug.WriteLine($"Switched: {args.OldDesktop.Name} -> {args.NewDesktop.Name}");
+            VirtualDesktop.Renamed += (_, args) => Debug.WriteLine($"Renamed: {args.Desktop}");
+
+            foreach (var desktop in VirtualDesktop.GetDesktops())
+            {
+                Debug.WriteLine($"Detected: {desktop}");
+            }
+        }
 
 		private void CreateNew(object sender, RoutedEventArgs e)
-		{
-			VirtualDesktop.Create().Switch();
-		}
+            => VirtualDesktop.Create().Switch();
 
-		private async void CreateNewAndMove(object sender, RoutedEventArgs e)
+        private async void CreateNewAndMove(object sender, RoutedEventArgs e)
 		{
 			var desktop = VirtualDesktop.Create();
 
@@ -48,7 +47,7 @@ namespace VirtualDesktopShowcase
 			else
 			{
 				await Task.Delay(_delay);
-				VirtualDesktopHelper.MoveToDesktop(GetForegroundWindow(), desktop);
+				VirtualDesktop.MoveToDesktop(GetForegroundWindow(), desktop);
 			}
 
 			desktop.Switch();
@@ -71,7 +70,7 @@ namespace VirtualDesktopShowcase
 			else
 			{
 				await Task.Delay(_delay);
-				VirtualDesktopHelper.MoveToDesktop(GetForegroundWindow(), left);
+				VirtualDesktop.MoveToDesktop(GetForegroundWindow(), left);
 			}
 
 			left.Switch();
@@ -94,7 +93,7 @@ namespace VirtualDesktopShowcase
 			else
 			{
 				await Task.Delay(_delay);
-				VirtualDesktopHelper.MoveToDesktop(GetForegroundWindow(), right);
+				VirtualDesktop.MoveToDesktop(GetForegroundWindow(), right);
 			}
 
 			right.Switch();
@@ -123,7 +122,7 @@ namespace VirtualDesktopShowcase
 			else
 			{
 				await Task.Delay(_delay);
-				var appId = ApplicationHelper.GetAppId(GetForegroundWindow());
+				var appId = VirtualDesktop.GetAppId(GetForegroundWindow());
 				if (appId != null) (VirtualDesktop.IsPinnedApplication(appId) ? VirtualDesktop.UnpinApplication : (Action<string>)VirtualDesktop.PinApplication)(appId);
 			}
 		}
