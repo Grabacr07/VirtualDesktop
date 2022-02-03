@@ -1,13 +1,15 @@
-## VirtualDesktop
+# VirtualDesktop
 
-VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://msdn.microsoft.com/en-us/library/windows/desktop/mt186440%28v%3Dvs.85%29.aspx) on Windows 10.
+VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://msdn.microsoft.com/en-us/library/windows/desktop/mt186440%28v%3Dvs.85%29.aspx) on Windows 10 / 11.
 
 
 ## Features
 
-* Switch, add, and remove a Virtual Desktop.
-* Move the window in the same process to any Virtual Desktop.
-* Move the window of another process to any Virtual Desktop (Support in version 2.0 or later).
+* Switch, add, and remove a virtual desktop.
+* Move the window in the same process to any virtual desktop.
+* Move the window of another process to any virtual desktop (Support in version 2.0 or later).
+* Pin any window or application; will be display on all desktops.
+* Notification for switching, deletion, renaming, etc.
 
 
 ## Installation
@@ -23,7 +25,6 @@ PM> Install-Package VirtualDesktop
 * [VirtualDesktop.WinForms](https://www.nuget.org/packages/VirtualDesktop.WinForms/) - Provides extension methods for [Form class](https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx).
 
 
-
 ## How to use
 
 Preparation: 
@@ -31,7 +32,7 @@ Preparation:
 <!-- Please create application manifest file and run without debugging. -->
 <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
     <application>
-	    <!-- Windows 10 -->
+	    <!-- Windows 10 / 11-->
 	    <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
     </application>
 </compatibility>
@@ -40,9 +41,9 @@ Preparation:
 using WindowsDesktop;
 ```
 
-Get instance of VirtualDesktop: 
+Get instance of VirtualDesktop class: 
 ```csharp 
-// Get all Virtual Desktops
+// Get all virtual desktops
 var desktops = VirtualDesktop.GetDesktops();
 
 // Get Virtual Desktop for specific window
@@ -53,7 +54,7 @@ var left  = desktop.GetLeft();
 var right = desktop.GetRight();
 ```
 
-Manage Virtual Desktops:
+Manage virtual desktops:
 ```csharp
 // Create new
 var desktop = VirtualDesktop.Create();
@@ -62,8 +63,16 @@ var desktop = VirtualDesktop.Create();
 desktop.Remove();
 
 // Switch
-desktop.Switch();
+desktop.GetLeft().Switch();
+```
 
+Virtual desktop events:
+```csharp
+// Notification of desktop switching
+VirtualDesktop.CurrentChanged += (_, args) => Console.WriteLine($"Switched: {args.NewDesktop.Name}");
+
+// Notification of desktop creating
+VirtualDesktop.Created += (_, desktop) => desktop.Switch();
 ```
 
 for WPF window
@@ -78,12 +87,14 @@ var desktop = window.GetCurrentDesktop();
 
 // Move window to specific Virtual Desktop
 window.MoveToDesktop(desktop);
+
+// Pin window
+window.Pin()
 ```
 
 See also:
 * [samples/VirtualDesktop.Showcase](samples/VirtualDesktop.Showcase) project  
-![ss150904031950kd](https://cloud.githubusercontent.com/assets/1779073/9666915/d57850d8-52b3-11e5-9d61-b13a49656b11.png)
-
+![](https://user-images.githubusercontent.com/1779073/152408982-149d483f-ee5b-48da-974f-6eb0f332364d.png)
 
 ## License
 
