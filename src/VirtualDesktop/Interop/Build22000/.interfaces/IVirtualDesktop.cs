@@ -11,18 +11,18 @@ namespace WindowsDesktop.Interop.Build22000
     // see also: https://github.com/microsoft/CsWinRT/blob/master/docs/interop.md
 
     [ComImport]
-	[Guid("00000000-0000-0000-0000-000000000000") /* replace at runtime */]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IVirtualDesktop
-	{
-		bool IsViewVisible(IApplicationView view);
+    [Guid("00000000-0000-0000-0000-000000000000") /* replace at runtime */]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IVirtualDesktop
+    {
+        bool IsViewVisible(IApplicationView view);
 
-		Guid GetID();
+        Guid GetID();
 
-		IntPtr Proc5();
-        
+        IntPtr Proc5();
+
         IntPtr GetName();
 
         IntPtr GetWallpaperPath();
-	}
+    }
 }

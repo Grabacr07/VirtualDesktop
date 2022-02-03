@@ -103,7 +103,7 @@ namespace WindowsDesktop.Interop.Build10240
         IApplicationView GetRootSwitchableOwner();
 
         IObjectArray EnumerateOwnershipTree();
-        
+
         [return: MarshalAs(UnmanagedType.LPWStr)]
         string GetEnterpriseId();
 

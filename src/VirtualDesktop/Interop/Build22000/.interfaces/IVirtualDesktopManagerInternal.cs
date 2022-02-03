@@ -5,45 +5,45 @@ using WindowsDesktop.Interop.Build10240;
 
 namespace WindowsDesktop.Interop.Build22000
 {
-	[ComImport]
-	[Guid("00000000-0000-0000-0000-000000000000") /* replace at runtime */]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	internal interface IVirtualDesktopManagerInternal
-	{
-		int GetCount(IntPtr hWndOrMon);
+    [ComImport]
+    [Guid("00000000-0000-0000-0000-000000000000") /* replace at runtime */]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal interface IVirtualDesktopManagerInternal
+    {
+        int GetCount(IntPtr hWndOrMon);
 
-		void MoveViewToDesktop(IApplicationView pView, IVirtualDesktop desktop);
+        void MoveViewToDesktop(IApplicationView pView, IVirtualDesktop desktop);
 
-		bool CanViewMoveDesktops(IApplicationView pView);
+        bool CanViewMoveDesktops(IApplicationView pView);
 
-		IVirtualDesktop GetCurrentDesktop(IntPtr hWndOrMon);
+        IVirtualDesktop GetCurrentDesktop(IntPtr hWndOrMon);
 
-		IObjectArray GetDesktops(IntPtr hWndOrMon);
+        IObjectArray GetDesktops(IntPtr hWndOrMon);
 
-		IVirtualDesktop GetAdjacentDesktop(IVirtualDesktop pDesktopReference, AdjacentDesktop uDirection);
+        IVirtualDesktop GetAdjacentDesktop(IVirtualDesktop pDesktopReference, AdjacentDesktop uDirection);
 
-		void SwitchDesktop(IntPtr hWndOrMon, IVirtualDesktop desktop);
+        void SwitchDesktop(IntPtr hWndOrMon, IVirtualDesktop desktop);
 
-		IVirtualDesktop CreateDesktop(IntPtr hWndOrMon);
+        IVirtualDesktop CreateDesktop(IntPtr hWndOrMon);
 
-		void MoveDesktop(IVirtualDesktop desktop, IntPtr hWndOrMon, int nIndex);
+        void MoveDesktop(IVirtualDesktop desktop, IntPtr hWndOrMon, int nIndex);
 
-		void RemoveDesktop(IVirtualDesktop pRemove, IVirtualDesktop pFallbackDesktop);
+        void RemoveDesktop(IVirtualDesktop pRemove, IVirtualDesktop pFallbackDesktop);
 
-		IVirtualDesktop FindDesktop(in Guid desktopId);
+        IVirtualDesktop FindDesktop(in Guid desktopId);
 
-		void GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop desktop, out IObjectArray o1, out IObjectArray o2);
+        void GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop desktop, out IObjectArray o1, out IObjectArray o2);
 
-		void SetDesktopName(IVirtualDesktop desktop, IntPtr name);
+        void SetDesktopName(IVirtualDesktop desktop, IntPtr name);
 
-		void SetDesktopWallpaper(IVirtualDesktop desktop, IntPtr path);
+        void SetDesktopWallpaper(IVirtualDesktop desktop, IntPtr path);
 
-		void UpdateWallpaperPathForAllDesktops(IntPtr path);
+        void UpdateWallpaperPathForAllDesktops(IntPtr path);
 
-		void CopyDesktopState(IApplicationView pView0, IApplicationView pView1);
+        void CopyDesktopState(IApplicationView pView0, IApplicationView pView1);
 
-		bool GetDesktopIsPerMonitor();
+        bool GetDesktopIsPerMonitor();
 
-		void SetDesktopIsPerMonitor(bool state);
-	}
+        void SetDesktopIsPerMonitor(bool state);
+    }
 }
