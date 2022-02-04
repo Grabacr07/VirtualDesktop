@@ -18,7 +18,7 @@ public class VirtualDesktopManagerInternal : ComWrapperBase<IVirtualDesktopManag
 
     public IEnumerable<IVirtualDesktop> GetDesktops()
     {
-        var array = this.InvokeMethod<IObjectArray>(Args(IntPtr.Zero));
+        var array = this.InvokeMethod<IObjectArray>();
         if (array == null) yield break;
 
         array.GetCount(out var count);
