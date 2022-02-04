@@ -35,12 +35,17 @@ partial class VirtualDesktop
     /// </summary>
     public static event EventHandler<VirtualDesktopRenamedEventArgs>? Renamed;
 
+    /// <summary>
+    /// Occurs when a virtual desktop wallpaper is changed.
+    /// </summary>
+    public static event EventHandler<VirtualDesktopWallpaperChangedEventArgs>? WallpaperChanged;
+
     private class EventProxy : IVirtualDesktopNotification
     {
         public void VirtualDesktopCreated(IVirtualDesktop pDesktop)
             => Created?.Invoke(this, pDesktop.ToVirtualDesktop());
 
-        public void VirtualDesktopDestroyBegin(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback) 
+        public void VirtualDesktopDestroyBegin(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
             => DestroyBegin?.Invoke(this, new VirtualDesktopDestroyEventArgs(pDesktopDestroyed, pDesktopFallback));
 
         public void VirtualDesktopDestroyFailed(IVirtualDesktop pDesktopDestroyed, IVirtualDesktop pDesktopFallback)
@@ -59,16 +64,20 @@ partial class VirtualDesktop
         public void CurrentVirtualDesktopChanged(IVirtualDesktop pDesktopOld, IVirtualDesktop pDesktopNew)
             => CurrentChanged?.Invoke(this, new VirtualDesktopChangedEventArgs(pDesktopOld, pDesktopNew));
 
-        public void VirtualDesktopWallpaperChanged(IVirtualDesktop pDesktop, string chPath)
-        {
-        }
-
         public void VirtualDesktopRenamed(IVirtualDesktop pDesktop, string chName)
         {
             var desktop = pDesktop.ToVirtualDesktop();
             desktop._name = chName;
 
             Renamed?.Invoke(this, new VirtualDesktopRenamedEventArgs(desktop, chName));
+        }
+
+        public void VirtualDesktopWallpaperChanged(IVirtualDesktop pDesktop, string chPath)
+        {
+            var desktop = pDesktop.ToVirtualDesktop();
+            desktop._wallpaperPath = chPath;
+
+            WallpaperChanged?.Invoke(this, new VirtualDesktopWallpaperChangedEventArgs(desktop, chPath));
         }
     }
 }

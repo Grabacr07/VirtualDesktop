@@ -26,10 +26,11 @@ namespace VirtualDesktopShowcase
 
             VirtualDesktop.CurrentChanged += (_, args) => Debug.WriteLine($"Switched: {args.OldDesktop.Name} -> {args.NewDesktop.Name}");
             VirtualDesktop.Renamed += (_, args) => Debug.WriteLine($"Renamed: {args.Desktop}");
+            VirtualDesktop.WallpaperChanged += (_, args) => Debug.WriteLine($"Wallpaper changed: {args.Desktop}, {args.Path}");
 
             foreach (var desktop in VirtualDesktop.GetDesktops())
             {
-                Debug.WriteLine($"Detected: {desktop}");
+                Debug.WriteLine($"Detected: {desktop}, {desktop.WallpaperPath}");
             }
         }
 

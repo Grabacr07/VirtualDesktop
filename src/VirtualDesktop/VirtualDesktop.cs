@@ -23,7 +23,7 @@ public partial class VirtualDesktop
     public Guid Id { get; }
 
     /// <summary>
-    /// Gets the name of this virtual desktop.
+    /// Gets or sets the path of the desktop wallpaper.
     /// </summary>
     public string Name
     {
@@ -32,6 +32,19 @@ public partial class VirtualDesktop
         {
             _provider.VirtualDesktopManagerInternal.SetDesktopName(this._source, value);
             this._name = value;
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the name of this virtual desktop.
+    /// </summary>
+    public string WallpaperPath
+    {
+        get => this._wallpaperPath;
+        set
+        {
+            _provider.VirtualDesktopManagerInternal.SetDesktopWallpaper(this._source, value);
+            this._wallpaperPath = value;
         }
     }
 

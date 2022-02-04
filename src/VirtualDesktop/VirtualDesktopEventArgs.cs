@@ -17,10 +17,21 @@ namespace WindowsDesktop
             this.Desktop = desktop;
             this.Name = name;
         }
+    }
 
-        internal VirtualDesktopRenamedEventArgs(IVirtualDesktop desktop, string name)
-            : this(desktop.ToVirtualDesktop(), name)
+    /// <summary>
+    /// Provides data for the <see cref="VirtualDesktop.WallpaperChanged" /> event.
+    /// </summary>
+    public class VirtualDesktopWallpaperChangedEventArgs : EventArgs
+    {
+        public VirtualDesktop Desktop { get; }
+
+        public string Path { get; }
+
+        public VirtualDesktopWallpaperChangedEventArgs(VirtualDesktop desktop, string path)
         {
+            this.Desktop = desktop;
+            this.Path = path;
         }
     }
 

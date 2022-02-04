@@ -20,6 +20,7 @@ partial class VirtualDesktop
     private static IDisposable? _notificationListener;
     private readonly IVirtualDesktop _source;
     private string _name;
+    private string _wallpaperPath;
 
     /// <summary>
     /// Gets a value indicating virtual desktops are supported by the host.
@@ -45,6 +46,7 @@ partial class VirtualDesktop
     {
         this._source = source;
         this._name = source.GetName();
+        this._wallpaperPath = source.GetWallpaperPath();
         this.Id = source.GetID();
     }
 

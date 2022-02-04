@@ -27,4 +27,6 @@ public interface IVirtualDesktopManagerInternal
     void MoveViewToDesktop(IntPtr hWnd, IVirtualDesktop desktop);
 
     void SetDesktopName(IVirtualDesktop desktop, string name);
+
+    void SetDesktopWallpaper(IVirtualDesktop desktop, string path);
 }
