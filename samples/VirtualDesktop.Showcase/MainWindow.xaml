@@ -82,41 +82,65 @@
                                   ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}, Path=Desktops}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type l:VirtualDesktopViewModel}">
-                                <Button Click="SwitchDesktop">
-                                    <Button.Resources>
+                                <Button x:Name="outerBorder"
+                                        Click="SwitchDesktop">
+                                    <Button.Style>
                                         <Style TargetType="{x:Type Button}">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type Button}">
-                                                        <ContentPresenter />
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
+                                            <Style.Setters>
+                                                <Setter Property="BorderBrush"
+                                                        Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" />
+                                                <Setter Property="BorderThickness"
+                                                        Value=".99" />
+                                                <Setter Property="Margin"
+                                                        Value="8" />
+                                                <Setter Property="Opacity"
+                                                        Value="0.75" />
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                                    Background="Transparent">
+                                                                <ContentPresenter />
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style.Setters>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver"
+                                                         Value="True">
+                                                    <Setter Property="BorderBrush"
+                                                            Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                                    <Setter Property="Opacity"
+                                                            Value="1.0" />
+                                                </Trigger>
+                                            </Style.Triggers>
                                         </Style>
-                                    </Button.Resources>
-                                    <Border x:Name="outerBorder"
-                                            BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
-                                            BorderThickness=".99"
-                                            Margin="8">
-                                        <DockPanel>
-                                            <StackPanel x:Name="texts"
-                                                        Margin="8">
-                                                <TextBlock Text="{Binding Name, Mode=OneWay}" />
-                                                <TextBlock Text="{Binding Id, Mode=OneWay}"
-                                                           FontSize="12" />
-                                                <TextBlock Text="{Binding ShowcaseMessage, Mode=OneWay}"
-                                                           FontSize="12" />
-                                            </StackPanel>
-                                            <Button Click="ChangeWallpaper"
-                                                    Height="{Binding ElementName=texts, Path=ActualHeight}"
+                                    </Button.Style>
+                                    <DockPanel>
+                                        <StackPanel x:Name="texts"
                                                     Margin="8">
-                                                <Image Source="{Binding WallpaperPath}"
-                                                       StretchDirection="DownOnly"
-                                                       Stretch="Uniform"
-                                                       HorizontalAlignment="Right" />
-                                            </Button>
-                                        </DockPanel>
-                                    </Border>
+                                            <TextBlock Text="{Binding Name, Mode=OneWay}" />
+                                            <TextBlock Text="{Binding Id, Mode=OneWay}"
+                                                       FontSize="12" />
+                                            <TextBlock Text="{Binding ShowcaseMessage, Mode=OneWay}"
+                                                       FontSize="12" />
+                                        </StackPanel>
+                                        <Button Click="ChangeWallpaper"
+                                                Height="{Binding ElementName=texts, Path=ActualHeight}"
+                                                Margin="8">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                    <ContentPresenter />
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                            <Image Source="{Binding WallpaperPath}"
+                                                   StretchDirection="DownOnly"
+                                                   Stretch="Uniform"
+                                                   HorizontalAlignment="Right" />
+                                        </Button>
+                                    </DockPanel>
                                 </Button>
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding IsCurrent}"
@@ -131,6 +155,9 @@
                                             <Setter TargetName="outerBorder"
                                                     Property="Margin"
                                                     Value="6" />
+                                            <Setter TargetName="outerBorder"
+                                                    Property="Opacity"
+                                                    Value="1.0" />
                                         </DataTrigger.Setters>
                                     </DataTrigger>
                                 </DataTemplate.Triggers>

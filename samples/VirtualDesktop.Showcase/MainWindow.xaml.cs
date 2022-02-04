@@ -76,7 +76,7 @@ partial class MainWindow
         VirtualDesktop.WallpaperChanged += (_, args) =>
         {
             var desktop = this.Desktops.FirstOrDefault(x => x.Id == args.Desktop.Id);
-            if (desktop != null) desktop.WallpaperPath = args.Path;
+            if (desktop != null) desktop.WallpaperPath = new Uri(args.Path);
             Debug.WriteLine($"Wallpaper changed: {args.Desktop}, {args.Path}");
         };
 
@@ -119,7 +119,7 @@ partial class MainWindow
     }
 
     private void CreateNew(object sender, RoutedEventArgs e)
-        => VirtualDesktop.Create().Switch();
+        => VirtualDesktop.Create();
 
     private async void CreateNewAndMove(object sender, RoutedEventArgs e)
     {
@@ -258,7 +258,7 @@ partial class MainWindow
 public class VirtualDesktopViewModel : INotifyPropertyChanged
 {
     private string _name;
-    private string _wallpaperPath;
+    private Uri _wallpaperPath;
     private string _showcaseMessage;
     private bool _isCurrent;
 
@@ -279,7 +279,7 @@ public class VirtualDesktopViewModel : INotifyPropertyChanged
         }
     }
 
-    public string WallpaperPath
+    public Uri WallpaperPath
     {
         get => this._wallpaperPath;
         set
@@ -321,7 +321,7 @@ public class VirtualDesktopViewModel : INotifyPropertyChanged
     public VirtualDesktopViewModel(VirtualDesktop source)
     {
         this._name = string.IsNullOrEmpty(source.Name) ? "(no name)" : source.Name;
-        this._wallpaperPath = source.WallpaperPath;
+        this._wallpaperPath = new Uri(source.WallpaperPath);
         this._showcaseMessage = "";
         this.Id = source.Id;
     }

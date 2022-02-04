@@ -1,6 +1,6 @@
 # VirtualDesktop
 
-VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://msdn.microsoft.com/en-us/library/windows/desktop/mt186440%28v%3Dvs.85%29.aspx) on Windows 10 / 11.
+VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://msdn.microsoft.com/en-us/library/windows/desktop/mt186440%28v%3Dvs.85%29.aspx) on Windows 11.
 
 
 ## Features
@@ -10,6 +10,19 @@ VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://msdn.microsoft
 * Move the window of another process to any virtual desktop (Support in version 2.0 or later).
 * Pin any window or application; will be display on all desktops.
 * Notification for switching, deletion, renaming, etc.
+* Change the wallpaper for each desktop.
+
+
+### Sample app
+
+![](https://user-images.githubusercontent.com/1779073/152605684-2d872356-1882-4bfd-821d-d4211ccac069.gif)
+
+
+## Requirements
+
+`net6.0-windows10.0.19041.0`
+* .NET 6
+* Windows 10 build 19041 (20H1) or later
 
 
 ## Installation
@@ -93,8 +106,8 @@ window.Pin()
 ```
 
 See also:
-* [samples/VirtualDesktop.Showcase](samples/VirtualDesktop.Showcase) project  
-![](https://user-images.githubusercontent.com/1779073/152408982-149d483f-ee5b-48da-974f-6eb0f332364d.png)
+* [samples/README.md](samples/README.md)
+
 
 ## License
 
