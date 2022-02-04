@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using WindowsDesktop.Interop;
 using WindowsDesktop.Interop.Build10240;
 using WindowsDesktop.Interop.Build22000;
@@ -82,5 +83,28 @@ partial class VirtualDesktop
 
         _notificationListener?.Dispose();
         _notificationListener = _provider.VirtualDesktopNotificationService.Register(new EventProxy());
+    }
+
+    private static T SafeInvoke<T>(Func<T> action, Func<T> error, params HResult[]? hResult)
+    {
+        try
+        {
+            return action();
+        }
+        catch (COMException ex) when (ex.Match(hResult ?? new[] { HResult.TYPE_E_ELEMENTNOTFOUND, }))
+        {
+            return error();
+        }
+    }
+
+    private static void SafeInvoke(Action action, params HResult[]? hResult)
+    {
+        try
+        {
+            action();
+        }
+        catch (COMException ex) when (ex.Match(hResult ?? new[] { HResult.TYPE_E_ELEMENTNOTFOUND, }))
+        {
+        }
     }
 }

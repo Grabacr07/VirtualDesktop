@@ -171,16 +171,11 @@ public partial class VirtualDesktop
     {
         InitializeIfNeeded();
 
-        try
-        {
-            return _provider.VirtualDesktopManagerInternal
+        return SafeInvoke<VirtualDesktop?>(
+            () => _provider.VirtualDesktopManagerInternal
                 .FindDesktop(desktopId)
-                .ToVirtualDesktop();
-        }
-        catch (COMException ex) when (ex.Match(HResult.TYPE_E_ELEMENTNOTFOUND))
-        {
-            return null;
-        }
+                .ToVirtualDesktop(),
+            () => null);
     }
 
     /// <summary>
@@ -192,19 +187,18 @@ public partial class VirtualDesktop
     {
         InitializeIfNeeded();
 
-        if (hWnd == IntPtr.Zero) return null;
+        if (hWnd == IntPtr.Zero || IsPinnedWindow(hWnd)) return null;
 
-        try
-        {
-            _provider.VirtualDesktopManager.GetWindowDesktopId((HWND)hWnd, out var desktopId);
-            return _provider.VirtualDesktopManagerInternal
-                .FindDesktop(desktopId)
-                .ToVirtualDesktop();
-        }
-        catch (COMException ex) when (ex.Match(HResult.REGDB_E_CLASSNOTREG, HResult.TYPE_E_ELEMENTNOTFOUND))
-        {
-            return null;
-        }
+        return SafeInvoke<VirtualDesktop?>(
+            () =>
+            {
+                _provider.VirtualDesktopManager.GetWindowDesktopId((HWND)hWnd, out var desktopId);
+                return _provider.VirtualDesktopManagerInternal
+                    .FindDesktop(desktopId)
+                    .ToVirtualDesktop();
+            },
+            () => null,
+            HResult.REGDB_E_CLASSNOTREG, HResult.TYPE_E_ELEMENTNOTFOUND);
     }
 
     #endregion
@@ -219,7 +213,7 @@ public partial class VirtualDesktop
     {
         InitializeIfNeeded();
 
-        return _provider.VirtualDesktopPinnedApps.IsViewPinned(hWnd);
+        return SafeInvoke(() => _provider.VirtualDesktopPinnedApps.IsViewPinned(hWnd), () => false);
     }
 
     /// <summary>
@@ -232,7 +226,7 @@ public partial class VirtualDesktop
 
         if (_provider.VirtualDesktopPinnedApps.IsViewPinned(hWnd) == false)
         {
-            _provider.VirtualDesktopPinnedApps.PinView(hWnd);
+            SafeInvoke(() => _provider.VirtualDesktopPinnedApps.PinView(hWnd));
         }
     }
 
@@ -246,7 +240,7 @@ public partial class VirtualDesktop
 
         if (_provider.VirtualDesktopPinnedApps.IsViewPinned(hWnd))
         {
-            _provider.VirtualDesktopPinnedApps.UnpinView(hWnd);
+            SafeInvoke(() => _provider.VirtualDesktopPinnedApps.UnpinView(hWnd));
         }
     }
 
@@ -258,7 +252,7 @@ public partial class VirtualDesktop
     {
         InitializeIfNeeded();
 
-        return _provider.VirtualDesktopPinnedApps.IsAppIdPinned(appId);
+        return SafeInvoke(() => _provider.VirtualDesktopPinnedApps.IsAppIdPinned(appId), () => false);
     }
 
     /// <summary>
@@ -271,7 +265,7 @@ public partial class VirtualDesktop
 
         if (_provider.VirtualDesktopPinnedApps.IsAppIdPinned(appId) == false)
         {
-            _provider.VirtualDesktopPinnedApps.PinAppID(appId);
+            SafeInvoke(() => _provider.VirtualDesktopPinnedApps.PinAppID(appId));
         }
     }
 
@@ -285,7 +279,7 @@ public partial class VirtualDesktop
 
         if (_provider.VirtualDesktopPinnedApps.IsAppIdPinned(appId))
         {
-            _provider.VirtualDesktopPinnedApps.UnpinAppID(appId);
+            SafeInvoke(() => _provider.VirtualDesktopPinnedApps.UnpinAppID(appId));
         }
     }
 

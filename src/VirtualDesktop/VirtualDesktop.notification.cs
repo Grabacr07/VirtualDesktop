@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using WindowsDesktop.Interop;
 using WindowsDesktop.Interop.Proxy;
+using WindowsDesktop.Utils;
 
 namespace WindowsDesktop;
 
 partial class VirtualDesktop
 {
+    private static readonly ConcurrentDictionary<IntPtr, ViewChangedListener> _viewChangedEventListeners = new();
+
     /// <summary>
     /// Occurs when a virtual desktop is created.
     /// </summary>
@@ -22,12 +24,7 @@ partial class VirtualDesktop
     /// Occurs when a virtual desktop is destroyed.
     /// </summary>
     public static event EventHandler<VirtualDesktopDestroyEventArgs>? Destroyed;
-
-    /// <summary>
-    /// Occurs when a application view is changed.
-    /// </summary>
-    public static event EventHandler<ApplicationViewChangedEventArgs>? ApplicationViewChanged;
-
+    
     /// <summary>
     /// Occurs when the current virtual desktop is changed.
     /// </summary>
@@ -42,6 +39,20 @@ partial class VirtualDesktop
     /// Occurs when a virtual desktop wallpaper is changed.
     /// </summary>
     public static event EventHandler<VirtualDesktopWallpaperChangedEventArgs>? WallpaperChanged;
+
+    /// <summary>
+    /// Register a listener to receive changes in the application view.
+    /// </summary>
+    /// <param name="targetHwnd">The target window handle to receive events from. If specify <see cref="IntPtr.Zero"/>, all changes will be delivered.</param>
+    /// <param name="action">Action to be performed.</param>
+    /// <returns></returns>
+    public static IDisposable RegisterViewChanged(IntPtr targetHwnd, Action<IntPtr> action)
+    {
+        var listener = _viewChangedEventListeners.GetOrAdd(targetHwnd, x => new ViewChangedListener(x));
+        listener.Listeners.Add(action);
+
+        return Disposable.Create(() => listener.Listeners.Remove(action));
+    }
 
     private class EventProxy : IVirtualDesktopNotification
     {
@@ -62,7 +73,10 @@ partial class VirtualDesktop
         }
 
         public void ViewVirtualDesktopChanged(IApplicationView pView)
-            => ApplicationViewChanged?.Invoke(this, new ApplicationViewChangedEventArgs(pView.GetThumbnailWindow(), FromId(pView.GetVirtualDesktopId())));
+        {
+            if (_viewChangedEventListeners.TryGetValue(IntPtr.Zero, out var all)) all.Call();
+            if (_viewChangedEventListeners.TryGetValue(pView.GetThumbnailWindow(), out var listener)) listener.Call();
+        }
 
         public void CurrentVirtualDesktopChanged(IVirtualDesktop pDesktopOld, IVirtualDesktop pDesktopNew)
             => CurrentChanged?.Invoke(this, new VirtualDesktopChangedEventArgs(pDesktopOld, pDesktopNew));
@@ -81,6 +95,23 @@ partial class VirtualDesktop
             desktop._wallpaperPath = chPath;
 
             WallpaperChanged?.Invoke(this, new VirtualDesktopWallpaperChangedEventArgs(desktop, chPath));
+        }
+    }
+
+    private class ViewChangedListener
+    {
+        private readonly IntPtr _targetHandle;
+
+        public List<Action<IntPtr>> Listeners { get; } = new();
+
+        public ViewChangedListener(IntPtr targetHandle)
+        {
+            this._targetHandle = targetHandle;
+        }
+
+        public void Call()
+        {
+            foreach (var listener in this.Listeners) listener(this._targetHandle);
         }
     }
 }
