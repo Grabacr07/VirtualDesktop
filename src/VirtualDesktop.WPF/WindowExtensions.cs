@@ -40,7 +40,7 @@ public static class WindowExtensions
     /// <param name="window">The window to move.</param>
     public static void SwitchAndMove(this VirtualDesktop virtualDesktop, Window window)
     {
-        window.MoveToDesktop(virtualDesktop);
+        if (window.IsPinned() == false) window.MoveToDesktop(virtualDesktop);
         virtualDesktop.Switch();
     }
 

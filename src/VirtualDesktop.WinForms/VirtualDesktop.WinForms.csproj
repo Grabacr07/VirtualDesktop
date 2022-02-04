@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net6.0-windows10.0.19041.0</TargetFrameworks>
@@ -15,11 +15,6 @@
     <Product>VirtualDesktop</Product>
     <RootNamespace>WindowsDesktop</RootNamespace>
     <PackageTags>Windows;Windows10;Desktop;VirtualDesktop;</PackageTags>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\$(TargetFramework)\VirtualDesktop.WinForms.xml</DocumentationFile>
-    <NoWarn>1701,1702,1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
