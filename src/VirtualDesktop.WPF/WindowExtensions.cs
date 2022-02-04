@@ -20,7 +20,7 @@ public static class WindowExtensions
     /// <summary>
     /// Returns the virtual desktop this window is located on.
     /// </summary>
-    public static VirtualDesktop GetCurrentDesktop(this Window window)
+    public static VirtualDesktop? GetCurrentDesktop(this Window window)
     {
         return VirtualDesktop.FromHwnd(window.GetHandle());
     }
@@ -89,10 +89,7 @@ public static class WindowExtensions
     /// Returns the window handle for this <see cref="Visual" />.
     /// </summary>
     internal static IntPtr GetHandle(this Visual visual)
-    {
-        var hwndSource = (HwndSource)PresentationSource.FromVisual(visual);
-        if (hwndSource == null) throw new InvalidOperationException();
-
-        return hwndSource.Handle;
-    }
+        => PresentationSource.FromVisual(visual) is HwndSource hwndSource
+            ? hwndSource.Handle
+            : throw new InvalidOperationException();
 }

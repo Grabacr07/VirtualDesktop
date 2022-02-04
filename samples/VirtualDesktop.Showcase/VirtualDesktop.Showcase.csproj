@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
     <RootNamespace>VirtualDesktopShowcase</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
@@ -12,13 +13,6 @@
     <ProjectReference Include="..\..\src\VirtualDesktop.Unsafe\VirtualDesktop.Unsafe.csproj" />
     <ProjectReference Include="..\..\src\VirtualDesktop.WPF\VirtualDesktop.WPF.csproj" />
     <ProjectReference Include="..\..\src\VirtualDesktop\VirtualDesktop.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
 </Project>

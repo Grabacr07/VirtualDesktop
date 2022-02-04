@@ -56,12 +56,12 @@ namespace VirtualDesktopShowcase
 
 		private void SwitchLeft(object sender, RoutedEventArgs e)
 		{
-			this.GetCurrentDesktop().GetLeft()?.Switch();
+			this.GetCurrentDesktop()?.GetLeft()?.Switch();
 		}
 
 		private async void SwitchLeftAndMove(object sender, RoutedEventArgs e)
 		{
-			var left = this.GetCurrentDesktop().GetLeft();
+			var left = this.GetCurrentDesktop()?.GetLeft();
 			if (left == null) return;
 
 			if (this.ThisWindowMenu.IsChecked ?? false)
@@ -75,16 +75,16 @@ namespace VirtualDesktopShowcase
 			}
 
 			left.Switch();
-		}
+        }
 
 		private void SwitchRight(object sender, RoutedEventArgs e)
 		{
-			this.GetCurrentDesktop().GetRight()?.Switch();
+			this.GetCurrentDesktop()?.GetRight()?.Switch();
 		}
 
 		private async void SwitchRightAndMove(object sender, RoutedEventArgs e)
 		{
-			var right = this.GetCurrentDesktop().GetRight();
+			var right = this.GetCurrentDesktop()?.GetRight();
 			if (right == null) return;
 
 			if (this.ThisWindowMenu.IsChecked ?? false)
@@ -98,7 +98,7 @@ namespace VirtualDesktopShowcase
 			}
 
 			right.Switch();
-		}
+        }
 
 		private async void Pin(object sender, RoutedEventArgs e)
 		{
@@ -132,12 +132,12 @@ namespace VirtualDesktopShowcase
 		{
 			if (this.ThisWindowMenu.IsChecked ?? false)
 			{
-				this.GetCurrentDesktop().Remove();
+				this.GetCurrentDesktop()?.Remove();
 			}
 			else
 			{
 				await Task.Delay(_delay);
-				this.GetCurrentDesktop().Remove();
+				this.GetCurrentDesktop()?.Remove();
 			}
 		}
 
