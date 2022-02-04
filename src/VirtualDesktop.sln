@@ -16,8 +16,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDesktop.WinForms", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDesktop", "VirtualDesktop\VirtualDesktop.csproj", "{B8A37B59-0F48-4A44-ADF7-96C54AC6CE61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDesktop.Unsafe", "VirtualDesktop.Unsafe\VirtualDesktop.Unsafe.csproj", "{9F9D5F40-CEA7-44EE-AD9E-BAE39C27466D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{335CE9BA-A467-4667-8707-D4B779EC8005}"
 	ProjectSection(SolutionItems) = preProject
 		..\.editorconfig = ..\.editorconfig
@@ -48,10 +46,6 @@ Global
 		{B8A37B59-0F48-4A44-ADF7-96C54AC6CE61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8A37B59-0F48-4A44-ADF7-96C54AC6CE61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8A37B59-0F48-4A44-ADF7-96C54AC6CE61}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F9D5F40-CEA7-44EE-AD9E-BAE39C27466D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F9D5F40-CEA7-44EE-AD9E-BAE39C27466D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F9D5F40-CEA7-44EE-AD9E-BAE39C27466D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F9D5F40-CEA7-44EE-AD9E-BAE39C27466D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using IServiceProvider = Windows.Win32.System.Com.IServiceProvider;
 
 namespace WindowsDesktop.Interop
 {

@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VirtualDesktop.Unsafe\VirtualDesktop.Unsafe.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="VirtualDesktop.csproj.DotSettings" />
     <EmbeddedResource Include="Interop\Build10240\.interfaces\AssemblyInfo.cs" />
     <EmbeddedResource Include="Interop\Build10240\.interfaces\IApplicationView.cs" />

@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\VirtualDesktop.Unsafe\VirtualDesktop.Unsafe.csproj" />
     <ProjectReference Include="..\..\src\VirtualDesktop.WPF\VirtualDesktop.WPF.csproj" />
     <ProjectReference Include="..\..\src\VirtualDesktop\VirtualDesktop.csproj" />
   </ItemGroup>

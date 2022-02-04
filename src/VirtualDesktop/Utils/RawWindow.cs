@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows.Interop;
 using System.Windows.Threading;
-using Windows.Win32;
-using Windows.Win32.Foundation;
+using WindowsDesktop.Interop;
 
 namespace WindowsDesktop.Utils;
 
@@ -33,7 +32,7 @@ internal abstract class RawWindow
         this._source?.Dispatcher?.BeginInvoke(DispatcherPriority.Send, () => this._source?.Dispose());
         this._source = null;
 			
-        PInvoke.CloseWindow((HWND)this.Handle);
+        PInvoke.CloseWindow(this.Handle);
     }
 
     protected virtual IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)

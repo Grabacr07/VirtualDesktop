@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Windows.Win32;
-using Windows.Win32.UI.Shell.Common;
 using WindowsDesktop.Interop.Proxy;
 
 namespace WindowsDesktop.Interop.Build22000;
@@ -22,12 +20,12 @@ public class VirtualDesktopManagerInternal : ComWrapperBase<IVirtualDesktopManag
         var array = this.InvokeMethod<IObjectArray>(Args(IntPtr.Zero));
         if (array == null) yield break;
 
-        array.GetCount(out var count);
+        var count = array.GetCount();
         var vdType = this.ComInterfaceAssembly.GetType(nameof(IVirtualDesktop));
 
         for (var i = 0u; i < count; i++)
         {
-            array.GetAt(i, vdType.GUID, out var ppvObject);
+            var ppvObject = array.GetAt(i, vdType.GUID);
             yield return new VirtualDesktop(this.ComInterfaceAssembly, ppvObject);
         }
     }

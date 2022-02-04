@@ -1,4 +1,4 @@
-﻿using Windows.Win32;
+﻿using WindowsDesktop.Interop;
 
 namespace WindowsDesktop.Utils;
 

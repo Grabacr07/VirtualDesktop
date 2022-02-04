@@ -258,7 +258,7 @@ partial class MainWindow
 public class VirtualDesktopViewModel : INotifyPropertyChanged
 {
     private string _name;
-    private Uri _wallpaperPath;
+    private Uri? _wallpaperPath;
     private string _showcaseMessage;
     private bool _isCurrent;
 
@@ -279,7 +279,7 @@ public class VirtualDesktopViewModel : INotifyPropertyChanged
         }
     }
 
-    public Uri WallpaperPath
+    public Uri? WallpaperPath
     {
         get => this._wallpaperPath;
         set
@@ -321,7 +321,7 @@ public class VirtualDesktopViewModel : INotifyPropertyChanged
     public VirtualDesktopViewModel(VirtualDesktop source)
     {
         this._name = string.IsNullOrEmpty(source.Name) ? "(no name)" : source.Name;
-        this._wallpaperPath = new Uri(source.WallpaperPath);
+        this._wallpaperPath = Uri.TryCreate(source.WallpaperPath, UriKind.Absolute, out var uri) ? uri : null;
         this._showcaseMessage = "";
         this.Id = source.Id;
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Windows.Win32.UI.Shell.Common;
 using WindowsDesktop.Interop.Build10240;
 
 namespace WindowsDesktop.Interop.Build22000

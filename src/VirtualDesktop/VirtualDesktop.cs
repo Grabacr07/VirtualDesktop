@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Windows.Win32;
-using Windows.Win32.Foundation;
 using WindowsDesktop.Interop;
 using WindowsDesktop.Interop.Proxy;
 
@@ -192,7 +190,7 @@ public partial class VirtualDesktop
         return SafeInvoke<VirtualDesktop?>(
             () =>
             {
-                _provider.VirtualDesktopManager.GetWindowDesktopId((HWND)hWnd, out var desktopId);
+                var desktopId = _provider.VirtualDesktopManager.GetWindowDesktopId(hWnd);
                 return _provider.VirtualDesktopManagerInternal
                     .FindDesktop(desktopId)
                     .ToVirtualDesktop();
@@ -299,9 +297,9 @@ public partial class VirtualDesktop
         var result = PInvoke.GetWindowThreadProcessId(hWnd, out var processId);
         if (result < 0) throw new Exception($"The process associated with '{hWnd}' not found.");
 
-        if (Process.GetCurrentProcess().Id == processId)
+        if (processId == Environment.ProcessId)
         {
-            _provider.VirtualDesktopManager.MoveWindowToDesktop((HWND)hWnd, virtualDesktop.Id);
+            _provider.VirtualDesktopManager.MoveWindowToDesktop(hWnd, virtualDesktop.Id);
         }
         else
         {
@@ -317,8 +315,7 @@ public partial class VirtualDesktop
     {
         InitializeIfNeeded();
 
-        _provider.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop((HWND)hWnd, out var onCurrentDesktop);
-        return onCurrentDesktop;
+        return _provider.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(hWnd);
     }
 
     public static string? GetAppId(IntPtr hWnd)
