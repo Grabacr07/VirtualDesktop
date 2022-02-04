@@ -23,8 +23,10 @@ partial class VirtualDesktop
     /// </summary>
     public static event EventHandler<VirtualDesktopDestroyEventArgs>? Destroyed;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static event EventHandler? ApplicationViewChanged;
+    /// <summary>
+    /// Occurs when a application view is changed.
+    /// </summary>
+    public static event EventHandler<ApplicationViewChangedEventArgs>? ApplicationViewChanged;
 
     /// <summary>
     /// Occurs when the current virtual desktop is changed.
@@ -60,7 +62,7 @@ partial class VirtualDesktop
         }
 
         public void ViewVirtualDesktopChanged(IApplicationView pView)
-            => ApplicationViewChanged?.Invoke(this, EventArgs.Empty);
+            => ApplicationViewChanged?.Invoke(this, new ApplicationViewChangedEventArgs(pView.GetThumbnailWindow(), FromId(pView.GetVirtualDesktopId())));
 
         public void CurrentVirtualDesktopChanged(IVirtualDesktop pDesktopOld, IVirtualDesktop pDesktopNew)
             => CurrentChanged?.Invoke(this, new VirtualDesktopChangedEventArgs(pDesktopOld, pDesktopNew));

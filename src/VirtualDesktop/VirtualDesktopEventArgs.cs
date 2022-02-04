@@ -83,4 +83,23 @@ namespace WindowsDesktop
         {
         }
     }
+
+    /// <summary>
+    /// Provides data for the <see cref="VirtualDesktop.ApplicationViewChanged" /> event.
+    /// </summary>
+    public class ApplicationViewChangedEventArgs : EventArgs
+    {
+        public IntPtr Hwnd { get; }
+
+        public VirtualDesktop? Desktop { get; }
+
+        private bool IsPinned
+            => this.Desktop == null;
+
+        public ApplicationViewChangedEventArgs(IntPtr hWnd, VirtualDesktop? desktop)
+        {
+            this.Hwnd = hWnd;
+            this.Desktop = desktop;
+        }
+    }
 }

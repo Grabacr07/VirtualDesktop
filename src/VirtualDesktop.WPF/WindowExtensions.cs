@@ -88,7 +88,7 @@ public static class WindowExtensions
     /// <summary>
     /// Returns the window handle for this <see cref="Visual" />.
     /// </summary>
-    internal static IntPtr GetHandle(this Visual visual)
+    public static IntPtr GetHandle(this Visual visual)
         => PresentationSource.FromVisual(visual) is HwndSource hwndSource
             ? hwndSource.Handle
             : throw new InvalidOperationException();

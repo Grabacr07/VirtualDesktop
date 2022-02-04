@@ -21,14 +21,14 @@ namespace WindowsDesktop.Interop.Build10240
 
         IApplicationView GetViewForAppUserModelId(string id);
 
-        int GetViewInFocus(out IntPtr view);
+        IntPtr GetViewInFocus();
 
         void RefreshCollection();
 
-        int RegisterForApplicationViewChanges(object listener, out int cookie);
+        int RegisterForApplicationViewChanges(object listener);
 
-        int RegisterForApplicationViewPositionChanges(object listener, out int cookie);
+        int RegisterForApplicationViewPositionChanges(object listener);
 
-        int UnregisterForApplicationViewChanges(int cookie);
+        void UnregisterForApplicationViewChanges(int cookie);
     }
 }
