@@ -58,6 +58,30 @@ namespace WindowsDesktop
     }
 
     /// <summary>
+    /// Provides data for the <see cref="VirtualDesktop.CurrentChanged" /> event.
+    /// </summary>
+    public class VirtualDesktopMovedEventArgs : EventArgs
+    {
+        public VirtualDesktop Desktop { get; }
+
+        public int OldIndex { get; }
+
+        public int NewIndex { get; }
+
+        public VirtualDesktopMovedEventArgs(VirtualDesktop desktop, int oldIndex, int newIndex)
+        {
+            this.Desktop = desktop;
+            this.OldIndex = oldIndex;
+            this.NewIndex = newIndex;
+        }
+
+        internal VirtualDesktopMovedEventArgs(IVirtualDesktop desktop, int oldIndex, int newIndex)
+            : this(desktop.ToVirtualDesktop(), oldIndex, newIndex)
+        {
+        }
+    }
+
+    /// <summary>
     /// Provides data for the <see cref="VirtualDesktop.DestroyBegin" />, <see cref="VirtualDesktop.DestroyFailed" />, and <see cref="VirtualDesktop.Destroyed" /> events.
     /// </summary>
     public class VirtualDesktopDestroyEventArgs : EventArgs

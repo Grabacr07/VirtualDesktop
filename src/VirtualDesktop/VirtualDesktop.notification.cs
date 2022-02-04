@@ -31,6 +31,11 @@ partial class VirtualDesktop
     public static event EventHandler<VirtualDesktopChangedEventArgs>? CurrentChanged;
 
     /// <summary>
+    /// Occurs when the virtual desktop is moved.
+    /// </summary>
+    public static event EventHandler<VirtualDesktopMovedEventArgs>? Moved; 
+
+    /// <summary>
     /// Occurs when a virtual desktop is renamed.
     /// </summary>
     public static event EventHandler<VirtualDesktopRenamedEventArgs>? Renamed;
@@ -69,8 +74,7 @@ partial class VirtualDesktop
             => Destroyed?.Invoke(this, new VirtualDesktopDestroyEventArgs(pDesktopDestroyed, pDesktopFallback));
 
         public void VirtualDesktopMoved(IVirtualDesktop pDesktop, int nIndexFrom, int nIndexTo)
-        {
-        }
+            => Moved?.Invoke(this, new VirtualDesktopMovedEventArgs(pDesktop, nIndexFrom, nIndexTo));
 
         public void ViewVirtualDesktopChanged(IApplicationView pView)
         {
