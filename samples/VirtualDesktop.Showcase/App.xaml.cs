@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace VirtualDesktopShowcase
+namespace VirtualDesktopShowcase;
+
+partial class App
 {
-	partial class App
-	{
-	}
 }

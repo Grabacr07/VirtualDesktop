@@ -1,61 +1,144 @@
 ﻿<Window x:Class="VirtualDesktopShowcase.MainWindow"
-		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		mc:Ignorable="d"
-		Title="VirtualDesktop.Showcase"
-		SizeToContent="WidthAndHeight"
-		SnapsToDevicePixels="True"
-		FontSize="20">
-	<ScrollViewer HorizontalScrollBarVisibility="Disabled"
-				  VerticalScrollBarVisibility="Auto">
-		<StackPanel Margin="8">
-			<Panel.Resources>
-				<Style TargetType="{x:Type Button}">
-					<Setter Property="Padding"
-							Value="20,4" />
-					<Setter Property="HorizontalContentAlignment"
-							Value="Left" />
-					<Setter Property="Margin"
-							Value="8" />
-					<Setter Property="BorderThickness"
-							Value="0.99" />
-				</Style>
-			</Panel.Resources>
-			<StackPanel Margin="8">
-				<RadioButton x:Name="ThisWindowMenu"
-							 IsChecked="True"
-							 VerticalContentAlignment="Center">
-					<TextBlock Text="This window" />
-				</RadioButton>
-				<Border Height="4" />
-				<RadioButton VerticalContentAlignment="Center">
-					<TextBlock>
-						<Run>Foreground window</Run>
-						<LineBreak />
-						<Run FontSize="14">(seconds later)</Run>
-					</TextBlock>
-				</RadioButton>
-			</StackPanel>
-			<Button Content="Create new"
-					Click="CreateNew" />
-			<Button Content="Create new and move"
-					Click="CreateNewAndMove" />
-			<Button Content="Switch left"
-					Click="SwitchLeft" />
-			<Button Content="Switch left and move"
-					Click="SwitchLeftAndMove" />
-			<Button Content="Switch right"
-					Click="SwitchRight" />
-			<Button Content="Switch right and move"
-					Click="SwitchRightAndMove" />
-			<Button Content="Pin/Unpin"
-					Click="Pin" />
-			<Button Content="Pin/Unpin (App)"
-					Click="PinApp" />
-			<Button Content="Remove"
-					Click="Remove" />
-		</StackPanel>
-	</ScrollViewer>
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:VirtualDesktopShowcase"
+        mc:Ignorable="d"
+        Title="VirtualDesktop.Showcase"
+        SizeToContent="WidthAndHeight"
+        SnapsToDevicePixels="True"
+        FontSize="16">
+    <DockPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto"
+                      Padding="8">
+            <DockPanel>
+                <Panel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Padding"
+                                Value="20,4" />
+                        <Setter Property="HorizontalContentAlignment"
+                                Value="Left" />
+                        <Setter Property="Margin"
+                                Value="8" />
+                        <Setter Property="BorderThickness"
+                                Value=".99" />
+                    </Style>
+                </Panel.Resources>
+                <GroupBox DockPanel.Dock="Left"
+                          Header=" Control "
+                          Margin="8">
+                    <StackPanel Margin="8">
+                        <Button Content="Create new"
+                                Click="CreateNew" />
+                        <Button Content="Switch left"
+                                Click="SwitchLeft" />
+                        <Button Content="Switch right"
+                                Click="SwitchRight" />
+                        <Button Content="Remove"
+                                Click="Remove" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox DockPanel.Dock="Left"
+                          Header=" Control (with window)"
+                          Margin="8">
+                    <StackPanel Margin="8">
+                        <Button Content="Create new and move"
+                                Click="CreateNewAndMove" />
+                        <Button Content="Switch left and move"
+                                Click="SwitchLeftAndMove" />
+                        <Button Content="Switch right and move"
+                                Click="SwitchRightAndMove" />
+                        <Button Content="Pin / Unpin"
+                                Click="Pin" />
+                        <Button Content="Pin / Unpin (App)"
+                                Click="PinApp" />
+                        <Border Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                                Height=".99"
+                                Margin="8" />
+                        <StackPanel Margin="6">
+                            <RadioButton x:Name="ThisWindowMenu"
+                                         IsChecked="True"
+                                         VerticalContentAlignment="Center">
+                                <TextBlock Text="This window" />
+                            </RadioButton>
+                            <Border Height="4" />
+                            <RadioButton VerticalContentAlignment="Center">
+                                <TextBlock>
+                                    <Run>Foreground window</Run>
+                                    <LineBreak />
+                                    <Run FontSize="14">(seconds later)</Run>
+                                </TextBlock>
+                            </RadioButton>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header=" Virtual desktops "
+                          Margin="8">
+                    <ItemsControl Margin="8"
+                                  ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}, Path=Desktops}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type l:VirtualDesktopViewModel}">
+                                <Button Click="SwitchDesktop">
+                                    <Button.Resources>
+                                        <Style TargetType="{x:Type Button}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type Button}">
+                                                        <ContentPresenter />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Resources>
+                                    <Border x:Name="outerBorder"
+                                            BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                                            BorderThickness=".99"
+                                            Margin="8">
+                                        <DockPanel>
+                                            <StackPanel x:Name="texts"
+                                                        Margin="8">
+                                                <TextBlock Text="{Binding Name, Mode=OneWay}" />
+                                                <TextBlock Text="{Binding Id, Mode=OneWay}"
+                                                           FontSize="12" />
+                                                <TextBlock Text="{Binding ShowcaseMessage, Mode=OneWay}"
+                                                           FontSize="12" />
+                                            </StackPanel>
+                                            <Button Click="ChangeWallpaper"
+                                                    Height="{Binding ElementName=texts, Path=ActualHeight}"
+                                                    Margin="8">
+                                                <Image Source="{Binding WallpaperPath}"
+                                                       StretchDirection="DownOnly"
+                                                       Stretch="Uniform"
+                                                       HorizontalAlignment="Right" />
+                                            </Button>
+                                        </DockPanel>
+                                    </Border>
+                                </Button>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsCurrent}"
+                                                 Value="True">
+                                        <DataTrigger.Setters>
+                                            <Setter TargetName="outerBorder"
+                                                    Property="BorderBrush"
+                                                    Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                            <Setter TargetName="outerBorder"
+                                                    Property="BorderThickness"
+                                                    Value="2.99" />
+                                            <Setter TargetName="outerBorder"
+                                                    Property="Margin"
+                                                    Value="6" />
+                                        </DataTrigger.Setters>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </GroupBox>
+            </DockPanel>
+        </ScrollViewer>
+    </DockPanel>
 </Window>
