@@ -80,7 +80,7 @@ namespace WindowsDesktop.Interop.Build10240
 
         void SetPositionPriority(IntPtr priority);
 
-        void GetSizeConstraints(IntPtr /* IImmersiveMonitor* */ monitor, out Size size1, out Size size2);
+        void GetSizeConstraints(IntPtr monitor, out Size size1, out Size size2);
 
         void GetSizeConstraintsForDpi(uint uint1, out Size size1, out Size size2);
 
