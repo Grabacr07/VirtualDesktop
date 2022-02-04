@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using JetBrains.Annotations;
 using WindowsDesktop.Utils;
 
 namespace WindowsDesktop.Interop.Build22000;
@@ -42,7 +41,6 @@ public class VirtualDesktopNotificationService : ComWrapperBase<IVirtualDesktopN
         }
     }
 
-    [UsedImplicitly(ImplicitUseTargetFlags.Members)]
     public abstract class EventListenerBase
     {
         internal ComWrapperFactory Factory { get; set; } = null!;

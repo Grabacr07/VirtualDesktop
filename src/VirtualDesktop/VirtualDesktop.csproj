@@ -23,30 +23,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Interop\Build22000\(interfaces)\AssemblyInfo.cs" />
-    <Compile Remove="Interop\Build22000\(interfaces)\IApplicationView.cs" />
-    <Compile Remove="Interop\Build22000\(interfaces)\IApplicationViewCollection.cs" />
-    <Compile Remove="Interop\Build22000\(interfaces)\IVirtualDesktop.cs" />
-    <Compile Remove="Interop\Build22000\(interfaces)\IVirtualDesktopManagerInternal.cs" />
-    <Compile Remove="Interop\Build22000\(interfaces)\IVirtualDesktopNotification.cs" />
-    <Compile Remove="Interop\Build22000\(interfaces)\IVirtualDesktopNotificationService.cs" />
-    <Compile Remove="Interop\Build22000\(interfaces)\IVirtualDesktopPinnedApps.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="VirtualDesktop.csproj.DotSettings" />
+    <EmbeddedResource Include="Interop\Build10240\.interfaces\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Interop\Build10240\.interfaces\IApplicationView.cs" />
+    <EmbeddedResource Include="Interop\Build10240\.interfaces\IApplicationViewCollection.cs" />
     <EmbeddedResource Include="Interop\Build10240\.interfaces\IVirtualDesktop.cs" />
     <EmbeddedResource Include="Interop\Build10240\.interfaces\IVirtualDesktopManagerInternal.cs" />
     <EmbeddedResource Include="Interop\Build10240\.interfaces\IVirtualDesktopNotification.cs" />
     <EmbeddedResource Include="Interop\Build10240\.interfaces\IVirtualDesktopNotificationService.cs" />
-    <EmbeddedResource Include="Interop\Build10240\.interfaces\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Interop\Build10240\.interfaces\IApplicationView.cs" />
-    <EmbeddedResource Include="Interop\Build10240\.interfaces\IApplicationViewCollection.cs" />
+    <EmbeddedResource Include="Interop\Build10240\.interfaces\IVirtualDesktopPinnedApps.cs" />
     <EmbeddedResource Include="Interop\Build22000\.interfaces\IVirtualDesktop.cs" />
     <EmbeddedResource Include="Interop\Build22000\.interfaces\IVirtualDesktopManagerInternal.cs" />
     <EmbeddedResource Include="Interop\Build22000\.interfaces\IVirtualDesktopNotification.cs" />
     <EmbeddedResource Include="Interop\Build22000\.interfaces\IVirtualDesktopNotificationService.cs" />
-    <EmbeddedResource Include="Interop\Build10240\.interfaces\IVirtualDesktopPinnedApps.cs" />
     <None Include="..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
