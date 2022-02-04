@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\VirtualDesktop.Unsafe\VirtualDesktop.Unsafe.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="VirtualDesktop.csproj.DotSettings" />
     <EmbeddedResource Include="Interop\Build10240\.interfaces\AssemblyInfo.cs" />
     <EmbeddedResource Include="Interop\Build10240\.interfaces\IApplicationView.cs" />
@@ -48,17 +52,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\VirtualDesktop.Unsafe\VirtualDesktop.Unsafe.csproj" />
   </ItemGroup>
 
 </Project>
