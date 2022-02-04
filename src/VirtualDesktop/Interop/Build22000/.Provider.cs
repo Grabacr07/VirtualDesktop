@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Windows.Win32.UI.Shell;
 using WindowsDesktop.Interop.Build10240;
+using WindowsDesktop.Interop.Proxy;
 using WindowsDesktop.Properties;
 
 namespace WindowsDesktop.Interop.Build22000;

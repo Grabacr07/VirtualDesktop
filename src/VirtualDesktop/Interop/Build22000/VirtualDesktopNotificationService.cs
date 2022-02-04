@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using WindowsDesktop.Interop.Proxy;
 using WindowsDesktop.Utils;
 
 namespace WindowsDesktop.Interop.Build22000;

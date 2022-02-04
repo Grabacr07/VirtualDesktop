@@ -1,5 +1,6 @@
 ﻿using System;
 using WindowsDesktop.Interop;
+using WindowsDesktop.Interop.Proxy;
 
 namespace WindowsDesktop
 {

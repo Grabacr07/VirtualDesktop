@@ -1,4 +1,4 @@
-﻿namespace WindowsDesktop.Interop;
+﻿namespace WindowsDesktop.Interop.Proxy;
 
 [ComInterface]
 public interface IVirtualDesktopPinnedApps

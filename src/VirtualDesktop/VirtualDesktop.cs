@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using WindowsDesktop.Interop;
+using WindowsDesktop.Interop.Proxy;
 
 namespace WindowsDesktop;
 

@@ -6,6 +6,7 @@ using System.Linq;
 using WindowsDesktop.Interop;
 using WindowsDesktop.Interop.Build10240;
 using WindowsDesktop.Interop.Build22000;
+using WindowsDesktop.Interop.Proxy;
 using WindowsDesktop.Properties;
 using WindowsDesktop.Utils;
 

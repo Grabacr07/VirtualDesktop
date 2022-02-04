@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Windows.Win32;
 using Windows.Win32.UI.Shell.Common;
+using WindowsDesktop.Interop.Proxy;
 
 namespace WindowsDesktop.Interop.Build22000;
 

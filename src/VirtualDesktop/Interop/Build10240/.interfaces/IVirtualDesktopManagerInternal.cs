@@ -7,7 +7,7 @@ namespace WindowsDesktop.Interop.Build10240
     [ComImport]
     [Guid("00000000-0000-0000-0000-000000000000") /* replace at runtime */]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    internal interface IVirtualDesktopManagerInternal
+    public interface IVirtualDesktopManagerInternal
     {
         int GetCount();
 
@@ -19,7 +19,7 @@ namespace WindowsDesktop.Interop.Build10240
 
         IObjectArray GetDesktops();
 
-        IVirtualDesktop GetAdjacentDesktop(IVirtualDesktop pDesktopReference, AdjacentDesktop uDirection);
+        IVirtualDesktop GetAdjacentDesktop(IVirtualDesktop pDesktopReference, int uDirection);
 
         void SwitchDesktop(IVirtualDesktop desktop);
 
