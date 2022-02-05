@@ -27,11 +27,11 @@ jobs:
     - name: Pack
       run: dotnet pack ${{ env.BUILD_TARGET }} -c Release --no-build
 
-    - name: Upload artifact
+    - name: Upload artifacts
       uses: actions/upload-artifact@v2.3.1
       with:
         name: nuget-packages
-        path: "*.nupkg"
+        path: "**/*.nupkg"
   
   
   publish:
