@@ -46,7 +46,6 @@ jobs:
       with:
         nuget-version: latest
         nuget-api-key: ${{ secrets.NUGET_API_KEY }}
-        nuget-api-key-source: https://api.nuget.org/v3/index.json
 
     - name: Fetch artifacts
       uses: actions/download-artifact@v2.1.0
@@ -54,4 +53,4 @@ jobs:
         name: nuget-packages
 
     - name: Publish
-      run: nuget push *.nupkg
+      run: nuget push *.nupkg -Source https://api.nuget.org/v3/index.json
