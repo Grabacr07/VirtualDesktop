@@ -5,11 +5,11 @@ using WindowsDesktop.Interop.Proxy;
 
 namespace WindowsDesktop.Interop.Build10240;
 
-public class VirtualDesktop : ComWrapperBase<IVirtualDesktop>, IVirtualDesktop
+internal class VirtualDesktop : ComWrapperBase<IVirtualDesktop>, IVirtualDesktop
 {
     private Guid? _id;
 
-    internal VirtualDesktop(ComInterfaceAssembly assembly, object comObject)
+    public VirtualDesktop(ComInterfaceAssembly assembly, object comObject)
         : base(assembly, comObject)
     {
     }

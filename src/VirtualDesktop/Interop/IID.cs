@@ -9,7 +9,7 @@ using Microsoft.Win32;
 
 namespace WindowsDesktop.Interop;
 
-public static class IID
+internal static class IID
 {
     private static readonly Regex _osBuildRegex = new(@"v_(?<build>\d{5}?)");
 

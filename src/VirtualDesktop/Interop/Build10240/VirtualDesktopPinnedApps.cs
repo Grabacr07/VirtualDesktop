@@ -5,11 +5,11 @@ using WindowsDesktop.Interop.Proxy;
 
 namespace WindowsDesktop.Interop.Build10240;
 
-public class VirtualDesktopPinnedApps : ComWrapperBase<IVirtualDesktopPinnedApps>, IVirtualDesktopPinnedApps
+internal class VirtualDesktopPinnedApps : ComWrapperBase<IVirtualDesktopPinnedApps>, IVirtualDesktopPinnedApps
 {
     private readonly ComWrapperFactory _factory;
 
-    internal VirtualDesktopPinnedApps(ComInterfaceAssembly assembly, ComWrapperFactory factory)
+    public VirtualDesktopPinnedApps(ComInterfaceAssembly assembly, ComWrapperFactory factory)
         : base(assembly, CLSID.VirtualDesktopPinnedApps)
     {
         this._factory = factory;
