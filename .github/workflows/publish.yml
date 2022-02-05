@@ -53,4 +53,4 @@ jobs:
         name: nuget-packages
 
     - name: Publish
-      run: nuget push *.nupkg -Source https://api.nuget.org/v3/index.json
+      run: nuget push **\*.nupkg -Source https://api.nuget.org/v3/index.json
