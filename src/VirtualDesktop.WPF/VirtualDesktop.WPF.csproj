@@ -7,7 +7,7 @@
     <Version>5.0.1</Version>
     <Authors>Manato KAMEYA</Authors>
     <Company>grabacr.net</Company>
-    <Description>C# wrapper for IVirtualDesktopManager on Windows 11.</Description>
+    <Description>C# wrapper for IVirtualDesktopManager on Windows 11 (and Windows 10).</Description>
     <Copyright>Copyright © 2020 Manato KAMEYA</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Grabacr07/VirtualDesktop</PackageProjectUrl>

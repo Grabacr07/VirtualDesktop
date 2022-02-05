@@ -9,7 +9,7 @@
     <PackageId>VirtualDesktop</PackageId>
     <Version>5.0.1</Version>
     <Company>grabacr.net</Company>
-    <Description>C# wrapper for IVirtualDesktopManager on Windows 11.</Description>
+    <Description>C# wrapper for IVirtualDesktopManager on Windows 11 (and Windows 10).</Description>
     <Copyright>Copyright © 2022 Manato KAMEYA</Copyright>
     <PackageProjectUrl>https://github.com/Grabacr07/VirtualDesktop</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Grabacr07/VirtualDesktop</RepositoryUrl>
