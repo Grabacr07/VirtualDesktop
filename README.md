@@ -52,9 +52,6 @@ Because of the dependency on [C#/WinRT](https://aka.ms/cswinrt) ([repo](https://
 ```xml
 <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
 ```
-```csharp
-using WindowsDesktop;
-```
 
 If it doesn't work, try creating an `app.manifest` file and optimize to work on Windows 10.
 ```xml
@@ -64,6 +61,11 @@ If it doesn't work, try creating an `app.manifest` file and optimize to work on 
 	    <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
     </application>
 </compatibility>
+```
+
+The namespace to use is `WindowsDesktop`.
+```csharp
+using WindowsDesktop;
 ```
 
 ### Get instance of VirtualDesktop class
