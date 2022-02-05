@@ -6,7 +6,6 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <RootNamespace>VirtualDesktopShowcase</RootNamespace>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
