@@ -60,13 +60,7 @@ public partial class VirtualDesktop
     /// </summary>
     /// <remarks>If this is the last virtual desktop, a new one will be created to switch to.</remarks>
     public void Remove()
-    {
-        var fallback = _provider.VirtualDesktopManagerInternal
-            .GetDesktops()
-            .Select(x => x.ToVirtualDesktop())
-            .FirstOrDefault(x => x.Id != this.Id) ?? Create();
-        this.Remove(fallback);
-    }
+        => this.Remove(this.GetRight() ?? this.GetLeft() ?? Create());
 
     /// <summary>
     /// Removes this virtual desktop and switches to <paramref name="fallbackDesktop" />.
