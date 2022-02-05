@@ -7,7 +7,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: 'source/VirtualDesktop.sln'
+  solution: 'src/VirtualDesktop.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 

@@ -15,7 +15,7 @@
     <RepositoryUrl>https://github.com/Grabacr07/VirtualDesktop</RepositoryUrl>
     <Authors>Manato KAMEYA</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageTags>Windows;Windows10;Desktop;VirtualDesktop;</PackageTags>
+    <PackageTags>Windows;Windows10;Windows11;Desktop;VirtualDesktop;</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
