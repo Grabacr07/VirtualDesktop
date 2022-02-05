@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ master ]
 
+
+env:
+  DOTNET_VERSION: 6.0.x
+  BUILD_TARGET: .\src\VirtualDesktop.sln
+
+
 jobs:
   build:
     runs-on: windows-latest
@@ -13,11 +19,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Use .NET 6.0
+    - name: Use .NET ${{ env.DOTNET_VERSION }}
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: ${{ env.DOTNET_VERSION }}
       
     - name: Build
-      run: dotnet build .\src\VirtualDesktop.sln -c Release
-      
+      run: dotnet build ${{ env.BUILD_TARGET }} -c Release
