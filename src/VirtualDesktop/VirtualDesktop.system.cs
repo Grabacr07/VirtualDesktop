@@ -52,6 +52,9 @@ partial class VirtualDesktop
         this.Id = source.GetID();
     }
 
+    /// <summary>
+    /// Sets the behavior for compiling the assembly. This method should always be called first.
+    /// </summary>
     public static void Configure(VirtualDesktopConfiguration configuration)
     {
         _configuration = configuration;

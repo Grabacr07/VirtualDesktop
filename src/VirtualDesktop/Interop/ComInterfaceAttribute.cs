@@ -6,7 +6,7 @@ using System.Reflection;
 namespace WindowsDesktop.Interop;
 
 [AttributeUsage(AttributeTargets.Interface)]
-public class ComInterfaceAttribute : Attribute
+internal class ComInterfaceAttribute : Attribute
 {
     public string? InterfaceName { get; }
 
@@ -20,7 +20,7 @@ public class ComInterfaceAttribute : Attribute
     }
 }
 
-public static class ComInterfaceAttributeExtensions
+internal static class ComInterfaceAttributeExtensions
 {
     /// <summary>
     /// Gets COM interface name if specific type has '<see cref="ComInterfaceAttribute"/>' attribute.

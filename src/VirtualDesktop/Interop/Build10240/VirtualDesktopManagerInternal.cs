@@ -5,11 +5,11 @@ using WindowsDesktop.Interop.Proxy;
 
 namespace WindowsDesktop.Interop.Build10240;
 
-public class VirtualDesktopManagerInternal : ComWrapperBase<IVirtualDesktopManagerInternal>, IVirtualDesktopManagerInternal
+internal class VirtualDesktopManagerInternal : ComWrapperBase<IVirtualDesktopManagerInternal>, IVirtualDesktopManagerInternal
 {
     private readonly ComWrapperFactory _factory;
 
-    internal VirtualDesktopManagerInternal(ComInterfaceAssembly assembly, ComWrapperFactory factory)
+    public VirtualDesktopManagerInternal(ComInterfaceAssembly assembly, ComWrapperFactory factory)
         : base(assembly, CLSID.VirtualDesktopManagerInternal)
     {
         this._factory = factory;

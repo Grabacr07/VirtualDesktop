@@ -50,7 +50,7 @@ partial class VirtualDesktop
     /// </summary>
     /// <param name="targetHwnd">The target window handle to receive events from. If specify <see cref="IntPtr.Zero"/>, all changes will be delivered.</param>
     /// <param name="action">Action to be performed.</param>
-    /// <returns></returns>
+    /// <returns>IDisposable instance for unsubscribing.</returns>
     public static IDisposable RegisterViewChanged(IntPtr targetHwnd, Action<IntPtr> action)
     {
         var listener = _viewChangedEventListeners.GetOrAdd(targetHwnd, x => new ViewChangedListener(x));

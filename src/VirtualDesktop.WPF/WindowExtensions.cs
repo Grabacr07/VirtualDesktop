@@ -91,5 +91,5 @@ public static class WindowExtensions
     public static IntPtr GetHandle(this Visual visual)
         => PresentationSource.FromVisual(visual) is HwndSource hwndSource
             ? hwndSource.Handle
-            : throw new InvalidOperationException();
+            : throw new ArgumentException("Unable to get a window handle.", nameof(visual));
 }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace WindowsDesktop.Interop;
 
-public enum HResult : uint
+internal enum HResult : uint
 {
     // ReSharper disable IdentifierTypo
     TYPE_E_OUTOFBOUNDS = 0x80028CA1,
@@ -13,7 +13,7 @@ public enum HResult : uint
     // ReSharper restore IdentifierTypo
 }
 
-public static class HResultExtensions
+internal static class HResultExtensions
 {
     public static bool Match(this Exception ex, params HResult[] hResult)
     {

@@ -4,17 +4,17 @@
     <TargetFrameworks>net6.0-windows10.0.19041.0</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
-    <Version>5.0.0</Version>
+    <Version>5.0.1</Version>
     <Authors>Manato KAMEYA</Authors>
     <Company>grabacr.net</Company>
-    <Description>C# wrapper for IVirtualDesktopManager on Windows 10.</Description>
+    <Description>C# wrapper for IVirtualDesktopManager on Windows 11 (and Windows 10).</Description>
     <Copyright>Copyright © 2020 Manato KAMEYA</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Grabacr07/VirtualDesktop</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Grabacr07/VirtualDesktop</RepositoryUrl>
     <Product>VirtualDesktop</Product>
     <RootNamespace>WindowsDesktop</RootNamespace>
-    <PackageTags>Windows;Windows10;Desktop;VirtualDesktop;</PackageTags>
+    <PackageTags>Windows;Windows10;Windows11;Desktop;VirtualDesktop;</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

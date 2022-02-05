@@ -5,9 +5,9 @@ using WindowsDesktop.Interop.Proxy;
 
 namespace WindowsDesktop.Interop.Build10240;
 
-public class ApplicationView : ComWrapperBase<IApplicationView>, IApplicationView
+internal class ApplicationView : ComWrapperBase<IApplicationView>, IApplicationView
 {
-    internal ApplicationView(ComInterfaceAssembly assembly, object comObject)
+    public ApplicationView(ComInterfaceAssembly assembly, object comObject)
         : base(assembly, comObject)
     {
     }
