@@ -29,4 +29,6 @@ public interface IVirtualDesktopManagerInternal
     void SetDesktopName(IVirtualDesktop desktop, string name);
 
     void SetDesktopWallpaper(IVirtualDesktop desktop, string path);
+
+    void UpdateWallpaperPathForAllDesktops(string path);
 }

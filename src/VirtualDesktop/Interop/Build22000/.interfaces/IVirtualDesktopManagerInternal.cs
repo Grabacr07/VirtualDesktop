@@ -33,11 +33,11 @@ namespace WindowsDesktop.Interop.Build22000
 
         void GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop desktop, out IObjectArray o1, out IObjectArray o2);
 
-        void SetDesktopName(IVirtualDesktop desktop, IntPtr name);
+        void SetDesktopName(IVirtualDesktop desktop, HString name);
 
-        void SetDesktopWallpaper(IVirtualDesktop desktop, IntPtr path);
+        void SetDesktopWallpaper(IVirtualDesktop desktop, HString path);
 
-        void UpdateWallpaperPathForAllDesktops(IntPtr path);
+        void UpdateWallpaperPathForAllDesktops(HString path);
 
         void CopyDesktopState(IApplicationView pView0, IApplicationView pView1);
 

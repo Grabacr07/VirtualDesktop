@@ -280,6 +280,17 @@ public partial class VirtualDesktop
     #region static members (others)
 
     /// <summary>
+    /// Apply the specified wallpaper to all desktops.
+    /// </summary>
+    /// <param name="path">Wallpaper image path.</param>
+    public static void UpdateWallpaperForAllDesktops(string path)
+    {
+        InitializeIfNeeded();
+
+        _provider.VirtualDesktopManagerInternal.UpdateWallpaperPathForAllDesktops(path);
+    }
+
+    /// <summary>
     /// Moves a window to the specified virtual desktop.
     /// </summary>
     /// <param name="hWnd">The handle of the window to be moved.</param>

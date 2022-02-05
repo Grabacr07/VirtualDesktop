@@ -21,8 +21,8 @@ internal class VirtualDesktop : ComWrapperBase<IVirtualDesktop>, IVirtualDesktop
         => this._id ?? (Guid)(this._id = this.InvokeMethod<Guid>());
 
     public string GetName()
-        => this.InvokeMethod<IntPtr>().MarshalFromHString();
+        => this.InvokeMethod<HString>();
 
     public string GetWallpaperPath()
-        => this.InvokeMethod<IntPtr>().MarshalFromHString();
+        => this.InvokeMethod<HString>();
 }
