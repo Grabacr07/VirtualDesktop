@@ -2,6 +2,10 @@
 
 VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://msdn.microsoft.com/en-us/library/windows/desktop/mt186440%28v%3Dvs.85%29.aspx) on Windows 11.
 
+[![Build](https://github.com/Grabacr07/VirtualDesktop/actions/workflows/build.yml/badge.svg)](https://github.com/Grabacr07/VirtualDesktop/actions/workflows/build.yml)
+![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/VirtualDesktop)
+![License](https://img.shields.io/github/license/Grabacr07/VirtualDesktop)
+
 
 ## Features
 
@@ -16,6 +20,7 @@ VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://msdn.microsoft
 ### Sample app
 
 ![](https://user-images.githubusercontent.com/1779073/152605684-2d872356-1882-4bfd-821d-d4211ccac069.gif)
+[samples/VirtualDesktop.Showcase](samples/VirtualDesktop.Showcase)
 
 
 ## Requirements

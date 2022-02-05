@@ -9,7 +9,7 @@ using WindowsDesktop.Interop.Proxy;
 namespace WindowsDesktop;
 
 /// <summary>
-/// Encapsulates a Windows 10/11 virtual desktop.
+/// Encapsulates Windows 11 (and Windows 10) virtual desktops.
 /// </summary>
 [DebuggerDisplay("{Name} ({Id})")]
 public partial class VirtualDesktop
