@@ -1,0 +1,57 @@
+name: Publish
+
+on:
+  push:
+    branches: [ release ]
+
+env:
+  DOTNET_VERSION: 6.0.x
+  BUILD_TARGET: .\src\VirtualDesktop.sln
+
+jobs:
+  build:
+    name: .NET Build
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Use .NET ${{ env.DOTNET_VERSION }}
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+      
+    - name: Build
+      run: dotnet build ${{ env.BUILD_TARGET }} -c Release
+      
+    - name: Pack
+      run: dotnet pack ${{ env.BUILD_TARGET }} -c Release --no-build
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2.3.1
+      with:
+        name: nuget-packages
+        path: "*.nupkg"
+  
+  
+  publish:
+    name: Publish to NuGet
+    runs-on: windows-latest
+    needs: build
+    if: github.ref == 'refs/heads/release'
+  
+    steps:
+    - name: Use NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+      with:
+        nuget-version: latest
+        nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+        nuget-api-key-source: https://api.nuget.org/v3/index.json
+
+    - name: Fetch artifacts
+      uses: actions/download-artifact@v2.1.0
+      with:
+        name: nuget-packages
+
+    - name: Publish
+      run: nuget push *.nupkg
