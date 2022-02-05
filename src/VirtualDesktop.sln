@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{17B4686F-1AFC-4D5E-BCD8-408DE4CEC3C3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".samples", ".samples", "{17B4686F-1AFC-4D5E-BCD8-408DE4CEC3C3}"
 	ProjectSection(SolutionItems) = preProject
 		..\samples\README.md = ..\samples\README.md
 	EndProjectSection
@@ -16,12 +16,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDesktop.WinForms", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDesktop", "VirtualDesktop\VirtualDesktop.csproj", "{B8A37B59-0F48-4A44-ADF7-96C54AC6CE61}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{335CE9BA-A467-4667-8707-D4B779EC8005}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".config", ".config", "{335CE9BA-A467-4667-8707-D4B779EC8005}"
 	ProjectSection(SolutionItems) = preProject
 		..\.editorconfig = ..\.editorconfig
 		..\.gitattributes = ..\.gitattributes
 		..\.gitignore = ..\.gitignore
-		..\azure-pipelines.yml = ..\azure-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{A58CDA13-2F14-4F77-AFF3-6F91C7993E5B}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\build.yml = ..\.github\workflows\build.yml
+		..\.github\workflows\publish.yml = ..\.github\workflows\publish.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".docs", ".docs", "{8A097A9D-BF69-424A-8477-24FD5FE334EF}"
+	ProjectSection(SolutionItems) = preProject
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
