@@ -57,6 +57,9 @@ internal class VirtualDesktopManagerInternal : ComWrapperBase<IVirtualDesktopMan
     public void SetDesktopWallpaper(IVirtualDesktop desktop, string path)
         => throw new NotSupportedException();
 
+    public void UpdateWallpaperPathForAllDesktops(string path)
+        => throw new NotSupportedException();
+
     private VirtualDesktop InvokeMethodAndWrap(object?[]? parameters = null, [CallerMemberName] string methodName = "")
         => new(this.ComInterfaceAssembly, this.InvokeMethod<object>(parameters, methodName) ?? throw new Exception("Failed to get IVirtualDesktop instance."));
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using WindowsDesktop.Interop;
 using WindowsDesktop.Interop.Proxy;
 
@@ -24,6 +23,9 @@ public partial class VirtualDesktop
     /// <summary>
     /// Gets or sets the name of this virtual desktop.
     /// </summary>
+    /// <remarks>
+    /// This is not supported on Windows 10.
+    /// </remarks>
     public string Name
     {
         get => this._name;
@@ -37,6 +39,9 @@ public partial class VirtualDesktop
     /// <summary>
     /// Gets or sets the path of the desktop wallpaper.
     /// </summary>
+    /// <remarks>
+    /// This is not supported on Windows 10.
+    /// </remarks>
     public string WallpaperPath
     {
         get => this._wallpaperPath;
@@ -78,16 +83,11 @@ public partial class VirtualDesktop
     /// </summary>
     public VirtualDesktop? GetLeft()
     {
-        try
-        {
-            return _provider.VirtualDesktopManagerInternal
+        return SafeInvoke(
+            () => _provider.VirtualDesktopManagerInternal
                 .GetAdjacentDesktop(this._source, AdjacentDesktop.LeftDirection)
-                .ToVirtualDesktop();
-        }
-        catch (COMException ex) when (ex.Match(HResult.TYPE_E_OUTOFBOUNDS))
-        {
-            return null;
-        }
+                .ToVirtualDesktop(),
+            HResult.TYPE_E_OUTOFBOUNDS);
     }
 
     /// <summary>
@@ -95,16 +95,11 @@ public partial class VirtualDesktop
     /// </summary>
     public VirtualDesktop? GetRight()
     {
-        try
-        {
-            return _provider.VirtualDesktopManagerInternal
+        return SafeInvoke(
+            () => _provider.VirtualDesktopManagerInternal
                 .GetAdjacentDesktop(this._source, AdjacentDesktop.RightDirection)
-                .ToVirtualDesktop();
-        }
-        catch (COMException ex) when (ex.Match(HResult.TYPE_E_OUTOFBOUNDS))
-        {
-            return null;
-        }
+                .ToVirtualDesktop(),
+            HResult.TYPE_E_OUTOFBOUNDS);
     }
 
     public override string ToString()
@@ -163,11 +158,9 @@ public partial class VirtualDesktop
     {
         InitializeIfNeeded();
 
-        return SafeInvoke<VirtualDesktop?>(
-            () => _provider.VirtualDesktopManagerInternal
-                .FindDesktop(desktopId)
-                .ToVirtualDesktop(),
-            () => null);
+        return SafeInvoke(() => _provider.VirtualDesktopManagerInternal
+            .FindDesktop(desktopId)
+            .ToVirtualDesktop());
     }
 
     /// <summary>
@@ -181,7 +174,7 @@ public partial class VirtualDesktop
 
         if (hWnd == IntPtr.Zero || IsPinnedWindow(hWnd)) return null;
 
-        return SafeInvoke<VirtualDesktop?>(
+        return SafeInvoke(
             () =>
             {
                 var desktopId = _provider.VirtualDesktopManager.GetWindowDesktopId(hWnd);
@@ -189,7 +182,6 @@ public partial class VirtualDesktop
                     .FindDesktop(desktopId)
                     .ToVirtualDesktop();
             },
-            () => null,
             HResult.REGDB_E_CLASSNOTREG, HResult.TYPE_E_ELEMENTNOTFOUND);
     }
 
@@ -201,83 +193,95 @@ public partial class VirtualDesktop
     /// Determines whether the specified window is pinned.
     /// </summary>
     /// <param name="hWnd">The handle of the window.</param>
+    /// <returns>True if pinned, false otherwise.</returns>
     public static bool IsPinnedWindow(IntPtr hWnd)
     {
         InitializeIfNeeded();
 
-        return SafeInvoke(() => _provider.VirtualDesktopPinnedApps.IsViewPinned(hWnd), () => false);
+        return SafeInvoke(() => _provider.VirtualDesktopPinnedApps.IsViewPinned(hWnd));
     }
 
     /// <summary>
     /// Pins the specified window, showing it on all virtual desktops.
     /// </summary>
     /// <param name="hWnd">The handle of the window.</param>
-    public static void PinWindow(IntPtr hWnd)
+    /// <returns>True if already pinned or successfully pinned, false otherwise (most of the time, the target window is not found or not ready).</returns>
+    public static bool PinWindow(IntPtr hWnd)
     {
         InitializeIfNeeded();
 
-        if (_provider.VirtualDesktopPinnedApps.IsViewPinned(hWnd) == false)
-        {
-            SafeInvoke(() => _provider.VirtualDesktopPinnedApps.PinView(hWnd));
-        }
+        return _provider.VirtualDesktopPinnedApps.IsViewPinned(hWnd)
+            || SafeInvoke(() => _provider.VirtualDesktopPinnedApps.PinView(hWnd));
     }
 
     /// <summary>
     /// Unpins the specified window.
     /// </summary>
     /// <param name="hWnd">The handle of the window.</param>
-    public static void UnpinWindow(IntPtr hWnd)
+    /// <returns>True if already unpinned or successfully unpinned, false otherwise (most of the time, the target window is not found or not ready).</returns>
+    public static bool UnpinWindow(IntPtr hWnd)
     {
         InitializeIfNeeded();
 
-        if (_provider.VirtualDesktopPinnedApps.IsViewPinned(hWnd))
-        {
-            SafeInvoke(() => _provider.VirtualDesktopPinnedApps.UnpinView(hWnd));
-        }
+        return _provider.VirtualDesktopPinnedApps.IsViewPinned(hWnd) == false
+            || SafeInvoke(() => _provider.VirtualDesktopPinnedApps.UnpinView(hWnd));
     }
 
     /// <summary>
     /// Determines whether the specified app is pinned.
     /// </summary>
-    /// <param name="appId">The identifier of the app.</param>
-    public static bool IsPinnedApplication(string appId)
+    /// <param name="appUserModelId">App User Model ID. <see cref="TryGetAppUserModelId"/> method may be helpful.</param>
+    /// <returns>True if pinned, false otherwise.</returns>
+    public static bool IsPinnedApplication(string appUserModelId)
     {
         InitializeIfNeeded();
 
-        return SafeInvoke(() => _provider.VirtualDesktopPinnedApps.IsAppIdPinned(appId), () => false);
+        return SafeInvoke(() => _provider.VirtualDesktopPinnedApps.IsAppIdPinned(appUserModelId));
     }
 
     /// <summary>
     /// Pins the specified app, showing it on all virtual desktops.
     /// </summary>
-    /// <param name="appId">The identifier of the app.</param>
-    public static void PinApplication(string appId)
+    /// <param name="appUserModelId">App User Model ID. <see cref="TryGetAppUserModelId"/> method may be helpful.</param>
+    /// <returns>True if already pinned or successfully pinned, false otherwise (most of the time, app id is incorrect).</returns>
+    public static bool PinApplication(string appUserModelId)
     {
         InitializeIfNeeded();
 
-        if (_provider.VirtualDesktopPinnedApps.IsAppIdPinned(appId) == false)
-        {
-            SafeInvoke(() => _provider.VirtualDesktopPinnedApps.PinAppID(appId));
-        }
+        return _provider.VirtualDesktopPinnedApps.IsAppIdPinned(appUserModelId)
+            || SafeInvoke(() => _provider.VirtualDesktopPinnedApps.PinAppID(appUserModelId));
     }
 
     /// <summary>
     /// Unpins the specified app.
     /// </summary>
-    /// <param name="appId">The identifier of the app.</param>
-    public static void UnpinApplication(string appId)
+    /// <param name="appUserModelId">App User Model ID. <see cref="TryGetAppUserModelId"/> method may be helpful.</param>
+    /// <returns>True if already unpinned or successfully unpinned, false otherwise (most of the time, app id is incorrect).</returns>
+    public static bool UnpinApplication(string appUserModelId)
     {
         InitializeIfNeeded();
 
-        if (_provider.VirtualDesktopPinnedApps.IsAppIdPinned(appId))
-        {
-            SafeInvoke(() => _provider.VirtualDesktopPinnedApps.UnpinAppID(appId));
-        }
+        return _provider.VirtualDesktopPinnedApps.IsAppIdPinned(appUserModelId) == false
+            || SafeInvoke(() => _provider.VirtualDesktopPinnedApps.UnpinAppID(appUserModelId));
     }
 
     #endregion
 
     #region static members (others)
+
+    /// <summary>
+    /// Apply the specified wallpaper to all desktops.
+    /// </summary>
+    /// <remarks>
+    /// This is not supported on Windows 10.
+    /// </remarks>
+    /// <param name="path">Wallpaper image path.</param>
+    public static void UpdateWallpaperForAllDesktops(string path)
+    {
+        InitializeIfNeeded();
+
+        _provider.VirtualDesktopManagerInternal.UpdateWallpaperPathForAllDesktops(path);
+    }
 
     /// <summary>
     /// Moves a window to the specified virtual desktop.
@@ -312,20 +316,27 @@ public partial class VirtualDesktop
         return _provider.VirtualDesktopManager.IsWindowOnCurrentVirtualDesktop(hWnd);
     }
 
-    public static string? GetAppId(IntPtr hWnd)
+    /// <summary>
+    /// Try gets the App User Model ID with the specified foreground window.
+    /// </summary>
+    /// <param name="hWnd">The handle of the window.</param>
+    /// <param name="appUserModelId">App User Model ID.</param>
+    /// <returns>True if the App User Model ID is available, false otherwise.</returns>
+    public static bool TryGetAppUserModelId(IntPtr hWnd, out string appUserModelId)
     {
         InitializeIfNeeded();
 
-        try
+        var id = SafeInvoke(() => _provider.ApplicationViewCollection
+            .GetViewForHwnd(hWnd)
+            .GetAppUserModelId());
+        if (id != null)
         {
-            return _provider.ApplicationViewCollection
-                .GetViewForHwnd(hWnd)
-                .GetAppUserModelId();
+            appUserModelId = id;
+            return true;
         }
-        catch (COMException ex) when (ex.Match(HResult.TYPE_E_ELEMENTNOTFOUND))
-        {
-            return null;
-        }
+
+        appUserModelId = "";
+        return false;
     }
 
     #endregion

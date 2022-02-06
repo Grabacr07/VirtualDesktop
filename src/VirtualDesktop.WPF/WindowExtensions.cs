@@ -47,6 +47,7 @@ public static class WindowExtensions
     /// <summary>
     /// Determines whether this window is pinned.
     /// </summary>
+    /// <returns>True if pinned, false otherwise.</returns>
     public static bool IsPinned(this Window window)
     {
         return VirtualDesktop.IsPinnedWindow(window.GetHandle());
@@ -55,34 +56,32 @@ public static class WindowExtensions
     /// <summary>
     /// Pins a window, showing it on all virtual desktops.
     /// </summary>
-    public static void Pin(this Window window)
+    /// <returns>True if already pinned or successfully pinned, false otherwise (most of the time, the target window is not found or not ready).</returns>
+    public static bool Pin(this Window window)
     {
-        VirtualDesktop.PinWindow(window.GetHandle());
+        return VirtualDesktop.PinWindow(window.GetHandle());
     }
 
     /// <summary>
     /// Unpins a window.
     /// </summary>
-    public static void Unpin(this Window window)
+    /// <returns>True if already unpinned or successfully unpinned, false otherwise (most of the time, the target window is not found or not ready).</returns>
+    public static bool Unpin(this Window window)
     {
-        VirtualDesktop.UnpinWindow(window.GetHandle());
+        return VirtualDesktop.UnpinWindow(window.GetHandle());
     }
 
     /// <summary>
     /// Toggles a window between being pinned and unpinned.
     /// </summary>
-    public static void TogglePin(this Window window)
+    /// <returns>True if successfully toggled, false otherwise (most of the time, the target window is not found or not ready).</returns>
+    public static bool TogglePin(this Window window)
     {
         var handle = window.GetHandle();
 
-        if (VirtualDesktop.IsPinnedWindow(handle))
-        {
-            VirtualDesktop.UnpinWindow(handle);
-        }
-        else
-        {
-            VirtualDesktop.PinWindow(handle);
-        }
+        return VirtualDesktop.IsPinnedWindow(handle)
+            ? VirtualDesktop.UnpinWindow(handle)
+            : VirtualDesktop.PinWindow(handle);
     }
 
     /// <summary>
@@ -91,5 +90,5 @@ public static class WindowExtensions
     public static IntPtr GetHandle(this Visual visual)
         => PresentationSource.FromVisual(visual) is HwndSource hwndSource
             ? hwndSource.Handle
-            : throw new ArgumentException("Unable to get a window handle.", nameof(visual));
+            : throw new ArgumentException("Unable to get a window handle. Call it after the Window.SourceInitialized event is fired.", nameof(visual));
 }

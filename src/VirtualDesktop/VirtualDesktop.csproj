@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <RootNamespace>WindowsDesktop</RootNamespace>
     <PackageId>VirtualDesktop</PackageId>
-    <Version>5.0.1</Version>
+    <Version>5.0.2</Version>
     <Company>grabacr.net</Company>
     <Description>C# wrapper for IVirtualDesktopManager on Windows 11 (and Windows 10).</Description>
     <Copyright>Copyright © 2022 Manato KAMEYA</Copyright>
@@ -16,6 +16,15 @@
     <Authors>Manato KAMEYA</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageTags>Windows;Windows10;Windows11;Desktop;VirtualDesktop;</PackageTags>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-windows10.0.19041.0|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

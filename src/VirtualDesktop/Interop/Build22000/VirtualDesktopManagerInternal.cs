@@ -52,10 +52,13 @@ internal class VirtualDesktopManagerInternal : ComWrapperBase<IVirtualDesktopMan
         => this.InvokeMethod(Args(this._factory.ApplicationViewFromHwnd(hWnd).ComObject, ((VirtualDesktop)desktop).ComObject));
 
     public void SetDesktopName(IVirtualDesktop desktop, string name)
-        => this.InvokeMethod(Args(((VirtualDesktop)desktop).ComObject, name.MarshalToHString()));
+        => this.InvokeMethod(Args(((VirtualDesktop)desktop).ComObject, new HString(name)));
 
     public void SetDesktopWallpaper(IVirtualDesktop desktop, string path)
-        => this.InvokeMethod(Args(((VirtualDesktop)desktop).ComObject, path.MarshalToHString()));
+        => this.InvokeMethod(Args(((VirtualDesktop)desktop).ComObject, new HString(path)));
+
+    public void UpdateWallpaperPathForAllDesktops(string path)
+        => this.InvokeMethod(Args(new HString(path)));
 
     private VirtualDesktop InvokeMethodAndWrap(object?[]? parameters = null, [CallerMemberName] string methodName = "")
         => new(this.ComInterfaceAssembly, this.InvokeMethod<object>(parameters, methodName) ?? throw new Exception("Failed to get IVirtualDesktop instance."));
