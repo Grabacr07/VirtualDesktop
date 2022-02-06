@@ -198,7 +198,7 @@ partial class MainWindow
             await Task.Delay(_delay);
 
             var handle = GetForegroundWindow();
-            (VirtualDesktop.IsPinnedWindow(handle) ? VirtualDesktop.UnpinWindow : (Action<IntPtr>)VirtualDesktop.PinWindow)(handle);
+            (VirtualDesktop.IsPinnedWindow(handle) ? VirtualDesktop.UnpinWindow : (Func<IntPtr, bool>)VirtualDesktop.PinWindow)(handle);
         }
     }
 
@@ -212,8 +212,10 @@ partial class MainWindow
         {
             await Task.Delay(_delay);
 
-            var appId = VirtualDesktop.GetAppId(GetForegroundWindow());
-            if (appId != null) (VirtualDesktop.IsPinnedApplication(appId) ? VirtualDesktop.UnpinApplication : (Action<string>)VirtualDesktop.PinApplication)(appId);
+            if (VirtualDesktop.TryGetAppUserModelId(GetForegroundWindow(), out var appId))
+            {
+                (VirtualDesktop.IsPinnedApplication(appId) ? VirtualDesktop.UnpinApplication : (Func<string, bool>)VirtualDesktop.PinApplication)(appId);
+            }
         }
     }
 

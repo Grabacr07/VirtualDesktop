@@ -88,26 +88,28 @@ partial class VirtualDesktop
         _notificationListener = _provider.VirtualDesktopNotificationService.Register(new EventProxy());
     }
 
-    private static T SafeInvoke<T>(Func<T> action, Func<T> error, params HResult[]? hResult)
+    private static T? SafeInvoke<T>(Func<T> action, params HResult[] hResult)
     {
         try
         {
             return action();
         }
-        catch (COMException ex) when (ex.Match(hResult ?? new[] { HResult.TYPE_E_ELEMENTNOTFOUND, }))
+        catch (COMException ex) when (ex.Match(hResult is { Length: 0 } ? new[] { HResult.TYPE_E_ELEMENTNOTFOUND, } : hResult))
         {
-            return error();
+            return default;
         }
     }
 
-    private static void SafeInvoke(Action action, params HResult[]? hResult)
+    private static bool SafeInvoke(Action action, params HResult[] hResult)
     {
         try
         {
             action();
+            return true;
         }
-        catch (COMException ex) when (ex.Match(hResult ?? new[] { HResult.TYPE_E_ELEMENTNOTFOUND, }))
+        catch (COMException ex) when (ex.Match(hResult is { Length: 0 } ? new[] { HResult.TYPE_E_ELEMENTNOTFOUND, } : hResult))
         {
+            return false;
         }
     }
 }
