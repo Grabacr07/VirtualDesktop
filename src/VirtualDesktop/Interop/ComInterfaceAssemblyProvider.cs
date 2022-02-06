@@ -20,7 +20,7 @@ internal class ComInterfaceAssemblyProvider
     private static readonly int _osBuild = Environment.OSVersion.Version.Build;
     private static readonly Regex _assemblyRegex = new(@"VirtualDesktop\.(?<build>\d{5}?)(\.\w*|)\.dll");
     private static readonly Regex _buildNumberRegex = new(@"\.Build(?<build>\d{5})\.");
-    private static readonly Version _requireVersion = new("2.0");
+    private static readonly Version _requireVersion = new("2.1");
 
     private readonly VirtualDesktopCompilerConfiguration _configuration;
     
@@ -45,7 +45,7 @@ internal class ComInterfaceAssemblyProvider
 #endif
             }
             .Where(x => string.IsNullOrEmpty(x) == false)
-            .Select(x => new DirectoryInfo(x!))
+            .Select(x => new DirectoryInfo(x))
             .Append(this._configuration.CompiledAssemblySaveDirectory)
             .Where(x => x.Exists);
 
