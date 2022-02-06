@@ -5,18 +5,19 @@
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>WindowsDesktop</RootNamespace>
-    <PackageId>VirtualDesktop</PackageId>
     <Version>5.0.3</Version>
+    <Product>VirtualDesktop</Product>
+    <Authors>Grabacr07</Authors>
     <Company>grabacr.net</Company>
-    <Description>C# wrapper for IVirtualDesktopManager on Windows 11 (and Windows 10).</Description>
     <Copyright>Copyright © 2022 Manato KAMEYA</Copyright>
-    <PackageProjectUrl>https://github.com/Grabacr07/VirtualDesktop</PackageProjectUrl>
+    <Description>C# Wrapper for the Virtual Desktop API on Windows 11 (and Windows 10).</Description>
     <RepositoryUrl>https://github.com/Grabacr07/VirtualDesktop</RepositoryUrl>
-    <Authors>Manato KAMEYA</Authors>
+    <PackageProjectUrl>https://github.com/Grabacr07/VirtualDesktop</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>Windows;Windows10;Windows11;Desktop;VirtualDesktop;</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <RootNamespace>WindowsDesktop</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
@@ -48,6 +49,10 @@
     <None Include="..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
