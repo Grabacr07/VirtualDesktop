@@ -31,7 +31,7 @@ partial class MainWindow
 
     private void InitializeComObjects()
     {
-        VirtualDesktop.Configure(new VirtualDesktopConfiguration());
+        VirtualDesktop.Configure();
 
         VirtualDesktop.Created += (_, desktop) =>
         {

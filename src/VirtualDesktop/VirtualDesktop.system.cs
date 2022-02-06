@@ -19,6 +19,7 @@ partial class VirtualDesktop
     private static readonly ConcurrentDictionary<Guid, VirtualDesktop> _knownDesktops = new();
     private static readonly ExplorerRestartListenerWindow _explorerRestartListener = new(() => HandleExplorerRestarted());
     private static VirtualDesktopConfiguration _configuration = new();
+    private static ComInterfaceAssembly? _assembly;
     private static IDisposable? _notificationListener;
     private readonly IVirtualDesktop _source;
     private string _name;
@@ -53,6 +54,14 @@ partial class VirtualDesktop
     }
 
     /// <summary>
+    /// Initialize using the default settings. This method should always be called first.
+    /// </summary>
+    public static void Configure()
+    {
+        InitializeIfNeeded();
+    }
+
+    /// <summary>
     /// Sets the behavior for compiling the assembly. This method should always be called first.
     /// </summary>
     public static void Configure(VirtualDesktopConfiguration configuration)
@@ -68,7 +77,7 @@ partial class VirtualDesktop
     {
         if (IsSupported == false) throw new NotSupportedException("You must target Windows 10 or later in your 'app.manifest' and run without debugging.");
         if (_provider.IsInitialized) return;
-
+        
         _explorerRestartListener.Show();
         InitializeCore();
     }
@@ -82,7 +91,7 @@ partial class VirtualDesktop
 
     private static void InitializeCore()
     {
-        _provider.Initialize(_configuration);
+        _provider.Initialize(_assembly ??= new ComInterfaceAssemblyBuilder(_configuration).GetAssembly());
 
         _notificationListener?.Dispose();
         _notificationListener = _provider.VirtualDesktopNotificationService.Register(new EventProxy());

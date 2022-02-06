@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -9,6 +10,9 @@ namespace WindowsDesktop.Interop
 	{
 		private readonly Dictionary<string, Type> _knownTypes = new();
 		private readonly Assembly _compiledAssembly;
+
+        public DirectoryInfo AssemblyLocation
+            => new(this._compiledAssembly.Location);
 
 		public ComInterfaceAssembly(Assembly compiledAssembly)
 		{

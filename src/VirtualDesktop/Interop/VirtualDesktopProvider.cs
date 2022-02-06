@@ -23,18 +23,15 @@ internal abstract class VirtualDesktopProvider
 
     public bool IsInitialized { get; internal set; }
 
-    internal void Initialize(VirtualDesktopConfiguration configuration)
+    internal void Initialize(ComInterfaceAssembly assembly)
     {
         if (this.IsInitialized) return;
 
-        var assemblyProvider = new ComInterfaceAssemblyProvider(configuration);
-        var assembly = assemblyProvider.GetAssembly();
-
-        this.InitializeCore(assembly, configuration);
+        this.InitializeCore(assembly);
         this.IsInitialized = true;
     }
 
-    private protected abstract void InitializeCore(ComInterfaceAssembly assembly, VirtualDesktopConfiguration configuration);
+    private protected abstract void InitializeCore(ComInterfaceAssembly assembly);
 
     internal class NotSupported : VirtualDesktopProvider
     {
@@ -56,7 +53,7 @@ internal abstract class VirtualDesktopProvider
         public override IVirtualDesktopNotificationService VirtualDesktopNotificationService
             => throw new NotSupportedException();
 
-        private protected override void InitializeCore(ComInterfaceAssembly assembly, VirtualDesktopConfiguration configuration)
+        private protected override void InitializeCore(ComInterfaceAssembly assembly)
             => throw new NotSupportedException();
     }
 
