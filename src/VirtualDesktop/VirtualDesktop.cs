@@ -153,7 +153,7 @@ public partial class VirtualDesktop
     /// Returns a virtual desktop matching the specified identifier.
     /// </summary>
     /// <param name="desktopId">The identifier of the virtual desktop to return.</param>
-    /// <remarks>Returns null if the identifier is not associated with any available desktops.</remarks>
+    /// <remarks>Returns <see langword="null" /> if the identifier is not associated with any available desktops.</remarks>
     public static VirtualDesktop? FromId(Guid desktopId)
     {
         InitializeIfNeeded();
@@ -167,7 +167,7 @@ public partial class VirtualDesktop
     /// Returns the virtual desktop the window is located on.
     /// </summary>
     /// <param name="hWnd">The handle of the window.</param>
-    /// <remarks>Returns null if the handle is not associated with any open windows.</remarks>
+    /// <remarks>Returns <see langword="null" /> if the handle is not associated with any open windows.</remarks>
     public static VirtualDesktop? FromHwnd(IntPtr hWnd)
     {
         InitializeIfNeeded();
@@ -193,7 +193,7 @@ public partial class VirtualDesktop
     /// Determines whether the specified window is pinned.
     /// </summary>
     /// <param name="hWnd">The handle of the window.</param>
-    /// <returns>True if pinned, false otherwise.</returns>
+    /// <returns><see langword="true" /> if pinned, <see langword="false" /> otherwise.</returns>
     public static bool IsPinnedWindow(IntPtr hWnd)
     {
         InitializeIfNeeded();
@@ -205,7 +205,7 @@ public partial class VirtualDesktop
     /// Pins the specified window, showing it on all virtual desktops.
     /// </summary>
     /// <param name="hWnd">The handle of the window.</param>
-    /// <returns>True if already pinned or successfully pinned, false otherwise (most of the time, the target window is not found or not ready).</returns>
+    /// <returns><see langword="true" /> if already pinned or successfully pinned, <see langword="false" /> otherwise (most of the time, the target window is not found or not ready).</returns>
     public static bool PinWindow(IntPtr hWnd)
     {
         InitializeIfNeeded();
@@ -218,7 +218,7 @@ public partial class VirtualDesktop
     /// Unpins the specified window.
     /// </summary>
     /// <param name="hWnd">The handle of the window.</param>
-    /// <returns>True if already unpinned or successfully unpinned, false otherwise (most of the time, the target window is not found or not ready).</returns>
+    /// <returns><see langword="true" /> if already unpinned or successfully unpinned, <see langword="false" /> otherwise (most of the time, the target window is not found or not ready).</returns>
     public static bool UnpinWindow(IntPtr hWnd)
     {
         InitializeIfNeeded();
@@ -231,7 +231,7 @@ public partial class VirtualDesktop
     /// Determines whether the specified app is pinned.
     /// </summary>
     /// <param name="appUserModelId">App User Model ID. <see cref="TryGetAppUserModelId"/> method may be helpful.</param>
-    /// <returns>True if pinned, false otherwise.</returns>
+    /// <returns><see langword="true" /> if pinned, <see langword="false" /> otherwise.</returns>
     public static bool IsPinnedApplication(string appUserModelId)
     {
         InitializeIfNeeded();
@@ -243,7 +243,7 @@ public partial class VirtualDesktop
     /// Pins the specified app, showing it on all virtual desktops.
     /// </summary>
     /// <param name="appUserModelId">App User Model ID. <see cref="TryGetAppUserModelId"/> method may be helpful.</param>
-    /// <returns>True if already pinned or successfully pinned, false otherwise (most of the time, app id is incorrect).</returns>
+    /// <returns><see langword="true" /> if already pinned or successfully pinned, <see langword="false" /> otherwise (most of the time, app id is incorrect).</returns>
     public static bool PinApplication(string appUserModelId)
     {
         InitializeIfNeeded();
@@ -256,7 +256,7 @@ public partial class VirtualDesktop
     /// Unpins the specified app.
     /// </summary>
     /// <param name="appUserModelId">App User Model ID. <see cref="TryGetAppUserModelId"/> method may be helpful.</param>
-    /// <returns>True if already unpinned or successfully unpinned, false otherwise (most of the time, app id is incorrect).</returns>
+    /// <returns><see langword="true" /> if already unpinned or successfully unpinned, <see langword="false" /> otherwise (most of the time, app id is incorrect).</returns>
     public static bool UnpinApplication(string appUserModelId)
     {
         InitializeIfNeeded();
@@ -321,18 +321,22 @@ public partial class VirtualDesktop
     /// </summary>
     /// <param name="hWnd">The handle of the window.</param>
     /// <param name="appUserModelId">App User Model ID.</param>
-    /// <returns>True if the App User Model ID is available, false otherwise.</returns>
+    /// <returns><see langword="true" /> if the App User Model ID is available, <see langword="false" /> otherwise.</returns>
     public static bool TryGetAppUserModelId(IntPtr hWnd, out string appUserModelId)
     {
         InitializeIfNeeded();
 
-        var id = SafeInvoke(() => _provider.ApplicationViewCollection
-            .GetViewForHwnd(hWnd)
-            .GetAppUserModelId());
-        if (id != null)
+        try
         {
-            appUserModelId = id;
+            appUserModelId = _provider.ApplicationViewCollection
+                .GetViewForHwnd(hWnd)
+                .GetAppUserModelId();
             return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"{nameof(TryGetAppUserModelId)} failed.");
+            Debug.WriteLine(ex);
         }
 
         appUserModelId = "";

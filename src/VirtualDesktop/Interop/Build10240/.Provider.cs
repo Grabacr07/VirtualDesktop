@@ -29,7 +29,7 @@ internal class VirtualDesktopProvider10240 : VirtualDesktopProvider
     public override IVirtualDesktopNotificationService VirtualDesktopNotificationService
         => this._virtualDesktopNotificationService ?? throw InitializationIsRequired;
 
-    private protected override void InitializeCore(ComInterfaceAssembly assembly, VirtualDesktopConfiguration configuration)
+    private protected override void InitializeCore(ComInterfaceAssembly assembly)
     {
         var type = Type.GetTypeFromCLSID(CLSID.VirtualDesktopManager)
             ?? throw new Exception($"No type found for CLSID '{CLSID.VirtualDesktopManager}'.");
