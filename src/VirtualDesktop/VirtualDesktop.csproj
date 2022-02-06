@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <RootNamespace>WindowsDesktop</RootNamespace>
     <PackageId>VirtualDesktop</PackageId>
-    <Version>5.0.2</Version>
+    <Version>5.0.3</Version>
     <Company>grabacr.net</Company>
     <Description>C# wrapper for IVirtualDesktopManager on Windows 11 (and Windows 10).</Description>
     <Copyright>Copyright © 2022 Manato KAMEYA</Copyright>
