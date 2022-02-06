@@ -326,13 +326,17 @@ public partial class VirtualDesktop
     {
         InitializeIfNeeded();
 
-        var id = SafeInvoke(() => _provider.ApplicationViewCollection
-            .GetViewForHwnd(hWnd)
-            .GetAppUserModelId());
-        if (id != null)
+        try
         {
-            appUserModelId = id;
+            appUserModelId = _provider.ApplicationViewCollection
+                .GetViewForHwnd(hWnd)
+                .GetAppUserModelId();
             return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"{nameof(TryGetAppUserModelId)} failed.");
+            Debug.WriteLine(ex);
         }
 
         appUserModelId = "";
