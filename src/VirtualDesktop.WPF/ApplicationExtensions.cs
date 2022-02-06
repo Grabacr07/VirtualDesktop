@@ -10,7 +10,7 @@ public static class ApplicationExtensions
     /// <summary>
     /// Determines whether this application is pinned.
     /// </summary>
-    /// <returns>True if pinned, false otherwise.</returns>
+    /// <returns><see langword="true" /> if pinned, <see langword="false" /> otherwise.</returns>
     public static bool IsPinned(this Application app)
     {
         return VirtualDesktop.TryGetAppUserModelId(app.GetWindowHandle(), out var appId)
@@ -20,7 +20,7 @@ public static class ApplicationExtensions
     /// <summary>
     /// Pins an application, showing it on all virtual desktops.
     /// </summary>
-    /// <returns>True if already pinned or successfully pinned, false otherwise (most of the time, main window is not found).</returns>
+    /// <returns><see langword="true" /> if already pinned or successfully pinned, <see langword="false" /> otherwise (most of the time, main window is not found).</returns>
     public static bool Pin(this Application app)
     {
         return VirtualDesktop.TryGetAppUserModelId(app.GetWindowHandle(), out var appId)
@@ -30,7 +30,7 @@ public static class ApplicationExtensions
     /// <summary>
     /// Unpins an application.
     /// </summary>
-    /// <returns>True if already unpinned or successfully unpinned, false otherwise (most of the time, main window is not found).</returns>
+    /// <returns><see langword="true" /> if already unpinned or successfully unpinned, <see langword="false" /> otherwise (most of the time, main window is not found).</returns>
     public static bool Unpin(this Application app)
     {
         return VirtualDesktop.TryGetAppUserModelId(app.GetWindowHandle(), out var appId)
@@ -40,7 +40,7 @@ public static class ApplicationExtensions
     /// <summary>
     /// Toggles an application between being pinned and unpinned.
     /// </summary>
-    /// <returns>True if successfully toggled, false otherwise (most of the time, main window is not found).</returns>
+    /// <returns><see langword="true" /> if successfully toggled, <see langword="false" /> otherwise (most of the time, main window is not found).</returns>
     public static bool TogglePin(this Application app)
     {
         if (VirtualDesktop.TryGetAppUserModelId(app.GetWindowHandle(), out var appId) == false) return false;

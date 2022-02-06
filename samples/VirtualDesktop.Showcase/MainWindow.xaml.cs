@@ -103,9 +103,9 @@ partial class MainWindow
                 foreach (var desktop in this.Desktops)
                 {
                     desktop.ShowcaseMessage = parent == null
-                        ? "(Showcase window is pinned)"
+                        ? "(this window is pinned)"
                         : desktop.Id == parent.Id
-                            ? "Showcase window is here."
+                            ? "this window is here."
                             : "";
                 }
             });

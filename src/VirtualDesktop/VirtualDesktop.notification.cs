@@ -14,6 +14,9 @@ partial class VirtualDesktop
     /// <summary>
     /// Occurs when a virtual desktop is created.
     /// </summary>
+    /// <remarks>
+    /// See <see cref="CurrentChanged"/> for details.
+    /// </remarks>
     public static event EventHandler<VirtualDesktop>? Created;
 
     public static event EventHandler<VirtualDesktopDestroyEventArgs>? DestroyBegin;
@@ -23,26 +26,47 @@ partial class VirtualDesktop
     /// <summary>
     /// Occurs when a virtual desktop is destroyed.
     /// </summary>
+    /// <remarks>
+    /// See <see cref="CurrentChanged"/> for details.
+    /// </remarks>
     public static event EventHandler<VirtualDesktopDestroyEventArgs>? Destroyed;
-    
+
     /// <summary>
     /// Occurs when the current virtual desktop is changed.
     /// </summary>
+    /// <remarks>
+    /// The internal initialization is triggered by the call of a static property/method.<br/>
+    /// Therefore, events are not fired just by subscribing to them.<br/>
+    /// <br/>
+    /// If you want to use only event subscription, the following code is recommended.<br/>
+    /// <code>
+    /// VirtualDesktop.Configuration();
+    /// </code>
+    /// </remarks>
     public static event EventHandler<VirtualDesktopChangedEventArgs>? CurrentChanged;
 
     /// <summary>
     /// Occurs when the virtual desktop is moved.
     /// </summary>
-    public static event EventHandler<VirtualDesktopMovedEventArgs>? Moved; 
+    /// <remarks>
+    /// See <see cref="CurrentChanged"/> for details.
+    /// </remarks>
+    public static event EventHandler<VirtualDesktopMovedEventArgs>? Moved;
 
     /// <summary>
     /// Occurs when a virtual desktop is renamed.
     /// </summary>
+    /// <remarks>
+    /// See <see cref="CurrentChanged"/> for details.
+    /// </remarks>
     public static event EventHandler<VirtualDesktopRenamedEventArgs>? Renamed;
 
     /// <summary>
     /// Occurs when a virtual desktop wallpaper is changed.
     /// </summary>
+    /// <remarks>
+    /// See <see cref="CurrentChanged"/> for details.
+    /// </remarks>
     public static event EventHandler<VirtualDesktopWallpaperChangedEventArgs>? WallpaperChanged;
 
     /// <summary>
@@ -50,9 +74,11 @@ partial class VirtualDesktop
     /// </summary>
     /// <param name="targetHwnd">The target window handle to receive events from. If specify <see cref="IntPtr.Zero"/>, all changes will be delivered.</param>
     /// <param name="action">Action to be performed.</param>
-    /// <returns>IDisposable instance for unsubscribing.</returns>
+    /// <returns><see cref="IDisposable"/> instance for unsubscribing.</returns>
     public static IDisposable RegisterViewChanged(IntPtr targetHwnd, Action<IntPtr> action)
     {
+        InitializeIfNeeded();
+
         var listener = _viewChangedEventListeners.GetOrAdd(targetHwnd, x => new ViewChangedListener(x));
         listener.Listeners.Add(action);
 

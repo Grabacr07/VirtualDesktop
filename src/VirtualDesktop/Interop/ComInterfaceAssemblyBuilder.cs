@@ -34,9 +34,9 @@ internal class ComInterfaceAssemblyBuilder
     }
 
     public ComInterfaceAssembly GetAssembly()
-        => _assembly ??= new ComInterfaceAssembly(this.GetExistingAssembly() ?? this.CreateAssembly());
+        => _assembly ??= new ComInterfaceAssembly(this.LoadExistingAssembly() ?? this.CreateAssembly());
 
-    private Assembly? GetExistingAssembly()
+    private Assembly? LoadExistingAssembly()
     {
         if (this._configuration.CompiledAssemblySaveDirectory.Exists)
         {

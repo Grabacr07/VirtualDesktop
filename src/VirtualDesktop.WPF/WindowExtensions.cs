@@ -47,7 +47,7 @@ public static class WindowExtensions
     /// <summary>
     /// Determines whether this window is pinned.
     /// </summary>
-    /// <returns>True if pinned, false otherwise.</returns>
+    /// <returns><see langword="true" /> if pinned, <see langword="false" /> otherwise.</returns>
     public static bool IsPinned(this Window window)
     {
         return VirtualDesktop.IsPinnedWindow(window.GetHandle());
@@ -56,7 +56,7 @@ public static class WindowExtensions
     /// <summary>
     /// Pins a window, showing it on all virtual desktops.
     /// </summary>
-    /// <returns>True if already pinned or successfully pinned, false otherwise (most of the time, the target window is not found or not ready).</returns>
+    /// <returns><see langword="true" /> if already pinned or successfully pinned, <see langword="false" /> otherwise (most of the time, the target window is not found or not ready).</returns>
     public static bool Pin(this Window window)
     {
         return VirtualDesktop.PinWindow(window.GetHandle());
@@ -65,7 +65,7 @@ public static class WindowExtensions
     /// <summary>
     /// Unpins a window.
     /// </summary>
-    /// <returns>True if already unpinned or successfully unpinned, false otherwise (most of the time, the target window is not found or not ready).</returns>
+    /// <returns><see langword="true" /> if already unpinned or successfully unpinned, <see langword="false" /> otherwise (most of the time, the target window is not found or not ready).</returns>
     public static bool Unpin(this Window window)
     {
         return VirtualDesktop.UnpinWindow(window.GetHandle());
@@ -74,7 +74,7 @@ public static class WindowExtensions
     /// <summary>
     /// Toggles a window between being pinned and unpinned.
     /// </summary>
-    /// <returns>True if successfully toggled, false otherwise (most of the time, the target window is not found or not ready).</returns>
+    /// <returns><see langword="true" /> if successfully toggled, <see langword="false" /> otherwise (most of the time, the target window is not found or not ready).</returns>
     public static bool TogglePin(this Window window)
     {
         var handle = window.GetHandle();
