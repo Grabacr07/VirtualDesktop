@@ -23,6 +23,9 @@ public partial class VirtualDesktop
     /// <summary>
     /// Gets or sets the name of this virtual desktop.
     /// </summary>
+    /// <remarks>
+    /// This is not supported on Windows 10.
+    /// </remarks>
     public string Name
     {
         get => this._name;
@@ -36,6 +39,9 @@ public partial class VirtualDesktop
     /// <summary>
     /// Gets or sets the path of the desktop wallpaper.
     /// </summary>
+    /// <remarks>
+    /// This is not supported on Windows 10.
+    /// </remarks>
     public string WallpaperPath
     {
         get => this._wallpaperPath;
@@ -266,6 +272,9 @@ public partial class VirtualDesktop
     /// <summary>
     /// Apply the specified wallpaper to all desktops.
     /// </summary>
+    /// <remarks>
+    /// This is not supported on Windows 10.
+    /// </remarks>
     /// <param name="path">Wallpaper image path.</param>
     public static void UpdateWallpaperForAllDesktops(string path)
     {
