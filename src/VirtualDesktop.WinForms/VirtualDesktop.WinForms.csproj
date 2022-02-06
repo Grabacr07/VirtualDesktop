@@ -5,7 +5,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>5.0.2</Version>
+    <Version>5.0.4</Version>
     <Product>VirtualDesktop</Product>
     <Authors>Grabacr07</Authors>
     <Company>grabacr.net</Company>
