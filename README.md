@@ -26,9 +26,9 @@ VirtualDesktop is C# wrapper for [IVirtualDesktopManager](https://msdn.microsoft
 ## Requirements
 
 ```xml
-<TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+<TargetFramework>net5.0-windows10.0.19041.0</TargetFramework>
 ```
-* .NET 6
+* .NET 5 or 6
 * Windows 10 build 19041 (20H1) or later
 
 
@@ -48,7 +48,10 @@ PM> Install-Package VirtualDesktop
 ## How to use
 
 ### Preparation
-Because of the dependency on [C#/WinRT](https://aka.ms/cswinrt) ([repo](https://github.com/microsoft/CsWinRT)), the target framework must be set to `net6.0-windows10.0.19041.0` or later.
+Because of the dependency on [C#/WinRT](https://aka.ms/cswinrt) ([repo](https://github.com/microsoft/CsWinRT)), the target framework must be set to `net5.0-windows10.0.19041.0` or later.
+```xml
+<TargetFramework>net5.0-windows10.0.19041.0</TargetFramework>
+```
 ```xml
 <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
 ```
