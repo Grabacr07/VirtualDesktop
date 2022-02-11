@@ -32,5 +32,5 @@ public record VirtualDesktopCompilerConfiguration
     /// <returns>
     /// A value indicating whether the compiled assembly should be saved or not. Default is %LocalAppData%.
     /// </returns>
-    public DirectoryInfo CompiledAssemblySaveDirectory { get; init; } = new(Path.Combine(ProductInfo.LocalAppData.FullName, "assemblies"));
+    public DirectoryInfo CompiledAssemblySaveDirectory { get; init; } = new(Path.Combine(LocationInfo.LocalAppData.FullName, "assemblies"));
 }

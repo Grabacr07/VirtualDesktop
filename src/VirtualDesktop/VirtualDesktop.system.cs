@@ -40,7 +40,8 @@ partial class VirtualDesktop
             _ => new VirtualDesktopProvider.NotSupported()
         };
 
-        Debug.WriteLine("*** VirtualDesktop Library ***");
+        Debug.WriteLine($"*** {AssemblyInfo.Title} Library ***");
+        Debug.WriteLine($"Version:  {AssemblyInfo.VersionString}");
         Debug.WriteLine($"OS Build: {Environment.OSVersion.Version.Build}");
         Debug.WriteLine($"Provider: {_provider.GetType().Name}");
     }
