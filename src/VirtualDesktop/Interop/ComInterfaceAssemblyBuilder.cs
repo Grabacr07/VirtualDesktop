@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Runtime.Loader;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -149,7 +150,20 @@ internal class ComInterfaceAssemblyBuilder
             var references = AppDomain.CurrentDomain.GetAssemblies()
                 .Concat(new[] { Assembly.GetExecutingAssembly(), })
                 .Where(x => x.IsDynamic == false)
-                .Select(x => MetadataReference.CreateFromFile(x.Location));
+                .Select(x => {
+                    if (!string.IsNullOrEmpty(x.Location))
+                    {
+                        return MetadataReference.CreateFromFile(x.Location);
+                    }
+                    else
+                    {
+                        unsafe
+                        {
+                            x.TryGetRawMetadata(out byte* blob, out int length);
+                            return AssemblyMetadata.Create(ModuleMetadata.CreateFromMetadata((IntPtr)blob, length)).GetReference();
+                        }
+                    }
+                });
             var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
             var compilation = CSharpCompilation.Create(name)
                 .WithOptions(options)

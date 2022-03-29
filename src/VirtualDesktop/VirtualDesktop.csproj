@@ -19,6 +19,7 @@
     <PackageTags>Windows;Windows10;Windows11;Desktop;VirtualDesktop;</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <RootNamespace>WindowsDesktop</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-windows10.0.19041.0|AnyCPU'">
