@@ -17,6 +17,8 @@ namespace WindowsDesktop.Interop.Build22000
 
         IVirtualDesktop GetCurrentDesktop(IntPtr hWndOrMon);
 
+        IObjectArray GetAllCurrentDesktops();
+
         IObjectArray GetDesktops(IntPtr hWndOrMon);
 
         IVirtualDesktop GetAdjacentDesktop(IVirtualDesktop pDesktopReference, int uDirection);
