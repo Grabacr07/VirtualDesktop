@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -37,9 +37,9 @@ internal static class IID
             .OrderByDescending(s => s.osBuild)
             .ToArray();
 
-        // Find first prop with build version >= current OS version
+        // Find first prop with build version <= current OS version
         var selectedSettings = orderedProps.FirstOrDefault(p =>
-            Environment.OSVersion.Version.Build >= p.osBuild
+            p.osBuild <= Environment.OSVersion.Version.Build
         );
         
         if (selectedSettings == null)
